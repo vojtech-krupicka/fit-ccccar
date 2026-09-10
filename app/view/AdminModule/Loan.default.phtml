@@ -1,0 +1,113 @@
+<?php
+/**
+ * AdminModule/Loan.default.phtml
+ *
+ * Sprava vypujcek.
+ *
+ * @copyright 2014
+ * @version 1.0.0
+ */
+?>
+
+
+<div class="catalog-filter">
+    <form class="form-horizontal" role="form" method="post" action="<?php echo CC_Utils::link('filterForm!'); ?>">
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="selectCustomer">Zákazník:</label>
+                    <div class="col-sm-9">
+                        <?php echo CC_Helper::printSelect('customer', $CC_TEMPLATE->customerList, $CC_TEMPLATE->filterForm->customer, 'Všichni zákazníci'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="inputLoan">Výpůjčka:</label>
+                    <div class="col-sm-9">
+                        <input id="inputLoan" name="loan" class="form-control" placeholder="číslo výpůjčky" value="<?php echo $CC_TEMPLATE->filterForm->loan; ?>" />
+                    </div>
+                </div>
+            </div>
+       </div>
+        <div class="row">
+            <div class="col-md-12 form-buttons">
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary" name="btnFilter"><span class="icon-filter"></span> Filtrovat</button>
+                    <?php if (count($CC_TEMPLATE->filterForm->hasFilter) > 0): ?>
+                        <button type="submit" class="btn btn-danger" name="btnReset"><span class="icon-remove"></span> Zrušit filtry</button>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<?php if (count($CC_TEMPLATE->loanList) > 0): ?>
+    <?php $CC_TEMPLATE->paginator->render(); ?>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Seznam výpůjček</h3></div>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="text-center col-md-1">Číslo výpůjčky</th>
+                            <th class="text-center">Zákazník<br />Email</th>
+                            <th class="text-center">Vozidlo<br />Km/Cena</th>
+                            <th class="text-center">Datum rezervace od/do<br />Datum zapůčení/vrácení</th>
+                            <th class="text-center">Zapůjčil<br />Přijal</th>
+                            <th class="text-center">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($CC_TEMPLATE->loanList as $loan): ?>
+                        <?php
+                            $trClass = '';
+                            if ($loan->isDeleted()) {
+                                $trClass = ' class="active"';
+                            } else if (!$loan->getStartAt() && !$loan->getEndAt()) {
+                                $trClass = ' class="danger"';
+                            } else if ($loan->getStartAt() && !$loan->getEndAt()) {
+                                $trClass = ' class="warning"';
+                            }
+                        ?>
+                        <tr<?php echo $trClass; ?>>
+                            <td class="text-center"><?php echo $loan->getId(); ?></td>
+                            <td class="text-center">
+                                <strong><?php echo $loan->getCustomer()->getFullName(); ?></strong><br />
+                                <a href="mailto:<?php echo $loan->getCustomer()->getEmail(); ?>" title="<?php echo $loan->getCustomer()->getEmail(); ?>"><?php echo $loan->getCustomer()->getEmail(); ?></a>
+                            </td>
+                            <td class="text-center">
+                                <strong><?php echo $loan->getVehicle()->getFullName(); ?></strong><br />
+                                <em><?php echo number_format($loan->getDistance(), 2); ?>km / <?php echo number_format($loan->getPrice(), 2); ?>Kč</em>
+                            </td>
+                            <td class="text-center">
+                                <?php echo CC_Helper::printDate($loan->getReservedFrom(), 'd.m.Y'); ?> /
+                                <?php echo CC_Helper::printDate($loan->getReservedTo(), 'd.m.Y'); ?><br />
+                                <?php echo $loan->getStartAt() ? '<abbr title="'.CC_Helper::printDate($loan->getStartAt(), 'd.m.Y h:i:s').'">' . CC_Helper::printDate($loan->getStartAt(), 'd.m.Y') . '</abbr>' : '<em>Nevypůjčeno</em>'; ?> / 
+                                <?php echo $loan->getEndAt() ? '<abbr title="'.CC_Helper::printDate($loan->getStartAt(), 'd.m.Y h:i:s').'">' . CC_Helper::printDate($loan->getEndAt(), 'd.m.Y') . '</abbr>' : '<em>Nevráceno</em>'; ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo $loan->getBorrower() ? $loan->getBorrower()->getFullName() : '<em>Nevypůjčeno</em>'; ?><br />
+                                <?php echo $loan->getRecipient() ? $loan->getRecipient()->getFullName() : '<em>Nevráceno</em>'; ?>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-default btn-xs" href="<?php echo CC_Utils::link(':Admin:Loan:detail', array('id' => $loan->getId())); ?>" title="Spravovat vypůjčku"><span class="icon-edit text-primary"></span></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <?php $CC_TEMPLATE->paginator->render(); ?>
+<?php else: ?>
+    <div class="alert alert-danger">Nebyly nalezeny žádné výpůjčky!</div>
+<?php endif; ?>

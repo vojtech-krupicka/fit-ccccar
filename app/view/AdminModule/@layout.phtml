@@ -1,0 +1,113 @@
+<?php
+/**
+ * AdminModule/layout.php
+ *
+ * Hlavni layout administracniho systemu.
+ *
+ * @copyright 2014
+ * @version 1.0.0
+ */
+?><!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>.: <?php echo CC_OWNER_NAME; ?> <?php echo !empty($CC_TEMPLATE->pageTitle) ? '|' . $CC_TEMPLATE->pageTitle : ''; ?>:.</title>
+    <meta name="description" content="Eshop půjčovny vozidel.">
+    <meta name="author" content="<?php echo CC_SYSTEM_AUTHOR; ?>">
+
+    <link rel="stylesheet" href="<?php echo CC_PATH_CSS; ?>/bootstrap.css" />	
+    <link rel="stylesheet" href="<?php echo CC_PATH_CSS; ?>/font-awesome.css">
+    <link rel="stylesheet" href="<?php echo CC_PATH_CSS; ?>/style.css?v=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo CC_PATH_CSS; ?>/images/favicon.ico" />
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <div class="row top">
+                <div class="col-md-4">
+                    <a class="logo" href="<?php echo CC_Utils::link(':Admin:Homepage:'); ?>" title="<?php echo CC_OWNER_NAME; ?>">
+                        <h1><?php echo CC_OWNER_NAME; ?><span><?php echo (CC_DEVEL_MODE) ? 'devel' : 'beta'; ?></span></h1>
+                        <h2>Administrační systém</h2>
+                    </a> 
+                </div>
+
+                <nav role="navigation" class="pull-right">
+                    <ul class="nav nav-pills">
+                        <?php if ($CC_TEMPLATE->admin): ?>
+                        <li><strong title="<?php echo $CC_TEMPLATE->admin->GetFullName(); ?>"><span class="icon-user"></span> <?php echo $CC_TEMPLATE->admin->GetFullName(); ?>:</strong></li>
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:User:profile')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:User:profile'); ?>" title="Můj profil"><span class="icon-cog"></span> Můj profil</a></li>
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:User:logout')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:User:logout'); ?>" title="Odhlášení"><span class="icon-signout"></span> Odhlášení</a></li>
+                        <?php else: ?>
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:User:login')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:User:login'); ?>" title="Přihlášení"><span class="icon-signin"></span> Přihlášení</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="row">                
+                <nav role="navigation" class="pull-left">
+                    <ul class="nav nav-pills"> 
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:Homepage:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:Homepage:default'); ?>" title="Domů"><span class="icon-home"></span> Domů</a></li>
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:Loan:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:Loan:default'); ?>" title="Správa výpůjček"><span class="icon-road"></span> Správa výpůjček</a></li>
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:Vehicle:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:Vehicle:default'); ?>" title="Správa vozidel"><span class="icon-truck"></span> Správa vozidel</a></li>
+                        <li<?php echo (CC_Utils::linkCurrent('Admin:Customer:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Admin:Customer:default'); ?>" title="Správa zákazníků"><span class="icon-group"></span> Správa zákazníků</a></li>
+                    </ul>
+                </nav>
+                <nav role="navigation" class="pull-right">
+                    <ul class="nav nav-pills"> 
+                        <li class="pull-right"><a href="<?php echo CC_Utils::link(':Homepage:default'); ?>" title="Veřejná sekce"><span class="icon-globe"></span> Veřejná sekce</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <div id="content">
+            <?php echo (!empty($CC_TEMPLATE->pageHeading)) ? '<h1>' . $CC_TEMPLATE->pageHeading . '</h1>' : ''; ?>
+            
+            
+            <?php if (count($CC_TEMPLATE->breadcrumb) > 0): ?>
+                <ul class="breadcrumb">
+                    <li class="home"><a href="<?php echo CC_Utils::link(':Admin:Homepage:default'); ?>" title="Domů"><span class="icon-home"></span></a></li>
+                    <?php foreach ($CC_TEMPLATE->breadcrumb as $item): ?>
+                        <li<?php echo ($item === end($CC_TEMPLATE->breadcrumb)) ? ' class="active"' : ''; ?>><span class="icon-arrow-right"></span><a href="<?php echo CC_Utils::link($item->href, $item->params); ?>" title="<?php echo $item->title; ?>"><?php echo $item->title; ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            
+            
+            
+            <?php foreach ($CC_TEMPLATE->flashMessages as $type => $flash): ?>
+                <?php if (count($flash) > 0): ?>
+                    <div class="alert alert-dismissable alert-<?php echo $type; ?>">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <?php foreach ($flash as $message): ?>
+                            <p><?php echo $message; ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            
+            
+            <div class="page">
+                <?php require_once $CC_TEMPLATE->view; ?>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="row copyright">
+                <p>&copy; Vytvořeno <?php echo CC_SYSTEM_YEAR; ?> Všechna práva vyhrazena - <a href="<?php echo CC_OWNER_EMAIL; ?>" title="<?php echo CC_OWNER_EMAIL; ?>"><?php echo CC_OWNER_NAME; ?></a>.</p>
+                <p>Vytvořil <a href="<?php echo CC_SYSTEM_EMAIL; ?>" title="<?php echo CC_SYSTEM_EMAIL; ?>"><?php echo CC_SYSTEM_AUTHOR; ?></a> jako školní projekt do předmětu DAS. Všechny informace na těchto stránkách jsou smyšlené a autor nenese žádnou zodpovědnost za škody vzniklé používáním těchto stránek.</p>
+            </div>
+        </footer>
+    </div>
+    
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="<?php echo CC_PATH_JS; ?>/bootstrap.min.js"></script>
+</body>
+</html>

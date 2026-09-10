@@ -1,0 +1,121 @@
+<?php
+/**
+ * User.registration.phtml
+ *
+ * Registrace uzivatele.
+ *
+ * @copyright 2014
+ * @version 1.0.0
+ */
+?>
+
+
+<form class="form-horizontal" role="form" method="post" action="<?php echo CC_Utils::link('regForm!'); ?>">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Přihlašovací údaje</h3></div>
+        <div class="panel-body">
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['email']) ? ' has-error' : ''; ?>">
+                <label for="inputEmail" class="col-sm-3 control-label">Email:</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Registrační email" value="<?php echo $CC_TEMPLATE->regForm->email; ?>">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['password']) ? ' has-error' : ''; ?>">
+                <label for="inputPassword" class="col-sm-3 control-label">Heslo:</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Uživatelské heslo">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['password']) ? ' has-error' : ''; ?>">
+                <label for="inputPasswordCheck" class="col-sm-3 control-label">Heslo (pro kontrolu):</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" id="inputPasswordCheck" name="passwordCheck" placeholder="Uživatelské heslo (pro kontrolu)">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Základní informace</h3></div>
+        <div class="panel-body">
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['name']) ? ' has-error' : ''; ?>">
+                <label for="inputName" class="col-sm-3 control-label">Jméno:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputName" name="name" value="<?php echo $CC_TEMPLATE->regForm->name; ?>">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['surname']) ? ' has-error' : ''; ?>">
+                <label for="inputSurname" class="col-sm-3 control-label">Přímení:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputSurname" name="surname" value="<?php echo $CC_TEMPLATE->regForm->surname; ?>">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['idNumber']) ? ' has-error' : ''; ?>">
+                <label for="inputIdNumber" class="col-sm-3 control-label">Číslo op.:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputIdNumber" name="idNumber" value="<?php echo $CC_TEMPLATE->regForm->idNumber; ?>">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['phoneNumber']) ? ' has-error' : ''; ?>">
+                <label for="inputPhoneNumber" class="col-sm-3 control-label">Telefon:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputPhoneNumber" name="phoneNumber" value="<?php echo $CC_TEMPLATE->regForm->phoneNumber; ?>">
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Kontaktní informace</h3></div>
+        <div class="panel-body">
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['street']) ? ' has-error' : ''; ?>">
+                <label for="inputStreet" class="col-sm-3 control-label">Ulice a č.p.:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputStreet" name="street" value="<?php echo $CC_TEMPLATE->regForm->street; ?>">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['city']) ? ' has-error' : ''; ?>">
+                <label for="inputCity" class="col-sm-3 control-label">Město/obec:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="inputCity" name="city" value="<?php echo $CC_TEMPLATE->regForm->city; ?>">
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['country']) ? ' has-error' : ''; ?>">
+                <label for="inputCountry" class="col-sm-3 control-label">Země původu:</label>
+                <div class="col-sm-5">
+                    <select class="form-control" id="inputCountry" name="country">
+                        <option value="0">--- Vyberte zemi původu ---</option>
+                        <option value="cr"<?php echo ($CC_TEMPLATE->regForm->country == 'cr') ? ' selected="selected"' : ''; ?>>Česká Republika</option>
+                        <option value="sr"<?php echo ($CC_TEMPLATE->regForm->country == 'sr') ? ' selected="selected"' : ''; ?>>Slovensko</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['zip']) ? ' has-error' : ''; ?>">
+                <label for="inputZip" class="col-sm-3 control-label">PSČ:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="inputZip" name="zip" value="<?php echo $CC_TEMPLATE->regForm->zip; ?>">
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Registrace</h3></div>
+        <div class="panel-body">
+            <div class="form-group<?php echo isset($CC_TEMPLATE->regForm->errors['agreed']) ? ' has-error' : ''; ?>">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="agreed"<?php echo $CC_TEMPLATE->regForm->agreed ? ' checked="checked"' : ''; ?>> Souhlasím s <a href="<?php echo CC_Utils::link(':Homepage:conditions'); ?>" title="Obchodní podmínky">obchodními podmínkami</a>.</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button type="submit" class="btn btn-primary"><span class="icon-cogs"></span> Registrovat</button>
+                    <button type="submit" class="btn btn-default"><span class="icon-remove"></span> Zrušit</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+</form>
+

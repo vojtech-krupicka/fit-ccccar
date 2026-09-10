@@ -1,0 +1,48 @@
+<?php
+/**
+ * error.php
+ *
+ * Layout pro chybovou stranku - vypise seznam chyb ke kterym doslo.
+ *
+ * @copyright 2014
+ * @version 1.0.0
+ */
+?><!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>.: <?php echo CC_OWNER_NAME; ?> <?php echo !empty($CC_TEMPLATE->pageTitle) ? '|' . $CC_TEMPLATE->pageTitle : ''; ?>:.</title>
+    <meta name="description" content="Eshop půjčovny vozidel.">
+    <meta name="author" content="<?php echo CC_SYSTEM_AUTHOR; ?>">
+
+    <link rel="stylesheet" href="<?php echo CC_PATH_CSS; ?>/bootstrap.css" />	
+    <link rel="stylesheet" href="<?php echo CC_PATH_CSS; ?>/font-awesome.css">
+    <link rel="stylesheet" href="<?php echo CC_PATH_CSS; ?>/style.css?v=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo CC_PATH_CSS; ?>/images/favicon.ico" />
+</head>
+
+<body>
+    <div id="container">
+        <div class="jumbotron">
+            <div class="container">
+                <h1>Chyba 404</h1>
+                <p>Omlouváme se, ale došlo k chybě. Stránka, kterou se pokoušíte zobrazit neexistuje.<br />Pokračujte zpět na úvodní stránku.</p>
+                <p><a class="btn btn-primary btn-lg" role="button" href="<?php echo CC_Utils::link('Homepage:default'); ?>"><span class="icon-home"></span> Úvodní stránka</a></p>
+
+                <div class="row copyright">
+                    <p>&copy; Vytvořeno <?php echo CC_SYSTEM_YEAR; ?> Všechna práva vyhrazena - <a href="<?php echo CC_OWNER_EMAIL; ?>" title="<?php echo CC_OWNER_EMAIL; ?>"><?php echo CC_OWNER_NAME; ?></a>.</p>
+                    <p>Vytvořil <a href="<?php echo CC_SYSTEM_EMAIL; ?>" title="<?php echo CC_SYSTEM_EMAIL; ?>"><?php echo CC_SYSTEM_AUTHOR; ?></a> jako školní projekt do předmětu DAS. Všechny informace na těchto stránkách jsou smyšlené a autor nenese žádnou zodpovědnost za škody vzniklé používáním těchto stránek.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="<?php echo CC_PATH_JS; ?>/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<?php
+/**
+ * Catalog.detail.phtml
+ *
+ * Detail vozidla s moznosti rezervace.
+ *
+ * @copyright 2014
+ * @version 1.0.0
+ */
+?>
+
+
+<div class="detail">
+    <div class="row">
+        <div class="col-md-6 image">
+            <?php $vehicleImage = is_file(CC_DIR_IMG . '/vehicles/' . $CC_TEMPLATE->vehicle->getId() . '.jpg') ? CC_PATH_IMG . '/vehicles/' . $CC_TEMPLATE->vehicle->getId() . '.jpg' : CC_PATH_IMG . '/vehicles/default.jpg'; ?>
+            <img class="thumbnail" src="<?php echo $vehicleImage; ?>">
+        </div>
+        <div class="col-md-6">
+            <div class="info">
+                <h2><?php echo $CC_TEMPLATE->vehicle->getFullName(); ?></h2>
+                <dl class="dl-horizontal">
+                    <dt>SPZ:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getPlateNumber(); ?></dd>
+                    <dt>Výrobce:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getVehicleType()->getManufacturer(); ?></dd>
+                    <dt>Model:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getVehicleType()->getBrand() . ' ' . $CC_TEMPLATE->vehicle->getModel(); ?></dd>
+                    <dt>Barva:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getVehicleColor()->getName(); ?> (kód: #<?php echo $CC_TEMPLATE->vehicle->getVehicleColor()->getEan(); ?>)</dd>
+                    <dt>Typ paliva:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getVehicleFuelType()->getFuel(); ?></dd>
+                    <dt>Rok výroby:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getYear(); ?></dd>
+                    <dt>Najeto:</dt>
+                    <dd><?php echo number_format($CC_TEMPLATE->vehicle->getMileage(), 2, ',', ' '); ?> km</dd>
+                    <dt>Cena/den:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getCostPerDay() < 0.01 ? '<strong class="text-success">ZDARMA</strong>' : number_format($CC_TEMPLATE->vehicle->getCostPerDay(), 2, ',', ' ') . 'Kč'; ?></dd>
+                    <dt>Cena/km:</dt>
+                    <dd><?php echo $CC_TEMPLATE->vehicle->getCostPerUnit() < 0.01 ? '<strong class="text-success">ZDARMA</strong>' : number_format($CC_TEMPLATE->vehicle->getCostPerUnit(), 2, ',', ' ') . 'Kč'; ?></dd>
+                    <dt>Dostupnost:</dt>
+                    <dd><strong class="text-success">dostupné</strong></dd>
+                </dl>
+            </div>
+        </div>
+    </div>      
+
+    <div class="row" id="borrow">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Rezervace</h3></div>
+                <div class="panel-body">
+                    <?php if ($CC_TEMPLATE->user): ?>
+                        <form class="form-horizontal" role="form" method="post" action="<?php echo CC_Utils::link('reservationForm!', array('id' => $CC_TEMPLATE->vehicle->getId())); ?>">
+                            <div class="row">
+                                <div class=" col-md-6">
+                                    <div class="form-group<?php echo isset($CC_TEMPLATE->reservationForm->errors['reservedFrom']) ? ' has-error' : ''; ?>">
+                                        <label class="col-sm-3 control-label" for="inputReservedFrom">Od:</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" id="inputReservedFrom" name="reservedFrom" placeholder="datum (DD.MM.RRRR)" value="<?php echo $CC_TEMPLATE->reservationForm->reservedFrom; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group<?php echo isset($CC_TEMPLATE->reservationForm->errors['reservedTo']) ? ' has-error' : ''; ?>">
+                                        <label class="col-sm-3 control-label" for="inputReservedTo">Do:</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" id="inputReservedTo" name="reservedTo" placeholder="datum (DD.MM.RRRR)" value="<?php echo $CC_TEMPLATE->reservationForm->reservedTo; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label" for="selectRentalOffice" title="Vozidlo si vyzvednu na pobočce">Pobočka:</label>
+                                        <div class="col-sm-9">
+                                            <?php echo CC_Helper::printSelect('rentalOffice', $CC_TEMPLATE->rentalOfficeList, $CC_TEMPLATE->reservationForm->rentalOffice); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-md-6">
+                                    <div class="form-group">
+                                        <div class="col-sm-12 text-right">
+                                            <button type="submit" class="btn btn-primary"><span class="icon-check"></span> Rezervovat</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    <?php else: ?>
+                        <div class="alert alert-danger">Pokud si chcete rezervovat toto vozidlo, musíte se <a href="<?php echo CC_Utils::link(':User:login'); ?>" title="Přihlášení">přihlásit</a>.</div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Seznam aktivní rezervací/výpujček</h3></div>
+
+                <?php if (isset($CC_TEMPLATE->loanList) && count($CC_TEMPLATE->loanList) > 0): ?>
+                    <table class="table table-striped table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="col-md-2 text-center">Rezervováno</th>
+                                <th class="col-md-2 text-center">Rezervace od</th>
+                                <th class="col-md-2 text-center">Rezervace do</th>
+                                <th class="col-md-2 text-center">Zapůjčeno</th>
+                                <th class="col-md-2 text-center">Vráceno</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($CC_TEMPLATE->loanList as $loan): ?>
+                            <tr<?php echo ($CC_TEMPLATE->user && $loan->getCustomer()->getId() == $CC_TEMPLATE->user->getId()) ? ' class="success"' : '';?>>
+                                <td class="text-center"><?php echo CC_Helper::printDate($loan->getReservedAt(), 'd.m.Y h:s'); ?></td>
+                                <td class="text-center"><?php echo CC_Helper::printDate($loan->getReservedFrom(), 'd.m.Y'); ?></td>
+                                <td class="text-center"><?php echo CC_Helper::printDate($loan->getReservedTo(), 'd.m.Y'); ?></td>
+                                <td class="text-center"><?php echo $loan->getStartAt() ? CC_Helper::printDate($loan->getStartAt(), 'd.m.Y h:s') : '<em>Nevypůjčeno</em>'; ?></td>
+                                <td class="text-center"><?php echo $loan->getEndAt() ? CC_Helper::printDate($loan->getEndAt(), 'd.m.Y h:s') : '<em>Nevráceno</em>'; ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="panel-body">
+                        <div class="alert alert-info">Pro dané vozidlo nejsou k dispozici žádné aktivní rezervace nebo výpůjčky.</div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

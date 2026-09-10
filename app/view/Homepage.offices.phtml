@@ -1,0 +1,100 @@
+<?php
+/**
+ * Homepage.offices.phtml
+ *
+ * Seznam pobocek pujcovny vozidel.
+ *
+ * @copyright 2014
+ * @version 1.0.0
+ */
+?>
+
+
+<?php if (isset($CC_TEMPLATE->rentalOfficeList) && count($CC_TEMPLATE->rentalOfficeList) > 0): ?>
+    <?php foreach ($CC_TEMPLATE->rentalOfficeList as $office): ?>
+    
+        <div class="row office-detail">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title"><?php echo $office->getName(); ?></h3></div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h4><span class="icon-envelope"></span> Kontakt</h4>
+                                <address>
+                                    <?php echo $office->getStreet(); ?><br />
+                                    <?php echo $office->getZip() . ' ' . $office->getCity(); ?><br />
+                                    <?php echo $office->getCountry(); ?><br /><br />
+                                    tel: <?php echo $office->getPhone(); ?><br />
+                                    e-mail: <a href="mailto:<?php echo $office->getEmail(); ?>" title="<?php echo $office->getEmail(); ?>"><?php echo $office->getEmail(); ?></a>
+                                </address>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><span class="icon-male"></span> Zodpovědná osoba</h4>
+                                <address>
+                                    <strong><?php echo $office->getSupervisor()->getFullName(); ?></strong><br />
+                                    <?php echo $office->getSupervisor()->getPhone(); ?><br />
+                                    <a href="mailto:<?php echo $office->getSupervisor()->getEmail(); ?>" title="<?php echo $office->getSupervisor()->getEmail(); ?>"><?php echo $office->getSupervisor()->getEmail(); ?></a><br />
+                                </address>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><span class="icon-group"></span> Zaměstnanci na této pobočce</h4>
+                                <dl class="dl-horizontal">
+                                    <?php foreach ($CC_TEMPLATE->employeeList[$office->getId()] as $employee): ?>
+                                    <dt><?php echo $employee->getFullName(); ?></dt>
+                                    <dd><?php echo $employee->getPhone(); ?>, <a href="mailto:<?php echo $employee->getEmail(); ?>" title="<?php echo $employee->getEmail(); ?>"><?php echo $employee->getEmail(); ?></a></dd>
+                                    <?php endforeach; ?>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+         </div>
+
+    <?php endforeach; ?>
+
+    <div class="row map">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Kde nás najdete?</h3></div>
+                <div class="panel-body" id="map-container">
+                </div>
+            </div>
+         </div>
+    </div>
+
+    <script src="http://api4.mapy.cz/loader.js"></script>   
+    <script type="text/javascript">Loader.load();</script>
+    <script>
+        //<![CDATA[
+        var map = new SMap(JAK.gel("map-container"));
+        map.addControl(new SMap.Control.Sync());
+        map.addDefaultLayer(SMap.DEF_SMART_BASE).enable();
+        map.addDefaultControls();
+        
+        var cardLayer = new SMap.Layer.Marker();
+        map.addLayer(cardLayer).enable();
+        
+        <?php foreach ($CC_TEMPLATE->rentalOfficeList as $office): ?>
+            var card = new SMap.Card();
+            card.setSize(224, 256);
+            card.getHeader().innerHTML = '<h4><?php echo $office->getName(); ?></h4>';
+            card.getBody().innerHTML = '<address>'
+                + '<?php echo $office->getStreet(); ?><br />'
+                + '<?php echo $office->getZip() . ' ' . $office->getCity(); ?><br />'
+                + '<?php echo $office->getCountry(); ?><br />'
+                + 'tel: <?php echo $office->getPhone(); ?><br />'
+                + 'e-mail: <a href="mailto:<?php echo $office->getEmail(); ?>" title="<?php echo $office->getEmail(); ?>"><?php echo $office->getEmail(); ?></a>'
+                + '</address>';
+        
+            var marker = new SMap.Marker(SMap.Coords.fromWGS84(<?php echo $office->getLon(); ?>, <?php echo $office->getLat(); ?>), 'office_<?php echo $office->getId(); ?>', {title: "<?php echo $office->getName(); ?>"});
+            marker.decorate(SMap.Marker.Feature.Card, card);
+            cardLayer.addMarker(marker); 
+            
+        <?php endforeach; ?>
+        //]]>
+    </script>
+<?php else: ?>
+    <div class="alert alert-info">V systému nebyly nalezeny žádné pobočky.</div>
+<?php endif; ?>
