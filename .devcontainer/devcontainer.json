@@ -1,35 +1,35 @@
 {
-  "name": "Nette skeleton",
-  "dockerComposeFile": [
-    "../docker-compose.yml"
-  ],
-  "service": "web",
-  "runServices": [
-    "web",
-    "db"
-  ],
-  "workspaceFolder": "/var/www/root",
-  "remoteUser": "dev",
-  "shutdownAction": "stopCompose",
-  // The web port (WEB_PORT in .env) is published by docker-compose.yml, so it's already reachable from
-  // Windows and WSL. Don't let VS Code add its own forward on top of it.
-  "otherPortsAttributes": {
-    "onAutoForward": "ignore"
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "xdebug.php-debug",
-        "bmewburn.vscode-intelephense-client",
-        "recca0120.vscode-phpunit",
-        "editorconfig.editorconfig",
-        "cweijan.vscode-database-client2",
-        "lkrms.pretty-php"
-      ],
-      "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php",
-        "terminal.integrated.defaultProfile.linux": "bash"
-      }
+    "name": "Web CCC Car Service",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "web",
+    "runServices": [
+        "web",
+        "db"
+    ],
+    "workspaceFolder": "/var/www/root",
+    "remoteUser": "dev",
+    "shutdownAction": "stopCompose",
+    // The web port (WEB_PORT in .env) is published by docker-compose.yml, so it's already reachable from
+    // Windows and WSL. Don't let VS Code add its own forward on top of it.
+    "otherPortsAttributes": {
+        "onAutoForward": "ignore"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "xdebug.php-debug",
+                "bmewburn.vscode-intelephense-client",
+                "recca0120.vscode-phpunit",
+                "editorconfig.editorconfig",
+                "cweijan.vscode-database-client2",
+                "lkrms.pretty-php"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
     }
-  }
 }

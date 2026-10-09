@@ -1,9 +1,8 @@
 {
-  "name": "vojtech-krupicka/php-nette-skeleton",
-  "description": "Nette 3.3 web project skeleton: Docker dev environment, migrations, PHPUnit with a test database, PHPStan level 8.",
+  "name": "vojtech-krupicka/fit-ccccar",
+  "description": "Small website for a rental car service, rewritten from legacy PHP to Nette 3.3 as a learning project.",
   "keywords": [
     "nette",
-    "skeleton",
     "docker",
     "phpunit",
     "phpstan"
