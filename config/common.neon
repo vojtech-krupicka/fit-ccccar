@@ -1,0 +1,35 @@
+# see https://doc.nette.org/en/configuring
+
+application:
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping: App\Presentation\*\**Presenter
+
+
+# dsn, user and password come from config/local.<env>.neon
+database:
+	dsn: '%database.driver%:host=%database.host%;dbname=%database.dbname%'
+	user: %database.user%
+	password: %database.password%
+
+
+latte:
+	strictParsing: yes
+
+
+assets:
+	mapping:
+		default:
+			path: assets
+
+
+session:
+	expiration: 14 days
+	autoStart: smart
+
+
+di:
+	export:
+		parameters: no
+		tags: no

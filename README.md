@@ -1,203 +1,133 @@
-# fit-ccccar
+# Nette skeleton
 
-A car-rental (autopůjčovna) web application — public vehicle catalogue with online
-reservations, plus a staff back-office for handling vehicle handovers and returns.
-Built in 2014 as a university course project.
+A starting point for a Nette 3.3 web application on PHP 8.4, distilled from a finished project.
+It has no application code beyond a welcome page and a tiny example feature, but everything around
+the code is already set up and tested.
 
-## About
+## What is included
 
-**CCC Car** is a small e-shop-style application for a fictional vehicle-rental
-company with seven branches. Customers browse a filterable catalogue of cars,
-register an account, and reserve a vehicle for a date range at a chosen branch.
-Employees log into a separate admin section where they confirm the handover of a
-reserved car, later close the loan (recording distance driven and return branch),
-and the system computes the price from a per-day rate, a per-kilometre rate and a
-late-return penalty.
+- **Docker Compose development environment** with a VS Code Dev Container: PHP 8.4 with Apache,
+  MySQL 8.4, Xdebug, the MySQL client, a separate test database `<MYSQL_DATABASE>_test`.
+- **Configuration** in layers: `config/common.neon`, `services.neon`, and one `local.<env>.neon` per
+  environment selected by `APP_ENV`. `.env` is the single source for the database settings in
+  development (`%env.NAME%` works in NEON). `NETTE_DEBUG` switches debug mode on its own.
+- **Database migrations**: numbered SQL files in `db/migrations` and the scripts `db/migrate`,
+  `db/dump`, `db/restore`, `db/test-reset`.
+- **Quality tools**: PHPStan level 8, a PSR-4 check (`composer run psr`), and PHPUnit 13 with
+  `DatabaseTestCase` (transaction per test, rolled back, refuses non-`*_test` databases) and
+  `PresenterTestCase` (run presenters, render complete pages, submit forms, fire signals).
+- **Safe defaults**: `.htaccess` files that deny `temp/`, `log/`, the project root and script
+  execution in `www/resources/`; `temp/` and `log/` tracked as empty folders.
+- **Deployment to FTP hosting**: `config/deployment.example.ini` for
+  [dg/ftp-deployment](https://github.com/dg/ftp-deployment).
+- **Docs for people and agents**: this README, `AGENTS.md` (conventions for AI coding agents),
+  `CHANGELOG.md` (Keep a Changelog), `LICENSE` (MIT).
+- **One example feature** (`app/Model/Example`, the `example_items` migrations, `ExampleFacadeTest`)
+  that shows the model conventions. Delete it when you have your own model.
 
-It was written for a database-focused course at the Brno University of Technology,
-Faculty of Information Technology (the schema, ER diagram and example SQL queries
-under `sql/` were part of the assignment). It runs on a small hand-rolled
-MVC-style framework and the old `mysql_*` PHP extension, so it is very much a
-period piece — see **Status** and **Security notes** below.
+## Starting a new project from this skeleton
 
-## Features
+Do these once, in this order. Nothing here is hidden elsewhere; this list is the complete set of
+names and values that belong to "this skeleton" and must become "my project".
 
-**Public site** (`www/`)
+1. **Copy the folder**, delete any `.git` in it, then `git init` and commit the unchanged copy first.
+2. **`composer.json`**: change `name`, `description`, `keywords` and `authors`. Then run
+   `composer update --lock` to refresh the lock file hash (or `composer update` to also pick up new
+   package versions).
+3. **`LICENSE`**: set the year and the copyright holder, or replace the licence.
+4. **`.env`**: `cp .env.example .env`, then choose `MYSQL_DATABASE`, `MYSQL_USER`,
+   `MYSQL_PASSWORD` and `WEB_PORT` (default 8080, change it if another project already uses it).
+   The test database is called `<MYSQL_DATABASE>_test` and is created automatically.
+5. **`config/local.dev.neon`**: `cp config/local.example.neon config/local.dev.neon` (it reads `.env`).
+6. **`.devcontainer/devcontainer.json`**: change `name`. The Docker Compose project name follows the
+   folder name.
+7. **Text and branding**: `<title>` in `app/Presentation/@layout.latte`, the welcome page
+   `app/Presentation/Home/default.latte`, `www/favicon.ico`, and the English error pages in
+   `app/Presentation/Error/Error4xx` (translate them if needed).
+8. **Docs**: rewrite this README for the new project, reset `CHANGELOG.md`, adjust the first
+   paragraph of `AGENTS.md`.
+9. **Remove what you do not need**: the Example feature (see above), `config/deployment.example.ini`
+   if you do not deploy by FTP, and in `docker/php/Dockerfile` the tools you will not use (`gd`,
+   `intl`, `openssh-client`, `sudo`, `nano`) and the PHP extensions, then rebuild the container.
+10. **Build and check** (inside the container):
 
-- Vehicle catalogue with filtering (branch, fuel type, colour, price-per-day
-  range, price-per-km range) plus sorting and pagination
-- Vehicle detail page with a reservation form (date range + pickup branch)
-- Customer registration, login/logout, profile editing and password change
-- "My loans" page: list of the customer's reservations with pagination and the
-  ability to cancel a reservation that has not yet been handed over
-- Static pages: branch list (with staff per branch), terms, FAQ, contacts
+    ```bash
+    composer install        # first time; or composer update
+    db/migrate
+    composer run check && composer run test
+    ```
 
-**Admin back-office** (`www/admin/`, employees only)
+    Open `http://localhost:<WEB_PORT>`.
 
-- Employee login/logout and profile editing
-- Loan management: filterable, paginated list of all loans
-- Loan lifecycle on the loan detail page — *new* → *open* (confirm handover:
-  records the issuing employee and start date) → *closed* (record distance and
-  return branch; price and vehicle mileage/location are updated in a DB
-  transaction) — plus cancellation
-- Customer list and vehicle management
+Not part of the skeleton on purpose: authentication, an admin, an AJAX library (Naja), a file
+manager, a front-end build. Add them in the project.
 
-## Tech stack
+## Getting started (after the checklist)
 
-- **PHP 5.x** — uses the `mysql_*` extension, removed in PHP 7
-- **MySQL** — InnoDB tables with foreign keys, `utf8_czech_ci`
-- No third-party framework. Hand-written pieces include:
-  - a front controller with `?c=<controller>&a=<action>&s=<signal>` routing and
-    `Module` path segments
-  - a class autoloader, a `CC_Database` wrapper, a `CC_ModelLoader` identity map,
-    entity / entity-list base classes, and a paginator
-  - `.phtml` view templates
-- **Front-end:** Bootstrap 3, Font Awesome, jQuery 1.11 (jQuery from a CDN, the
-  rest vendored under `www/css` and `www/js`)
-- **Dev tooling:** `www/tools/genEntity.php` and `genTables.php` generate entity
-  classes and table constants from a live database schema
+Open the folder in VS Code and run **Dev Containers: Reopen in Container**. Without VS Code:
 
-## Repository layout
-
-```
-app/
-  config.php          system + database configuration
-  bootstrap.php        request setup, DB connection, session, routing
-  controller/          public controllers + AdminModule/ for the back-office
-  model/               CC_* entities and *List collections, CC_ModelLoader
-  utils/               CC_Database, CC_Utils (links/redirects/session), CC_Paginator, helpers
-  view/                .phtml templates (AdminModule/ mirrors the admin controllers)
-www/
-  index.php            public front controller
-  admin/index.php      admin front controller (redirects to login unless an employee session exists)
-  css/ js/ fonts/ img/ static assets
-  tools/               schema-driven code generators (dev only)
-sql/
-  create.sql           schema only
-  insert.sql           seed data only (run after create.sql)
-  create-insert.sql    schema + seed + fix-up UPDATEs in one file (recommended)
-  select.sql           example analytical queries with expected output
-  user.sql             CREATE USER / GRANT statements
-  ccccar_db.png        schema diagram
-  ccccar_erd.png       ER diagram
+```bash
+cp .env.example .env
+cp config/local.example.neon config/local.dev.neon
+docker compose up -d
+docker compose exec -u dev web bash
 ```
 
-## Installation / usage
+Inside the container, as the `dev` user: `composer install`, `db/migrate`.
 
-Requires a legacy environment: **PHP 5.x with the `mysql` extension** and
-**MySQL 5.x**. It will not run on PHP 7+ unmodified.
+## Commands
 
-1. **Database**
+| Command | What it does |
+|---|---|
+| `composer run test` | Run the PHPUnit suite |
+| `composer run phpstan` | Static analysis, level 8, on `app/` and `tests/` |
+| `composer run psr` | Every class matches its file path (PSR-4), no duplicates |
+| `composer run check` | `psr` and `phpstan` |
+| `composer run test:db` | Drop and recreate the test database from the migrations |
+| `db/migrate` | Apply pending migrations to the development database |
+| `db/dump [file]`, `db/restore <file>` | Dump / restore the development database |
 
-   ```sql
-   -- create a database and user (adjust the password)
-   CREATE DATABASE ccccar CHARACTER SET utf8 COLLATE utf8_czech_ci;
-   CREATE USER 'ccccar'@'localhost' IDENTIFIED BY 'YOUR_PASSWORD_HERE';
-   GRANT ALL PRIVILEGES ON ccccar.* TO 'ccccar'@'localhost';
-   ```
+VS Code tasks with the same names are in `.vscode/tasks.json`. Run commands as the `dev` user.
 
-   Then load the schema and seed data:
+## Configuration
 
-   ```bash
-   mysql -u ccccar -p ccccar < sql/create-insert.sql
-   ```
+| File | In git | Used when |
+|---|---|---|
+| `config/common.neon`, `services.neon` | yes | always |
+| `config/local.example.neon` | yes | template, not loaded |
+| `config/local.dev.neon` | no | `APP_ENV=dev` (the dev container) |
+| `config/local.test.neon` | yes | `APP_ENV=test` (PHPUnit); the throwaway test database |
+| `config/local.prod.neon` | no | `APP_ENV=prod` (the default when the variable is unset) |
 
-2. **Configuration** — edit `app/config.php`:
+`Bootstrap` stops with a clear error when the file for the current `APP_ENV` is missing. Production
+without environment variables (shared hosting) uses literal values in `local.prod.neon`.
 
-   - `CC_DATABASE_*` — host, database name, user and password
-   - `$_SERVER["DOCUMENT_ROOT"]` is hard-coded near the top of the file; set it to
-     the absolute path of the `www/` directory on your machine
-   - `CC_PATH_ROOT` / `CC_PATH_ADMIN` assume the app is served from
-     `http://<host>/program/www` — change the `/program/www` prefix to match how
-     you host it
-   - set `CC_DEVEL_MODE` to `true` for local development (enables `dump()` output)
+## Tests
 
-3. **Web server** — point a PHP-capable web server at the `www/` directory.
-   The public site is `www/index.php`; the admin is `www/admin/index.php`.
+Tests run against `<MYSQL_DATABASE>_test`, built from the same migrations (`composer run test:db`).
+Each test runs in a transaction that is rolled back. After changing the mock data in a migration,
+rebuild the test database. The container has Xdebug on; the composer script switches it off for tests.
 
-### Demo accounts
+## Deployment
 
-All seed accounts use the password **`demo1234`**.
+Only `www/` may be web-accessible. For Docker, mount or bake in `config/local.prod.neon` and leave
+`APP_ENV` and `NETTE_DEBUG` unset. For FTP hosting use `config/deployment.example.ini`: copy it to
+`config/deployment.ini` (git-ignored), deploy from a clean `git archive` export with
+`composer install --no-dev --optimize-autoloader`, preview with `-t`, and apply new migrations by
+hand. Never apply the mock-data migrations in production.
 
-| Role     | Email                      | Password   |
-|----------|----------------------------|------------|
-| Customer | `bilbo.baggins@example.com`| `demo1234` |
-| Employee | `frodo.baggins@ccccar.cz`  | `demo1234` |
+## Layout
 
-The seed data (people, addresses, phone numbers) is entirely fictional —
-customers are named after *The Lord of the Rings* characters.
-
-## Database reference
-
-Nine tables. `loan` is the central entity, linking a `customer`, a `vehicle`, the
-`rentalOffice` where the car is picked up, and the employees who issue
-(`borrower_id`) and receive (`recipient_id`) it. A `vehicle` is described by
-lookup tables for type, fuel and colour, and belongs to at most one branch.
-
-![ER diagram](sql/ccccar_erd.png)
-
-![Schema diagram](sql/ccccar_db.png)
-
-Key columns:
-
-| Table             | Notable columns |
-|-------------------|-----------------|
-| `rentalOffice`    | `name`, address fields, `phone`, `email`, `lat`/`lon`, `supervisor_id` → `employee` |
-| `employee`        | `rentalOffice_id`, `name`, `surname`, `phone`, `email`, `password` (SHA-256 hex) |
-| `customer`        | `name`, `surname`, `identityNumber`, `email`, `phone`, address fields, `password`, `createdAt` |
-| `vehicle`         | `vehicleType_id`, `vehicleFuelType_id`, `vehicleColor_id`, `rentalOffice_id`, `model`, `plateNumber`, `mileage`, `year`, `costPerDay`, `costPerUnit` |
-| `vehicleType`     | `manufacturer`, `brand` |
-| `vehicleColor`    | `name`, `ean` |
-| `vehicleFuelType` | `fuel` |
-| `loan`            | `vehicle_id`, `rentalOffice_id`, `customer_id`, `borrower_id`, `recipient_id`, `reservedAt`, `reservedFrom`, `reservedTo`, `startAt`, `endAt`, `distance`, `price`, `deleted` |
-
-A loan's state is derived from its timestamps: only `reserved*` set → *new*;
-`startAt` set → *open*; `endAt` set → *closed*; `deleted = 1` → *cancelled*.
-
-Example — reserve, hand over and close a loan:
-
-```sql
--- 1. customer reserves vehicle 5 at branch 2 for a week
-INSERT INTO loan (vehicle_id, rentalOffice_id, customer_id, reservedAt, reservedFrom, reservedTo)
-VALUES (5, 2, 1, NOW(), '2014-06-02', '2014-06-09');
-
--- 2. employee 3 hands the car over
-UPDATE loan SET borrower_id = 3, startAt = NOW() WHERE id = LAST_INSERT_ID();
-
--- 3. employee 4 takes it back after 812 km; price is computed by the app
-UPDATE loan SET recipient_id = 4, endAt = NOW(), distance = 812.0, price = 9450.00
-WHERE id = <loan id>;
+```
+app/                      Bootstrap, Core (router), Model (BaseFacade, BaseEntity, Example), Presentation
+config/                   common.neon, services.neon, local.*.neon, deployment.example.ini
+db/                       migrations/, dumps/ (git-ignored), migrate dump restore test-reset
+docker/                   PHP/Apache image, MySQL init script
+tests/                    bootstrap, DatabaseTestCase, PresenterTestCase, examples
+www/                      Public document root (assets/, resources/ for uploads)
+log/ temp/                Runtime directories (contents git-ignored)
 ```
 
-See `sql/select.sql` for larger example queries (branch inventory, most active
-customer, a customer × vehicle pivot of loan counts).
+## Licence
 
-## Status
-
-**Archived.** Built in 2014 as a university course project and not maintained
-since. It is published for reference and as a portfolio piece. It targets a PHP 5
-/ `mysql_*` stack that is long end-of-life, and it is not intended to be deployed.
-
-## Security notes
-
-This code does **not** follow modern practices and should not be used as a
-template or run on a public server. Known issues include:
-
-- **SQL injection** throughout — user input (including the login form) is
-  concatenated directly into queries via the removed `mysql_*` API with no
-  escaping or prepared statements
-- **No output escaping** in templates → cross-site scripting
-- **No CSRF protection** on any form
-- Passwords hashed with **unsalted, single-pass SHA-256**
-- `display_errors` is on and `dump()` prints session/user objects in the request
-  path
-- The generators in `www/tools/` are unauthenticated and connect to the database;
-  they must not be reachable in any hosted setup
-- The front controller builds an include path from the `c` query parameter
-
-The database credentials in `app/config.php`, `sql/user.sql` and `www/tools/*` are
-placeholders (`xxx`); set real ones locally and keep them out of version control.
-
-## License
-
-[MIT](LICENSE)
+MIT, see `LICENSE`.

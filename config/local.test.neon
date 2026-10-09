@@ -1,0 +1,9 @@
+# Used when APP_ENV=test (phpunit.xml). A throwaway database <MYSQL_DATABASE>_test inside the dev
+# compose network: nothing secret here, so this file is committed.
+parameters:
+	database:
+		driver: mysql
+		host: %env.DB_HOST%
+		dbname: %env.MYSQL_DATABASE%_test
+		user: %env.MYSQL_USER%
+		password: %env.MYSQL_PASSWORD%
