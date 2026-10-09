@@ -4,7 +4,8 @@ application:
 	errorPresenter:
 		4xx: Error:Error4xx
 		5xx: Error:Error5xx
-	mapping: App\Presentation\*\**Presenter
+	mapping:
+		*: App\UI\*\**Presenter
 
 
 # dsn, user and password come from config/local.<env>.neon

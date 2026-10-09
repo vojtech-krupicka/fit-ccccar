@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Presentation;
+namespace Tests\UI;
 
 use Nette\Application\Responses\TextResponse;
 use Tests\PresenterTestCase;

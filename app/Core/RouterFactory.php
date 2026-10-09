@@ -2,8 +2,9 @@
 
 namespace App\Core;
 
-use Nette;
+use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
+use Nette;
 
 final class RouterFactory
 {
@@ -12,7 +13,45 @@ final class RouterFactory
     public static function createRouter(): RouteList
     {
         $router = new RouteList;
-        $router->addRoute('<presenter>/<action>[/<id>]', 'Home:default');
+
+        $adminRouter = new RouteList('Admin');
+        $adminRouter->addRoute('admin/index.php', 'Default:default', Route::ONE_WAY);
+        $adminRouter->addRoute('admin/<presenter>[/<action>[/<id \d+(?:-[a-z-]+)?>]]', array(
+            'presenter' => array(
+                Route::Value => 'Default',
+                Route::FilterTable => array(
+                    'uvod' => 'Default'
+                ),
+            ),
+            'action' => array(
+                Route::Value => 'default',
+                Route::FilterTable => array(
+                    'vychozi' => 'default',
+                ),
+            ),
+            'id' => null,
+        ));
+
+        $frontRouter = new RouteList('Front');
+        $frontRouter->addRoute('index.php', 'Home:default', Route::ONE_WAY);
+        $frontRouter->addRoute('<presenter>[/<action>[/<id>]]', array(
+            'presenter' => array(
+                Route::Value => 'Home',
+                Route::FilterTable => array(
+                    'uvod' => 'Home',
+                ),
+            ),
+            'action' => array(
+                Route::Value => 'default',
+                Route::FilterTable => array(
+                    'vychozi' => 'default'
+                ),
+            ),
+            'id' => null,
+        ));
+
+        $router->add($adminRouter);
+        $router->add($frontRouter);
 
         return $router;
     }
