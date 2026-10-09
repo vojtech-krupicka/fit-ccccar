@@ -1,6 +1,6 @@
 services:
 	- App\Core\RouterFactory::createRouter
-
+	- App\Model\Settings\AppSettings(%info%, %seo%, %system%)
 
 search:
 	-	in: %appDir%
