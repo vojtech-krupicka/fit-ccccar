@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-7">
+        <h1><span class="icon-question-sign"></span> Důležité odkazy</h1>
+        {* <ul class="pull-left">
+            <li<?php echo (CC_Utils::linkCurrent(':Catalog:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Catalog:default'); ?>" title="Katalog vozidel">Katalog vozidel</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:offices')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:offices'); ?>" title="Pobočky">Pobočky</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:conditions')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:conditions'); ?>" title="Obchodní podmínky">Obchodní podmínky</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:faq')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:faq'); ?>" title="Užitečné informace">Užitečné informace</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:contact')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:contact'); ?>" title="Kontakty">Kontakty</a></li>
+        </ul>
+
+        <ul class="pull-left">
+            <?php if ($CC_TEMPLATE->user): ?>
+            <li class="list-item-no-style"><strong title="<?php echo $CC_TEMPLATE->user->GetFullName(); ?>"><span class="icon-user"></span> <?php echo $CC_TEMPLATE->user->GetFullName(); ?>:</strong></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:profile')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:profile'); ?>" title="Můj profil">Můj profil</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:loans')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:loans'); ?>" title="Výpůjčky">Výpůjčky</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:logout')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:logout'); ?>" title="Odhlášení">Odhlášení</a></li>
+            <?php else: ?>
+            <li class="list-item-no-style"><strong><span class="icon-user"></span> Uživatelská sekce</strong></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:login')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:login'); ?>" title="Přihlášení">Přihlášení</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:registration')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:registration'); ?>" title="Registrace">Registrace</a></li>
+            <?php endif; ?>
+            <li><em><a href="<?php echo CC_Utils::link('Admin:Homepage:default'); ?>" title="Administrace systému">Administrace systému</a></em></li>
+        </ul> *}
+    </div>
+    <div class="col-md-5">
+        <h1><span class="icon-envelope"></span> Kontakt</h1>
+        <div class="col-md-6">
+            <address>
+                <?php echo CC_OWNER_NAME; ?>, s. r. o.<br />
+                Hlavní ulice 13<br />
+                123 45 Praha 123
+            </address>
+        </div>
+        <div class="col-md-6">
+            <address>
+                tel: 777 777 777<br />
+                mobil: 777 777 777<br />
+                e-mail: <a href="mailto:<?php echo CC_OWNER_EMAIL; ?>" title="<?php echo CC_OWNER_EMAIL; ?>"><?php echo CC_OWNER_EMAIL; ?></a>
+            </address>
+        </div>
+    </div>
+</div>
+<div class="row copyright">
+    <p>&copy; Vytvořeno <?php echo CC_SYSTEM_YEAR; ?> Všechna práva vyhrazena - <a href="<?php echo CC_OWNER_EMAIL; ?>" title="<?php echo CC_OWNER_EMAIL; ?>"><?php echo CC_OWNER_NAME; ?></a>.</p>
+    <p>Vytvořil <a href="<?php echo CC_SYSTEM_EMAIL; ?>" title="<?php echo CC_SYSTEM_EMAIL; ?>"><?php echo CC_SYSTEM_AUTHOR; ?></a> jako školní projekt do předmětu DAS. Všechny informace na těchto stránkách jsou smyšlené a autor nenese žádnou zodpovědnost za škody vzniklé používáním těchto stránek.</p>
+</div>

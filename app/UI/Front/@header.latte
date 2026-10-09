@@ -1,0 +1,35 @@
+<div class="row top">
+    <div class="col-md-4">
+        <a class="logo" n:href="Home" title="{$args->info->company}">
+            <h1>{$args->info->company}<span>{if $args->system->debugMode}devel{else}beta{/if}</span></h1>
+            <h2>Jednička v půjčování vozidel všeho druhu!</h2>
+        </a>
+    </div>
+
+    <nav role="navigation" class="pull-right">
+        {* <ul class="nav nav-pills">
+            <?php if ($CC_TEMPLATE->user): ?>
+            <li><strong title="<?php echo $CC_TEMPLATE->user->GetFullName(); ?>"><span class="icon-user"></span> <?php echo $CC_TEMPLATE->user->GetFullName(); ?>:</strong></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:profile')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:profile'); ?>" title="Můj profil"><span class="icon-cog"></span> Můj profil</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:loans')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:loans'); ?>" title="Výpůjčky"><span class="icon-road"></span> Výpůjčky</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:logout')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:logout'); ?>" title="Odhlášení"><span class="icon-signout"></span> Odhlášení</a></li>
+            <?php else: ?>
+            <li<?php echo (CC_Utils::linkCurrent(':User:login')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:login'); ?>" title="Přihlášení"><span class="icon-signin"></span> Přihlášení</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':User:registration')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':User:registration'); ?>" title="Registrace"><span class="icon-cogs"></span> Registrace</a></li>
+            <?php endif; ?>
+        </ul> *}
+    </nav>
+</div>
+
+<div class="row">
+    <nav role="navigation" class="pull-left">
+        {* <ul class="nav nav-pills">
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:default'); ?>" title="Domů"><span class="icon-home"></span> Domů</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Catalog:default')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Catalog:default'); ?>" title="Katalog vozidel"><span class="icon-truck"></span> Katalog vozidel</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:offices')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:offices'); ?>" title="Pobočky"><span class="icon-globe"></span> Pobočky</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:conditions')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:conditions'); ?>" title="Obchodní podmínky"><span class="icon-info-sign"></span> Obchodní podmínky</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:faq')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:faq'); ?>" title="Užitečné informace"><span class="icon-question-sign"></span> Užitečné informace</a></li>
+            <li<?php echo (CC_Utils::linkCurrent(':Homepage:contact')) ? ' class="active"' : ''; ?>><a href="<?php echo CC_Utils::link(':Homepage:contact'); ?>" title="Kontakty"><span class="icon-phone-sign"></span> Kontakty</a></li>
+        </ul> *}
+    </nav>
+</div>
