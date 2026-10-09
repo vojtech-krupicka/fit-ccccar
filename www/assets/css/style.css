@@ -1,0 +1,387 @@
+.pagination {
+    margin: 6px 0;
+}
+
+.panel {
+    margin-top: 20px;
+}
+
+.panel table th,
+.panel table td {
+    vertical-align: middle !important;
+}
+
+
+/** ************************************************************************* */
+/** BODY                                                                     */
+/** ************************************************************************* */
+
+body {
+    background: #F9F9F9 url(images/bg-body-projectControls.png) no-repeat top center;
+}
+
+#container {
+    margin: 0 auto;
+    width: 1024px;
+    background-color: #FFFFFF;
+    padding: 30px;
+}
+
+
+/** ************************************************************************* */
+/** HEADER                                                                    */
+/** ************************************************************************* */
+
+header {
+    border: 1px #428BCA solid;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 32px;
+}
+
+header .top {
+    position: relative;
+    display: block;
+    padding-bottom: 10px;
+    border-bottom: 1px #AAAAAA solid;
+    margin: 0 0 10px 0;
+}
+
+header .top div {
+    padding: 0;
+}
+
+header .top nav {
+    position: absolute;
+    top: -22px;
+    right: 0;
+}
+
+header .top nav li a {
+    border-radius: 0 0 4px 4px !important;
+}
+
+header .top nav li strong {
+    color: #666666;
+    display: block;
+    padding: 10px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 256px;
+    white-space: nowrap;
+    text-align: right;
+}
+
+header a.logo {
+    display: block;
+    text-decoration: none;
+}
+
+header a.logo:hover {
+    text-decoration: none;
+}
+
+header h1 {
+    margin: 0px;
+    text-shadow: 1px 1px 3px #666666;
+}
+
+header h1 span {
+    color: #999999;
+    font-size: 50%;
+    font-style: italic;
+    left: 150px;
+    position: absolute;
+    top: 0;
+}
+
+header h2 {
+    color: #888888;
+    font-size: 100%;
+    margin: 0px;
+    text-shadow: 1px 1px 3px #888888;
+}
+
+header nav {
+    margin: 6px 16px 0 16px;
+}
+
+
+/** ************************************************************************* */
+/** FOOTER                                                                    */
+/** ************************************************************************* */
+
+footer {
+    margin-top: 32px;
+    border: 1px #428BCA solid;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+footer h1 {
+    color: #428BCA;
+    font-size: 120%;
+    margin: 0 0 12px 0;
+}
+
+footer .copyright {
+    margin: 12px 0 0 0;
+    padding: 10px 0 0 0;
+    text-align: center;
+    border-top: 1px #AAAAAA solid;
+}
+
+footer .copyright p {
+    font-size: 80%;
+    color: #AAAAAA;
+    width: 80%;
+    margin: 8px auto 0;
+}
+
+footer ul {
+    margin-right: 32px;
+}
+
+footer li.list-item-no-style {
+    list-style: none;
+    margin-left: -16px;
+}
+
+footer li.active a {
+    text-decoration: underline;
+    color: #2A6496;
+}
+
+
+/** ************************************************************************* */
+/** CONTENT                                                                   */
+/** ************************************************************************* */
+
+main {
+    background-color: #F9F9F9;
+    border: 1px #428BCA solid;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+main h1 {
+    margin: 0 0 12px 0;
+    font-size: 200%;
+    color: #428BCA;
+    text-shadow: 1px 1px 3px #666666;
+}
+
+main .breadcrumb {
+    background-color: #DEDEDE;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    padding: 6px 32px 8px 16px;
+    font-size: 80%;
+}
+
+main .breadcrumb span {
+    color: #252626;
+    padding: 0 4px;
+}
+
+main .breadcrumb li.home span {
+    color: #1a345c;
+}
+
+main .breadcrumb>li+li:before {
+    content: "";
+    padding: 0;
+}
+
+main .breadcrumb li a {
+    color: #1a345c;
+    text-decoration: underline;
+}
+
+main .breadcrumb li.pull-right a {
+    font-size: 90%;
+}
+
+main .breadcrumb li a:hover,
+main .breadcrumb li.active a {
+    text-decoration: none;
+}
+
+
+main .catalog-filter {
+    background: #EEEEEE;
+    padding: 15px 15px 5px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+main .catalog-filter form {
+    margin: 0;
+}
+
+main .catalog-filter .form-group {
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: -15px;
+}
+
+main .catalog-filter .control-label {
+    text-align: left !important;
+    padding-left: 0;
+}
+
+main .catalog-filter .form-buttons {
+    text-align: right;
+    margin-right: 0;
+    padding-right: 30px;
+}
+
+main .catalog-items {
+    margin: 15px auto;
+}
+
+main .catalog-items>.col-md-3 {
+    margin: 0 1px 12px;
+    padding: 0;
+    width: 230px;
+}
+
+main .catalog-items .item {
+    height: 334px;
+    border: 1px solid #DEDEDE;
+    background: #EEEEEE;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+main .catalog-items .item h2 {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 0 24px;
+    margin: 0;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+main .catalog-items .item a.image {
+    width: 200px;
+    height: 150px;
+    margin: 10px auto;
+    display: block;
+}
+
+main .catalog-items .item img {
+    width: 200px;
+    height: 150px;
+    margin: 0 !important;
+}
+
+main .catalog-items .item .info {
+    font-size: 85%;
+    margin: 0 0 8px 0;
+}
+
+main .detail {
+    margin-top: 15px;
+}
+
+main .detail .image a {
+    width: 432px;
+    height: 324px;
+    margin: 0;
+    display: block;
+}
+
+main .detail .image img {
+    width: 432px;
+    height: 324px;
+    margin: 0 !important;
+}
+
+main .detail .info {
+    border: 1px solid #DEDEDE;
+    background: #EEEEEE;
+    border-radius: 4px;
+    height: 324px;
+    padding: 18px 32px 24px;
+    position: relative;
+}
+
+main .detail .info h2 {
+    color: #31708F;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0;
+}
+
+main .detail .info dl {
+    font-size: 14px;
+    margin: 16px 0 16px;
+}
+
+main .detail .info dt {
+    font-weight: 400;
+    line-height: 25px;
+    text-align: left;
+    width: 128px;
+}
+
+main .detail .info dd {
+    color: #23406D;
+    line-height: 25px;
+    margin-left: 104px;
+}
+
+main .office-detail h4 {
+    color: #31708F;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 16px;
+}
+
+main .office-detail dt {
+    font-weight: 600;
+    line-height: 25px;
+    text-align: left;
+    width: 144px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+main .office-detail dd {
+    line-height: 25px;
+    text-align: left;
+    width: 290px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 144px;
+}
+
+#map-container {
+    height: 600px;
+}
+
+.jumbotron {
+    border-radius: 8px;
+}
+
+.jumbotron .copyright {
+    margin: 32px 0 0 0;
+    padding: 10px 0 0 0;
+    text-align: center;
+    border-top: 1px #AAAAAA solid;
+}
+
+.jumbotron .copyright p {
+    font-size: 80%;
+    color: #AAAAAA;
+    width: 80%;
+    margin: 8px auto 0;
+}
