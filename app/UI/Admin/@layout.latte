@@ -1,15 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
+<!doctype html>
+<html lang="cs">
 
-	<title>{ifset title}{include title|stripHtml|trim} | {/ifset}Nette Skeleton</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="{$args->system->author}" />
+    <meta name="keywords" content="{$args->seo->keywords|striptags}" />
+    <meta name="description" content="administrační systém, {$args->seo->description|striptags}" />
+    <meta name="robots" content="noindex, nofollow" />
+    {block meta}{/block}
+
+    <title>.: {$args->info->company}{if $pageHeading} | {$pageHeading|striptags}{/if} :.</title>
+
+    {asset 'css/bootstrap.css'}
+    {asset 'css/font-awesome.css'}
+    {asset 'css/style.css'}
+    {block css}{/block}
+
+    <link rel="icon" type="image/x-icon" href="{asset? 'images/favicon.ico'}">
 </head>
 
 <body>
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+    <div id="container">
+        <header>
+            {import '@header.latte'}
+            {include header}
+        </header>
 
-	{include content}
+        <main>
+            {import '@main.latte'}
+            {include main}
+        </main>
+
+        <footer>
+            {import '@footer.latte'}
+            {include footer}
+        </footer>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    {asset "js/bootstrap.min.js"}
+
+    <script src="https://unpkg.com/nette-forms@3"></script>
+    <script src="https://unpkg.com/naja@3/dist/Naja.min.js"></script>
+    {asset "js/app.js"}
 </body>
+
 </html>

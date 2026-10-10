@@ -27,6 +27,10 @@ final class NavigationItem
         public readonly string|null $icon,
         public readonly array $args = [],
     ) {
-        $this->isActive = $presenter->isLinkCurrent($target);
+        try {
+            $this->isActive = $presenter->isLinkCurrent($target);
+        } catch (\Throwable $e) {
+            $this->isActive = false;
+        }
     }
 }

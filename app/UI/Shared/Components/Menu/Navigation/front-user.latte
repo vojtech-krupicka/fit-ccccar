@@ -1,5 +1,0 @@
-{varType array $items}
-
-<li n:foreach="$items as $item" n:class="$item->isActive ? active">
-    <a href="{plink $item->target, ...$item->args}" title="{$item->title}"><span n:if="$item->icon" class="{$item->icon}"></span> {$item->title}</a>
-</li>

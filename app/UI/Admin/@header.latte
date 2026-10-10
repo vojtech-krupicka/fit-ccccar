@@ -1,0 +1,34 @@
+{block header}
+
+    <div class="row top">
+        <div class="col-md-4">
+            <a class="logo" n:href="Home" title="Administrační systém: {$args->info->company}">
+                <h1>{$args->info->company}<span>{if $args->system->debugMode}devel{else}beta{/if}</span></h1>
+                <h2>Administrační systém</h2>
+            </a>
+        </div>
+
+        <nav role="navigation" class="pull-right">
+            <ul class="nav nav-pills">
+                <li n:if="$user->isLoggedIn()">
+                    <strong title="$user->GetFullName()"><span class="icon-user"></span> {$user->GetFullName()}:</strong>
+                </li>
+                {control navigation:adminUser}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <nav role="navigation" class="pull-left">
+            <ul class="nav nav-pills">
+                {control navigation:adminMain}
+            </ul>
+        </nav>
+        <nav role="navigation" class="pull-right">
+            <ul class="nav nav-pills">
+                <li class="pull-right"><a n:href=":Front:Home:default" title="Veřejná sekce"><span class="icon-globe"></span> Veřejná sekce</a></li>
+            </ul>
+        </nav>
+    </div>
+
+{/block}
