@@ -11,6 +11,11 @@
     vertical-align: middle !important;
 }
 
+a[href^="#error:"] {
+    background: red;
+    color: white;
+}
+
 
 /** ************************************************************************* */
 /** BODY                                                                     */

@@ -1,0 +1,11 @@
+{varType array $items}
+
+<nav n:if="$items">
+    <ul class="breadcrumb">
+        <li class="home"><a href="{plink 'Home:default'}" title="Domů"><span class="icon-home"></span>Úvod</a></li>
+        <li n:foreach="$items as $item" n:class="$iterator->last ? active">
+            <span class="icon-arrow-right"></span>
+            <a href="{plink $item->target, ...$item->args}" title="{$item->title}">{$item->title}</a>
+        </li>
+    </ul>
+</nav>

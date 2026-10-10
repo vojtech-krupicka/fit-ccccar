@@ -23,6 +23,12 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4
   },
+  "[latte]": {
+    "editor.defaultFormatter": "zraly.latte-formatter",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false
+  },
   "[json]": {
     "editor.tabSize": 4,
     "editor.formatOnSave": false

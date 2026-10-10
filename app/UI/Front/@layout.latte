@@ -22,16 +22,18 @@
 <body>
     <div id="container">
         <header>
-            {include '@header.latte'}
+            {import '@header.latte'}
+            {include header}
         </header>
 
         <main>
-            {* {include '@content.latte'} *}
-            {include content}
+            {import '@main.latte'}
+            {include main}
         </main>
 
         <footer>
-            {include '@footer.latte'}
+            {import '@footer.latte'}
+            {include footer}
         </footer>
     </div>
 
