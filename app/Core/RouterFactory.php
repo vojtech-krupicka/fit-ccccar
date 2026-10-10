@@ -15,12 +15,12 @@ final class RouterFactory
         $router = new RouteList;
 
         $adminRouter = new RouteList('Admin');
-        $adminRouter->addRoute('admin/index.php', 'Default:default', Route::ONE_WAY);
+        $adminRouter->addRoute('admin/index.php', 'Home:default', Route::ONE_WAY);
         $adminRouter->addRoute('admin/<presenter>[/<action>[/<id \d+(?:-[a-z-]+)?>]]', array(
             'presenter' => array(
-                Route::Value => 'Default',
+                Route::Value => 'Home',
                 Route::FilterTable => array(
-                    'uvod' => 'Default'
+                    'uvod' => 'Home'
                 ),
             ),
             'action' => array(
