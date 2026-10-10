@@ -48,6 +48,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
     #region Breadcrumb
 
+    /**
+     * @param string $target
+     * @param string $title
+     * @param array<string, mixed> $args
+     */
     protected function addBreadcrumb(string $target, string $title, array $args = []): self
     {
         $this->template->breadcrumbItems[] = new Breadcrumb\BreadcrumbItem($target, $title, $args);

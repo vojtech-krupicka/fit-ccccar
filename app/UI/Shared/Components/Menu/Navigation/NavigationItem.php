@@ -6,8 +6,20 @@ use Nette\Application\UI\Presenter;
 
 final class NavigationItem
 {
+    /**
+     * Indicates whether the navigation item is currently active.
+     */
     public bool $isActive = false;
 
+    /**
+     * Navigation item for the menu.
+     *
+     * @param Presenter $presenter The current presenter instance.
+     * @param string $target
+     * @param string $title
+     * @param string|null $icon
+     * @param array<string, mixed> $args
+     */
     public function __construct(
         Presenter $presenter,
         public readonly string $target,
