@@ -21,8 +21,8 @@ class SignInFormFactory
         $this->formFactory->addGroup($form, 'Přihlášení');
 
         $form
-            ->addText('username', '*Přihlašovací jméno:')
-            ->setRequired('Musíte vyplnit Vaše přihlašovací jméno do administračního systému.');
+            ->addText('username', '*Email:')
+            ->setRequired('Musíte vyplnit Váš email do administračního systému.');
 
         $form
             ->addPassword('password', '*Heslo:')
@@ -48,7 +48,7 @@ class SignInFormFactory
             $this->user->setAuthenticator($this->authenticator);
             $this->user->login($values->username, $values->password);
         } catch (Security\AuthenticationException $e) {
-            $form->addError('Uživatelské jméno nebo heslo nesouhlasí.');
+            $form->addError('Nesprávné přihlašovací jméno nebo heslo!');
         }
     }
 }
