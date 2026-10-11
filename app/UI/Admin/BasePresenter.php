@@ -2,4 +2,17 @@
 
 namespace App\UI\Admin;
 
-abstract class BasePresenter extends \App\UI\BasePresenter {}
+use Nette\Bridges\SecurityHttp\SessionStorage;
+
+abstract class BasePresenter extends \App\UI\BasePresenter
+{
+    public function checkRequirements($element): void
+    {
+        $storage = $this->getUser()->getStorage();
+        if ($storage instanceof SessionStorage) {
+            $storage->setNamespace('admin');
+        }
+
+        parent::checkRequirements($element);
+    }
+}

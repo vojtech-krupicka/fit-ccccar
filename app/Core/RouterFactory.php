@@ -20,7 +20,9 @@ final class RouterFactory
             'presenter' => array(
                 Route::Value => 'Home',
                 Route::FilterTable => array(
-                    'uvod' => 'Home'
+                    'uvod' => 'Home',
+                    'prihlaseni' => 'SignIn',
+                    'odhlaseni' => 'SignOut',
                 ),
             ),
             'action' => array(
@@ -41,13 +43,13 @@ final class RouterFactory
                     'uvod' => 'Home',
                     'prihlaseni' => 'SignIn',
                     'registrace' => 'SignUp',
+                    'odhlaseni' => 'SignOut',
                 ),
             ),
             'action' => array(
                 Route::Value => 'default',
                 Route::FilterTable => array(
                     'vychozi' => 'default',
-                    'odhlaseni' => 'signOut',
                 ),
             ),
             'id' => null,

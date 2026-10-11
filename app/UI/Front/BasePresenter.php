@@ -2,23 +2,17 @@
 
 namespace App\UI\Front;
 
-use App\Core\Attributes;
+use Nette\Bridges\SecurityHttp\SessionStorage;
 
 abstract class BasePresenter extends \App\UI\BasePresenter
 {
-    #region SignOut
-
-    #[Attributes\Signal]
-    public function actionSignOut(): void
+    public function checkRequirements($element): void
     {
-        if ($this->user->isLoggedIn()) {
-            $this->redirect('SignIn:default');
+        $storage = $this->getUser()->getStorage();
+        if ($storage instanceof SessionStorage) {
+            $storage->setNamespace('front');
         }
 
-        $this->user->logout(true);
-        $this->flashMessage('Byl jste úspěšně odhlášen.', 'info');
-        $this->redirect('SignIn:default');
+        parent::checkRequirements($element);
     }
-
-    #endregion SignOut
 }

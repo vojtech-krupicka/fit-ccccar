@@ -5,7 +5,6 @@ namespace App\UI\Front\SignIn;
 use App\UI\Front\Components\Forms\SignIn\SignInFormFactory;
 use App\UI\Front;
 use Nette\Application\UI;
-use Nette\Forms\Rendering\DefaultFormRenderer;
 
 final class SignInPresenter extends Front\BasePresenter
 {
@@ -13,9 +12,10 @@ final class SignInPresenter extends Front\BasePresenter
         private readonly SignInFormFactory $signInFormFactory
     ) {}
 
-    public function actionDefault(): void
+    protected function startup(): void
     {
-        if ($this->user->isLoggedIn()) {
+        parent::startup();
+        if ($this->getUser()->isLoggedIn()) {
             $this->redirect('Home:default');
         }
     }

@@ -26,11 +26,22 @@ class NavigationItem
         public readonly string $title,
         public readonly string|null $icon,
         public readonly array $args = [],
+        public readonly NavigationItemType $type = NavigationItemType::Link,
     ) {
         try {
             $this->isActive = $presenter->isLinkCurrent($target);
         } catch (\Throwable $e) {
             $this->isActive = false;
         }
+    }
+
+    public function isLink(): bool
+    {
+        return $this->type === NavigationItemType::Link;
+    }
+
+    public function isButton(): bool
+    {
+        return $this->type === NavigationItemType::Button;
     }
 }

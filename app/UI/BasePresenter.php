@@ -19,7 +19,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
     #[Inject]
     public Breadcrumb\BreadcrumbControlFactory $breadcrumbControlFactory;
 
-    public function startup(): void
+    protected function startup(): void
     {
         parent::startup();
 

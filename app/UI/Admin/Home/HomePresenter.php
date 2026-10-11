@@ -4,4 +4,4 @@ namespace App\UI\Admin\Home;
 
 use App\UI\Admin;
 
-final class HomePresenter extends Admin\BasePresenter {}
+final class HomePresenter extends Admin\BaseSecuredPresenter {}

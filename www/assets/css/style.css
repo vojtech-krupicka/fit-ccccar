@@ -66,6 +66,18 @@ header .top nav li a {
     border-radius: 0 0 4px 4px !important;
 }
 
+header .top nav li button {
+    border-radius: 0 0 4px 4px !important;
+    padding: 10px 15px;
+    text-decoration: none !important;
+    box-sizing: border-box;
+}
+
+header .top nav li button:hover {
+    text-decoration: none;
+    background-color: #eeeeee;
+}
+
 header .top nav li strong {
     color: #666666;
     display: block;
@@ -156,6 +168,11 @@ footer li.active a {
     text-decoration: underline;
     color: #2A6496;
 }
+
+footer li button.btn-link {
+    padding: 0;
+}
+
 
 
 /** ************************************************************************* */

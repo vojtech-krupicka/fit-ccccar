@@ -2,16 +2,17 @@
 
 namespace App\UI\Front\Components\Forms\SignIn;
 
+use App\Core\Authentization\FrontAuthenticator;
 use App\UI\Shared\Components\Forms\BootstrapFormFactory;
 use Nette\Application\UI;
-use Nette\Utils\Html;
 use Nette\Security;
 
 class SignInFormFactory
 {
     public function __construct(
         private readonly Security\User $user,
-        private readonly BootstrapFormFactory $formFactory
+        private readonly BootstrapFormFactory $formFactory,
+        private readonly FrontAuthenticator $authenticator,
     ) {}
 
     public function create(): UI\Form
@@ -43,6 +44,8 @@ class SignInFormFactory
             } else {
                 $this->user->setExpiration('+30minutes', true);
             }
+
+            $this->user->setAuthenticator($this->authenticator);
             $this->user->login($values->username, $values->password);
         } catch (Security\AuthenticationException $e) {
             $form->addError('Uživatelské jméno nebo heslo nesouhlasí.');

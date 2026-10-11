@@ -11,7 +11,7 @@
         <nav role="navigation" class="pull-right">
             <ul class="nav nav-pills">
                 <li n:if="$user->isLoggedIn()">
-                    <strong title="$user->GetFullName()"><span class="icon-user"></span> {$user->GetFullName()}:</strong>
+                    <strong title="{$user->getIdentity()->name}"><span class="icon-user"></span> {$user->getIdentity()->name}:</strong>
                 </li>
                 {control navigation:frontUser}
             </ul>

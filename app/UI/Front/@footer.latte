@@ -11,7 +11,7 @@
             <ul class="pull-left">
                 <li class="list-item-no-style">
                 {if $user->isLoggedIn()}
-                    <strong title="$user->GetFullName()"><span class="icon-user"></span> {$user->GetFullName()}:</strong>
+                    <strong title="$user->getIdentity()->name"><span class="icon-user"></span> {$user->getIdentity()->name}:</strong>
                 {else}
                     <strong><span class="icon-user"></span> Uživatelská sekce</strong>
                 {/if}

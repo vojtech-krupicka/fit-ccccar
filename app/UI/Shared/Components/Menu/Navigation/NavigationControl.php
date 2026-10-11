@@ -50,9 +50,9 @@ class NavigationControl extends Control
         return $this->user->isLoggedIn() ? [
             new NavigationItem($presenter, 'Home:profile', 'Můj profil', 'icon-cog'),
             new NavigationItem($presenter, 'Home:loans', 'Výpůjčky', 'icon-road'),
-            new NavigationItem($presenter, 'Home:logout', 'Odhlášení', 'icon-signout'),
+            new NavigationItem($presenter, 'SignOut:default', 'Odhlásit se', 'icon-signout', type: NavigationItemType::Button),
         ] : [
-            new NavigationItem($presenter, 'SignIn:default', 'Přihlášení', 'icon-signin'),
+            new NavigationItem($presenter, 'SignIn:default', 'Přihlásit se', 'icon-signin'),
             new NavigationItem($presenter, 'SignUp:default', 'Registrace', 'icon-cogs'),
         ];
     }
@@ -95,9 +95,9 @@ class NavigationControl extends Control
         $presenter = $this->getPresenter();
         return $this->user->isLoggedIn() ? [
             new NavigationItem($presenter, 'Home:profile', 'Můj profil', 'icon-cog'),
-            new NavigationItem($presenter, 'Home:logout', 'Odhlášení', 'icon-signout'),
+            new NavigationItem($presenter, 'SignOut:default', 'Odhlásit se', 'icon-signout', type: NavigationItemType::Button),
         ] : [
-            new NavigationItem($presenter, 'Home:login', 'Přihlášení', 'icon-signin'),
+            new NavigationItem($presenter, 'SignIn:default', 'Přihlásit se', 'icon-signin'),
         ];
     }
 
