@@ -1,0 +1,48 @@
+<?php declare(strict_types=1);
+
+namespace App\UI\Front\Components\Forms\SignIn;
+
+use App\UI\Shared\Components\Forms\FormFactory;
+use Nette\Application\UI;
+use Nette\Security;
+
+class SignInFormFactory
+{
+    public function __construct(
+        private readonly Security\User $user,
+        private readonly FormFactory $formFactory
+    ) {}
+
+    public function create(): UI\Form
+    {
+        $form = $this->formFactory->create();
+        $form
+            ->addText('username', '*Přihlašovací jméno:')
+            ->setRequired('Musíte vyplnit Vaše přihlašovací jméno do administračního systému.');
+
+        $form
+            ->addPassword('password', '*Heslo:')
+            ->setRequired('Vyplňte prosím Vaše heslo.');
+
+        $form->addCheckbox('persistent', 'Zůstat přihlášený?');
+
+        $form->addSubmit('send', 'Přihlásit');
+        $form->onSuccess[] = $this->onSuccess(...);
+
+        return $form;
+    }
+
+    public function onSuccess(UI\Form $form, SignInFormData $values): void
+    {
+        try {
+            if ($values->persistent) {
+                $this->user->setExpiration('+7days', false);
+            } else {
+                $this->user->setExpiration('+90minutes', true);
+            }
+            $this->user->login($values->username, $values->password);
+        } catch (Security\AuthenticationException $e) {
+            $form->addError('Uživatelské jméno nebo heslo není správné.');
+        }
+    }
+}

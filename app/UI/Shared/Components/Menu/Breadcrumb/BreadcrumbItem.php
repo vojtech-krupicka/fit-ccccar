@@ -2,7 +2,7 @@
 
 namespace App\UI\Shared\Components\Menu\Breadcrumb;
 
-final class BreadcrumbItem
+class BreadcrumbItem
 {
     /**
      * @param string $target The target of the breadcrumb item

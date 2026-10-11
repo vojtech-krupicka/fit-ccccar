@@ -4,7 +4,7 @@ namespace App\UI\Shared\Components\Menu\Breadcrumb;
 
 use Nette\Application\UI\Control;
 
-final class BreadcrumbControl extends Control
+class BreadcrumbControl extends Control
 {
     /**
      * @param list<BreadcrumbItem>|null $items

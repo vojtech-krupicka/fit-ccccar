@@ -1,0 +1,37 @@
+{block content}
+
+{control signInForm}
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Přihlášení</h3></div>
+    <div class="panel-body">
+
+    <form class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+            <label for="inputEmail" class="col-sm-3 control-label">Email:</label>
+            <div class="col-sm-9">
+                <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Registrační email" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword" class="col-sm-3 control-label">Heslo:</label>
+            <div class="col-sm-9">
+                <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Uživatelské heslo">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="persistent"> Trvalé přihlášení</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-primary"><span class="icon-signin"></span> Přihlášit</button>
+            </div>
+        </div>
+    </form>
+
+    </div>
+</div>

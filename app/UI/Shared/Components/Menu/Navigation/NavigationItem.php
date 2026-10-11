@@ -4,7 +4,7 @@ namespace App\UI\Shared\Components\Menu\Navigation;
 
 use Nette\Application\UI\Presenter;
 
-final class NavigationItem
+class NavigationItem
 {
     /**
      * Indicates whether the navigation item is currently active.

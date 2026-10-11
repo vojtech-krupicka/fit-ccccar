@@ -5,7 +5,7 @@ namespace App\UI\Shared\Components\Menu\Navigation;
 use Nette\Application\UI\Control;
 use Nette\Security\User;
 
-final class NavigationControl extends Control
+class NavigationControl extends Control
 {
     public function __construct(
         private readonly User $user,
@@ -52,8 +52,8 @@ final class NavigationControl extends Control
             new NavigationItem($presenter, 'Home:loans', 'Výpůjčky', 'icon-road'),
             new NavigationItem($presenter, 'Home:logout', 'Odhlášení', 'icon-signout'),
         ] : [
-            new NavigationItem($presenter, 'Home:login', 'Přihlášení', 'icon-signin'),
-            new NavigationItem($presenter, 'Home:register', 'Registrace', 'icon-cogs'),
+            new NavigationItem($presenter, 'SignIn:default', 'Přihlášení', 'icon-signin'),
+            new NavigationItem($presenter, 'SignUp:default', 'Registrace', 'icon-cogs'),
         ];
     }
 

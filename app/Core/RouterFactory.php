@@ -39,12 +39,15 @@ final class RouterFactory
                 Route::Value => 'Home',
                 Route::FilterTable => array(
                     'uvod' => 'Home',
+                    'prihlaseni' => 'SignIn',
+                    'registrace' => 'SignUp',
                 ),
             ),
             'action' => array(
                 Route::Value => 'default',
                 Route::FilterTable => array(
-                    'vychozi' => 'default'
+                    'vychozi' => 'default',
+                    'odhlaseni' => 'signOut',
                 ),
             ),
             'id' => null,
