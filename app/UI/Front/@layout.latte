@@ -12,6 +12,7 @@
     <title>.: {$args->info->company}{if $pageHeading} | {$pageHeading|striptags}{/if} :.</title>
 
     {asset 'css/bootstrap.css'}
+    {asset 'css/bootstrap-theme.css'}
     {asset 'css/font-awesome.css'}
     {asset 'css/style.css'}
     {block css}{/block}
@@ -43,8 +44,8 @@
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     {asset "js/bootstrap.min.js"}
+    {asset "js/netteForms.min.js"}
 
-    <script src="https://unpkg.com/nette-forms@3"></script>
     <script src="https://unpkg.com/naja@3/dist/Naja.min.js"></script>
     {asset "js/app.js"}
 </body>
