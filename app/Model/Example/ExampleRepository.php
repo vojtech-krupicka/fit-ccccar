@@ -2,9 +2,9 @@
 
 namespace App\Model\Example;
 
-use App\Model\BaseFacade;
+use App\Model\BaseRepository;
 
-class ExampleFacade extends BaseFacade
+class ExampleRepository extends BaseRepository
 {
     public function getById(int $id): ?ExampleEntity
     {
@@ -18,7 +18,8 @@ class ExampleFacade extends BaseFacade
      */
     public function getAll(): array
     {
-        return ExampleEntity::fromSelection($this->dbconn->table('example_items')->order('name ASC'));
+        // return ExampleEntity::fromSelection($this->dbconn->table('example_items')->order('name ASC'));
+        return [];
     }
 
     public function persist(ExampleEntity $item): void

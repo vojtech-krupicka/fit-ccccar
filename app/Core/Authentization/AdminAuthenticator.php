@@ -2,20 +2,33 @@
 
 namespace App\Core\Authentization;
 
+use App\Model\Employee\EmployeeFacade;
 use Nette\Security;
 
 final class AdminAuthenticator implements Security\Authenticator
 {
     public function __construct(
         private Security\Passwords $passwords,
+        private EmployeeFacade $employeeFacade,
     ) {}
 
     public function authenticate(string $username, string $password): Security\IIdentity
     {
-        return new Security\SimpleIdentity(
-            2026,
-            ['admin'],
-            ['name' => 'Harry Employee'],
+        $admin = $this->employeeFacade->getEmployeeByEmail($username);
+        if (!$admin) {
+            throw new Security\AuthenticationException('User not found.');
+        }
+
+        if (!$this->passwords->verify($password, $admin->password)) {
+            throw new Security\AuthenticationException('Invalid password.');
+        }
+
+        return new Identity(
+            id: (int) $admin->id,
+            roles: ['admin'],
+            email: (string) $admin->email,
+            firstname: (string) $admin->firstname,
+            surname: (string) $admin->surname,
         );
     }
 }

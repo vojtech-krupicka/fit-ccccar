@@ -3,19 +3,19 @@
 namespace Tests\Model;
 
 use App\Model\Example\ExampleEntity;
-use App\Model\Example\ExampleFacade;
+use App\Model\Example\ExampleRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\DatabaseTestCase;
 
-#[CoversClass(ExampleFacade::class)]
-final class ExampleFacadeTest extends DatabaseTestCase
+#[CoversClass(ExampleRepository::class)]
+final class ExampleRepositoryTest extends DatabaseTestCase
 {
-    private ExampleFacade $facade;
+    private ExampleRepository $facade;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->facade = self::container()->getByType(ExampleFacade::class);
+        $this->facade = self::container()->getByType(ExampleRepository::class);
     }
 
     public function testGetAllReturnsTheMockDataSortedByName(): void

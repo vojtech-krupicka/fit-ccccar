@@ -1,7 +1,7 @@
 -- -----------------------------------------------------
 -- Table `rental_office`
 -- -----------------------------------------------------
-INSERT INTO rental_office (name, street, city, country, zip, phone, email) VALUES 
+INSERT INTO rental_office (name, street, city, country, zip, phone, email) VALUES
 	('Pobočka Praha', 'Pražská', 'Praha', 'Česká republika', '142 00', '123456789', 'praha@ccccar.cz'),
 	('Pobočka Brno', 'Brněnská', 'Brno', 'Česká republika', '621 00', '234567891', 'brno@ccccar.cz'),
 	('Pobočka Plzeň', 'Plzeňská', 'Plzeň', 'Česká republika', '301 00', '345678912', 'plzen@ccccar.cz'),
@@ -30,7 +30,7 @@ INSERT INTO vehicle_color (name, ean) VALUES
 -- Table `vehicle_fuel_type`
 -- -----------------------------------------------------
 INSERT INTO vehicle_fuel_type (fuel) VALUES
-	('benzín'), 
+	('benzín'),
 	('diesel'),
 	('LPG');
 
@@ -82,7 +82,7 @@ INSERT INTO vehicle (vehicle_type_id, vehicle_fuel_type_id, vehicle_color_id, re
 	(1, 2, 3, 6, 'Combi 1.4', 'E949326', 186818.19, 2007),
 	(3, 2, 7, 2, 'Combi 1.3', 'A456837', 133542.61, 2010),
 	(3, 2, 7, 4, 'Combi 1.1', 'E292349', 136812.69, 2002);
-	
+
 
 -- -----------------------------------------------------
 -- Table `employee`
@@ -104,10 +104,10 @@ INSERT INTO employee (rental_office_id, name, surname, phone, email) VALUES
 	(6, 'Radagast', 'Brown', '722284412', 'radagast.brown@ccccar.cz'),
 	(7, 'Elrond', 'Halfelven', '773723490', 'elrond.halfelven@ccccar.cz');
 
-	
+
 -- -----------------------------------------------------
 -- Table `customer`
--- -----------------------------------------------------  
+-- -----------------------------------------------------
 INSERT INTO customer (name, surname, identity_number, email, phone, street, city, country, zip, created_at) VALUES
 	('Bilbo', 'Baggins', '965928264', 'bilbo.baggins@example.com', '737821343', 'Úvoz', 'Zlín', 'Česká republika', '62407', '2010-07-10 06:21:12'),
 	('Rosie', 'Cotton', '620928136', 'rosie.cotton@example.com', '720474330', 'Astronautů', 'Vsetín', 'Česká republika', '58952', '2009-01-10 08:23:10'),
@@ -139,7 +139,7 @@ INSERT INTO customer (name, surname, identity_number, email, phone, street, city
 	('Gríma', 'Wormtongue', '191493178', 'grima.wormtongue@example.com', '776480560', 'U Stromovky', 'Liberec', 'Česká republika', '31820', '2011-10-18 07:37:11'),
 	('Halbarad', 'Dúnadan', '942525915', 'halbarad.dunadan@example.com', '773260298', 'Boženy Němcové', 'Hradec Králové', 'Česká republika', '36557', '2009-06-27 11:46:00'),
 	('Isildur', 'Elendilson', '988338952', 'isildur.elendilson@example.com', '737321257', 'Smrková', 'Hradec Králové', 'Česká republika', '77839', '2009-04-18 03:01:19');
-	
+
 
 -- -----------------------------------------------------
 -- Table `loan`
@@ -655,6 +655,6 @@ JOIN employee e ON e.id = l.borrower_id;
 
 
 -- All seed accounts use the demo password "demo1234" (SHA-256, unsalted - see README).
-UPDATE `customer` SET `password` = '0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea764157c5d';
-UPDATE `employee` SET `password` = '0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea764157c5d';
+UPDATE `customer` SET `password` = '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje';
+UPDATE `employee` SET `password` = '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy';
 

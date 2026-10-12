@@ -2,9 +2,4 @@
 
 namespace App\Model;
 
-abstract class BaseFacade
-{
-    public function __construct(
-        protected \Nette\Database\Explorer $dbconn
-    ) {}
-}
+abstract class BaseFacade {}
