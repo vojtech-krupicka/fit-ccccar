@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Core\Authentization;
+namespace App\Core\Authentication;
 
 use App\Model\Employee\EmployeeFacade;
 use Nette\Security;
@@ -12,7 +12,7 @@ final class AdminAuthenticator implements Security\Authenticator
         private EmployeeFacade $employeeFacade,
     ) {}
 
-    public function authenticate(string $username, string $password): Security\IIdentity
+    public function authenticate(string $username, string $password): Identity
     {
         $admin = $this->employeeFacade->getEmployeeByEmail($username);
         if (!$admin) {

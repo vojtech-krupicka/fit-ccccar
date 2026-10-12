@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Core\Authentization;
+namespace App\Core\Authentication;
 
 use App\Model\Customer\CustomerFacade;
 use Nette\Security;
@@ -12,7 +12,7 @@ final class FrontAuthenticator implements Security\Authenticator
         private CustomerFacade $customerFacade,
     ) {}
 
-    public function authenticate(string $username, string $password): Security\IIdentity
+    public function authenticate(string $username, string $password): Identity
     {
         $user = $this->customerFacade->getCustomerByEmail($username);
         if (!$user) {

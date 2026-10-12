@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace App\Core\Authentization;
+namespace App\Core\Authentication;
 
-use App\Model\BaseEntity;
 use Nette\Security;
 
 class Identity implements Security\IIdentity
