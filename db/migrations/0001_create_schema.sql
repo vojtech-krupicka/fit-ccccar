@@ -7,7 +7,7 @@ CREATE TABLE `rental_office` (
   `name` VARCHAR(256) NOT NULL DEFAULT '',
   `street` VARCHAR(64) NOT NULL DEFAULT '',
   `city` VARCHAR(64) NOT NULL DEFAULT '',
-  `country` VARCHAR(64) NOT NULL DEFAULT '',
+  `country` CHAR(2) NOT NULL,
   `zip` VARCHAR(10) NOT NULL DEFAULT '',
   `phone` VARCHAR(13) NOT NULL DEFAULT '',
   `email` VARCHAR(96) NOT NULL DEFAULT '',

@@ -44,12 +44,15 @@ final class RouterFactory
                     'prihlaseni' => 'SignIn',
                     'registrace' => 'SignUp',
                     'odhlaseni' => 'SignOut',
+                    'zakaznik' => 'Customer',
                 ),
             ),
             'action' => array(
                 Route::Value => 'default',
                 Route::FilterTable => array(
                     'vychozi' => 'default',
+                    'profil' => 'profile',
+                    'vypujcky' => 'loans',
                 ),
             ),
             'id' => null,

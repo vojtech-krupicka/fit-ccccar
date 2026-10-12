@@ -1,0 +1,109 @@
+<?php declare(strict_types=1);
+
+namespace App\UI\Front\Customer;
+
+use App\Core\Authentication\Identity;
+use App\Model\Customer\CustomerEntity;
+use App\Model\Customer\CustomerFacade;
+use App\UI\Front\Components\Forms\Profile\ChangePasswordFormData;
+use App\UI\Front\Components\Forms\Profile\ChangePasswordFormFactory;
+use App\UI\Front\Components\Forms\Profile\ProfileFormData;
+use App\UI\Front\Components\Forms\Profile\ProfileFormFactory;
+use App\UI\Front;
+use \Nette\Application\UI;
+
+final class CustomerPresenter extends Front\BasePresenter
+{
+    private CustomerEntity $customer;
+
+    public function __construct(
+        private readonly ProfileFormFactory $profileFormFactory,
+        private readonly ChangePasswordFormFactory $changePasswordFormFactory,
+        private readonly CustomerFacade $customerFacade
+    ) {}
+
+    public function startup(): void
+    {
+        parent::startup();
+
+        if (!$this->user->isLoggedIn()) {
+            $this->redirect('SignIn:default');
+        }
+
+        $identity = $this->user->getIdentity();
+        if (!$identity instanceof Identity) {
+            $this->redirect('SignIn:default');
+        }
+
+        $customer = $this->customerFacade->getCustomer($identity->id);
+        if ($customer === null) {
+            $this->redirect('SignIn:default');
+        }
+        $this->customer = $customer;
+    }
+
+    public function renderProfile(): void
+    {
+        $this->template->pageHeading = 'Můj profil';
+        $this->addBreadcrumb('Customer:profile', 'Můj profil');
+    }
+
+    protected function createComponentChangePasswordForm(): UI\Form
+    {
+        $form = $this->changePasswordFormFactory->create();
+
+        $form['cancel']->onClick[] = function () {
+            $this->getPresenter()->redirect('this');
+        };
+        $form->onSuccess[] = function (UI\Form $form, ChangePasswordFormData $values) {
+            if ($this->customerFacade->changePassword($this->customer, $values->oldPassword, $values->newPassword)) {
+                $this->flashMessage('Vaše heslo bylo úspěšně aktualizováno.', 'info');
+            } else {
+                $this->flashMessage('Vaše heslo se nepodařilo změnit. Zkontrolujte prosím staré heslo.', 'error');
+            }
+
+            $this->redirect('this');
+        };
+
+        return $form;
+    }
+
+    protected function createComponentProfileForm(): UI\Form
+    {
+        $form = $this->profileFormFactory->create();
+
+        $form->setDefaults([
+            'email' => $this->customer->email,
+            'firstName' => $this->customer->firstname,
+            'lastName' => $this->customer->surname,
+            'idNumber' => $this->customer->identityNumber,
+            'phone' => $this->customer->phone,
+            'street' => $this->customer->street,
+            'city' => $this->customer->city,
+            'zip' => $this->customer->zip,
+            'country' => $this->customer->country,
+        ]);
+
+        $form['cancel']->onClick[] = function () {
+            $this->getPresenter()->redirect('this');
+        };
+        $form->onSuccess[] = function (UI\Form $form, ProfileFormData $values) {
+            $this->customer->email = $values->email;
+            $this->customer->firstname = $values->firstName;
+            $this->customer->surname = $values->lastName;
+            $this->customer->identityNumber = $values->idNumber;
+            $this->customer->phone = $values->phone;
+            $this->customer->street = $values->street;
+            $this->customer->city = $values->city;
+            $this->customer->zip = $values->zip;
+            $this->customer->country = $values->country;
+
+            $this->customerFacade->persist($this->customer);
+
+            $this->flashMessage('Váš profil byl úspěšně aktualizován.', 'info');
+            $this->redirect('this');
+        };
+
+        return $form;
+    }
+}

@@ -7,8 +7,8 @@ use App\Model\BaseEntity;
 final class CustomerEntity extends BaseEntity
 {
     public function __construct(
-        public int|null $id = null,
-        public string|null $password = null,
+        public int|null $id,
+        public string $password,
         public string $email = '',
         public string $firstname = '',
         public string $surname = '',

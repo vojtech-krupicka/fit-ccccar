@@ -2,7 +2,7 @@
 
 namespace App\UI\Admin\Components\Forms\SignIn;
 
-use App\Core\Authentization\AdminAuthenticator;
+use App\Core\Authentication\AdminAuthenticator;
 use App\UI\Shared\Components\Forms\BootstrapFormFactory;
 use Nette\Application\UI;
 use Nette\Security;

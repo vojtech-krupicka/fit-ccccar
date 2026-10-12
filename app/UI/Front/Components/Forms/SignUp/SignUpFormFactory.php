@@ -102,6 +102,7 @@ class SignUpFormFactory
     public function onSuccess(UI\Form $form, SignUpFormData $values): void
     {
         $customer = new CustomerEntity(
+            id: null,
             password: $this->passwords->hash($values->password),
             email: $values->email,
             firstname: $values->firstName,

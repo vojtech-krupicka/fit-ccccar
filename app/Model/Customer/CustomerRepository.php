@@ -27,7 +27,7 @@ class CustomerRepository extends BaseRepository
     public function update(CustomerEntity $customer): void
     {
         $row = $this->dbconn->table('customer')->where('id', $customer->id);
-        if ($row) {
+        if ($row != null) {
             $row->update(CustomerDbMapper::dump($customer));
         }
     }

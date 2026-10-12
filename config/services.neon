@@ -1,9 +1,9 @@
 services:
 	- App\Core\RouterFactory::createRouter
 	- App\Model\Settings\AppSettings(%info%, %seo%, %system%)
-	- create: App\Core\Authentization\FrontAuthenticator
+	- create: App\Core\Authentication\FrontAuthenticator
 		autowired: self
-	- create: App\Core\Authentization\AdminAuthenticator
+	- create: App\Core\Authentication\AdminAuthenticator
 		autowired: self
 
 search:

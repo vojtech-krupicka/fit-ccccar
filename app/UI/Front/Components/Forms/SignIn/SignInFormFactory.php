@@ -2,7 +2,7 @@
 
 namespace App\UI\Front\Components\Forms\SignIn;
 
-use App\Core\Authentization\FrontAuthenticator;
+use App\Core\Authentication\FrontAuthenticator;
 use App\UI\Shared\Components\Forms\BootstrapFormFactory;
 use Nette\Application\UI;
 use Nette\Security;

@@ -30,7 +30,7 @@ abstract class CustomerDbMapper
      * @param CustomerEntity $entity The entity to dump.
      * @return array{password: string, email: string, name: string, surname: string,
      *      identity_number: string, phone: string, street: string, city: string, zip: string,
-     *      country: string, created: \DateTime|null}
+     *      country: string, created_at: \DateTime|null}
      *      The array representation of the entity.
      */
     public static function dump(CustomerEntity $entity): array
