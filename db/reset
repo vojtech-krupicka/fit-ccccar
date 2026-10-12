@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Drop every table in the development database and apply all migrations again.
+# Destroys all data in the database, including the schema_migrations table.
+#
+# Usage: db/reset [-y]    (-y skips the confirmation prompt)
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+source db/lib/db.sh
+
+if [[ "${APP_ENV:-dev}" == "prod" ]]; then
+  echo "Refusing to reset the database when APP_ENV=prod" >&2
+  exit 1
+fi
+
+if [[ "${1:-}" != "-y" ]]; then
+  read -r -p "Drop ALL tables in '$DB_NAME' and re-run the migrations? [y/N] " answer
+  if [[ ! "$answer" =~ ^[yY]$ ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+fi
+
+echo "Dropping all tables in $DB_NAME"
+drops=$(mysql_cli -N -B -e "SELECT CONCAT('DROP TABLE IF EXISTS \`', table_name, '\`;') FROM information_schema.tables WHERE table_schema = DATABASE()")
+if [[ -n "$drops" ]]; then
+  { echo "SET FOREIGN_KEY_CHECKS=0;"; echo "$drops"; } | mysql_cli
+fi
+
+db/migrate

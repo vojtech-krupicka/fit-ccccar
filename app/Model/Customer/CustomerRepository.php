@@ -17,4 +17,18 @@ class CustomerRepository extends BaseRepository
         $row = $this->dbconn->table('customer')->where('email', $email)->fetch();
         return CustomerDbMapper::load($row);
     }
+
+    public function insert(CustomerEntity $customer): void
+    {
+        $row = $this->dbconn->table('customer')->insert(CustomerDbMapper::dump($customer));
+        $customer->id = (int) $row['id'];
+    }
+
+    public function update(CustomerEntity $customer): void
+    {
+        $row = $this->dbconn->table('customer')->where('id', $customer->id);
+        if ($row) {
+            $row->update(CustomerDbMapper::dump($customer));
+        }
+    }
 }

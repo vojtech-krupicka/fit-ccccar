@@ -17,4 +17,13 @@ class CustomerFacade
     {
         return $this->customerRepository->getByEmail($email);
     }
+
+    public function persist(CustomerEntity $customer): void
+    {
+        if ($customer->id === null) {
+            $this->customerRepository->insert($customer);
+        } else {
+            $this->customerRepository->update($customer);
+        }
+    }
 }

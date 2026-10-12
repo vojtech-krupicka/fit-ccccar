@@ -12,7 +12,7 @@ the code is already set up and tested.
   environment selected by `APP_ENV`. `.env` is the single source for the database settings in
   development (`%env.NAME%` works in NEON). `NETTE_DEBUG` switches debug mode on its own.
 - **Database migrations**: numbered SQL files in `db/migrations` and the scripts `db/migrate`,
-  `db/dump`, `db/restore`, `db/test-reset`.
+  `db/dump`, `db/restore`, `db/reset`, `db/test-reset`.
 - **Quality tools**: PHPStan level 8, a PSR-4 check (`composer run psr`), and PHPUnit 13 with
   `DatabaseTestCase` (transaction per test, rolled back, refuses non-`*_test` databases) and
   `PresenterTestCase` (run presenters, render complete pages, submit forms, fire signals).
@@ -86,6 +86,7 @@ Inside the container, as the `dev` user: `composer install`, `db/migrate`.
 | `composer run test:db` | Drop and recreate the test database from the migrations |
 | `db/migrate` | Apply pending migrations to the development database |
 | `db/dump [file]`, `db/restore <file>` | Dump / restore the development database |
+| `db/reset [-y]` | Drop all tables in the development database and re-run all migrations |
 
 VS Code tasks with the same names are in `.vscode/tasks.json`. Run commands as the `dev` user.
 

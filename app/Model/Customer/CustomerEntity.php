@@ -8,7 +8,7 @@ final class CustomerEntity extends BaseEntity
 {
     public function __construct(
         public int|null $id = null,
-        public string $password = '',
+        public string|null $password = null,
         public string $email = '',
         public string $firstname = '',
         public string $surname = '',
@@ -18,6 +18,6 @@ final class CustomerEntity extends BaseEntity
         public string $city = '',
         public string $zip = '',
         public string $country = '',
-        public \DateTime|null $created = null,
+        public \DateTime $created = new \DateTime(),
     ) {}
 }

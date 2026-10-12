@@ -2,17 +2,22 @@
 
 namespace App\UI\Front\Components\Forms\SignUp;
 
+use App\Model\Customer\CustomerEntity;
+use App\Model\Customer\CustomerFacade;
 use App\UI\Front\Components\Forms\Controls\StrongPassword;
 use App\UI\Shared\Components\Forms\BootstrapFormFactory;
 use Nette\Application\LinkGenerator;
 use Nette\Application\UI;
 use Nette\Utils\Html;
+use Nette\Security;
 
 class SignUpFormFactory
 {
     public function __construct(
         private readonly BootstrapFormFactory $formFactory,
         private readonly LinkGenerator $linkGenerator,
+        private readonly CustomerFacade $customerFacade,
+        private readonly Security\Passwords $passwords,
     ) {}
 
     public function create(): UI\Form
@@ -96,9 +101,22 @@ class SignUpFormFactory
 
     public function onSuccess(UI\Form $form, SignUpFormData $values): void
     {
-        echo '<pre>';
-        var_dump($values);
-        echo '</pre>';
-        die;
+        $customer = new CustomerEntity(
+            password: $this->passwords->hash($values->password),
+            email: $values->email,
+            firstname: $values->firstName,
+            surname: $values->lastName,
+            identityNumber: $values->idNumber,
+            phone: $values->phone,
+            street: $values->street,
+            city: $values->city,
+            zip: $values->zip,
+            country: $values->country,
+        );
+        $this->customerFacade->persist($customer);
+
+        if ($customer->id === null) {
+            $form->addError('Registrace se nezdařila. Zkuste to prosím znovu.');
+        }
     }
 }

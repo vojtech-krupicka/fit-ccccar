@@ -46,7 +46,7 @@ abstract class CustomerDbMapper
             'city' => $entity->city,
             'zip' => $entity->zip,
             'country' => $entity->country,
-            'created' => $entity->created,
+            'created_at' => $entity->created,
         ];
     }
 }

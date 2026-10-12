@@ -85,60 +85,60 @@ INSERT INTO vehicle (vehicle_type_id, vehicle_fuel_type_id, vehicle_color_id, re
 
 
 -- -----------------------------------------------------
--- Table `employee`
+-- Table `employee`, password is `aaa`
 -- -----------------------------------------------------
-INSERT INTO employee (rental_office_id, name, surname, phone, email) VALUES
-	(1, 'Frodo', 'Baggins', '728175225', 'frodo.baggins@ccccar.cz'),
-	(1, 'Samwise', 'Gamgee', '776719266', 'samwise.gamgee@ccccar.cz'),
-	(1, 'Meriadoc', 'Brandybuck', '727488359', 'meriadoc.brandybuck@ccccar.cz'),
-	(2, 'Peregrin', 'Took', '774805883', 'peregrin.took@ccccar.cz'),
-	(2, 'Aragorn', 'Elessar', '737696073', 'aragorn.elessar@ccccar.cz'),
-	(2, 'Boromir', 'Denethorson', '728827472', 'boromir.denethorson@ccccar.cz'),
-	(3, 'Faramir', 'Denethorson', '777438188', 'faramir.denethorson@ccccar.cz'),
-	(3, 'Éowyn', 'Rohan', '773571776', 'eowyn.rohan@ccccar.cz'),
-	(4, 'Éomer', 'Rohan', '727539712', 'eomer.rohan@ccccar.cz'),
-	(4, 'Théoden', 'Rohan', '722550379', 'theoden.rohan@ccccar.cz'),
-	(5, 'Legolas', 'Greenleaf', '774726168', 'legolas.greenleaf@ccccar.cz'),
-	(5, 'Gimli', 'Glóinson', '774800525', 'gimli.gloinson@ccccar.cz'),
-	(6, 'Gandalf', 'Grey', '774276491', 'gandalf.grey@ccccar.cz'),
-	(6, 'Radagast', 'Brown', '722284412', 'radagast.brown@ccccar.cz'),
-	(7, 'Elrond', 'Halfelven', '773723490', 'elrond.halfelven@ccccar.cz');
+INSERT INTO employee (rental_office_id, name, surname, phone, email, password) VALUES
+	(1, 'Frodo', 'Baggins', '728175225', 'frodo.baggins@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(1, 'Samwise', 'Gamgee', '776719266', 'samwise.gamgee@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(1, 'Meriadoc', 'Brandybuck', '727488359', 'meriadoc.brandybuck@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(2, 'Peregrin', 'Took', '774805883', 'peregrin.took@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(2, 'Aragorn', 'Elessar', '737696073', 'aragorn.elessar@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(2, 'Boromir', 'Denethorson', '728827472', 'boromir.denethorson@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(3, 'Faramir', 'Denethorson', '777438188', 'faramir.denethorson@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(3, 'Éowyn', 'Rohan', '773571776', 'eowyn.rohan@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(4, 'Éomer', 'Rohan', '727539712', 'eomer.rohan@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(4, 'Théoden', 'Rohan', '722550379', 'theoden.rohan@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(5, 'Legolas', 'Greenleaf', '774726168', 'legolas.greenleaf@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(5, 'Gimli', 'Glóinson', '774800525', 'gimli.gloinson@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(6, 'Gandalf', 'Grey', '774276491', 'gandalf.grey@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(6, 'Radagast', 'Brown', '722284412', 'radagast.brown@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy'),
+	(7, 'Elrond', 'Halfelven', '773723490', 'elrond.halfelven@ccccar.cz', '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy');
 
 
 -- -----------------------------------------------------
--- Table `customer`
+-- Table `customer`, password is `xxx`
 -- -----------------------------------------------------
-INSERT INTO customer (name, surname, identity_number, email, phone, street, city, country, zip, created_at) VALUES
-	('Bilbo', 'Baggins', '965928264', 'bilbo.baggins@example.com', '737821343', 'Úvoz', 'Zlín', 'Česká republika', '62407', '2010-07-10 06:21:12'),
-	('Rosie', 'Cotton', '620928136', 'rosie.cotton@example.com', '720474330', 'Astronautů', 'Vsetín', 'Česká republika', '58952', '2009-01-10 08:23:10'),
-	('Hamfast', 'Gamgee', '311539230', 'hamfast.gamgee@example.com', '721752223', 'Mánesova', 'Žďár nad Sázavou', 'Česká republika', '66319', '2012-10-04 08:45:09'),
-	('Fredegar', 'Bolger', '524047001', 'fredegar.bolger@example.com', '737437785', 'Dlouhá třída', 'Benešov', 'Česká republika', '43711', '2012-12-21 03:34:36'),
-	('Galadriel', 'Lórien', '225091186', 'galadriel.lorien@example.com', '731471201', 'Vilová', 'Most', 'Česká republika', '91025', '2013-07-26 12:05:39'),
-	('Celeborn', 'Lórien', '217142956', 'celeborn.lorien@example.com', '773981349', 'Palackého', 'Košice', 'Slovenská republika', '46761', '2013-08-29 21:25:45'),
-	('Arwen', 'Undómiel', '430486456', 'arwen.undomiel@example.com', '728428249', 'Karolíny Světlé', 'Zlín', 'Česká republika', '53567', '2009-03-31 11:44:37'),
-	('Glorfindel', 'Rivendell', '470255974', 'glorfindel.rivendell@example.com', '727245254', 'K. V. Raise', 'Plzeň', 'Česká republika', '68153', '2009-07-29 20:11:28'),
-	('Haldir', 'Lórien', '566113953', 'haldir.lorien@example.com', '774118129', 'Nákladní', 'Jindřichův Hradec', 'Česká republika', '10999', '2009-01-20 05:27:18'),
-	('Thranduil', 'Woodland', '488943566', 'thranduil.woodland@example.com', '774248571', 'Tesařská', 'Benešov', 'Česká republika', '83768', '2011-12-22 09:22:36'),
-	('Thorin', 'Oakenshield', '300399766', 'thorin.oakenshield@example.com', '776667083', 'Nádražní', 'Frýdek-Místek', 'Česká republika', '68165', '2010-12-30 08:22:15'),
-	('Balin', 'Fundinson', '498865468', 'balin.fundinson@example.com', '728960064', 'Pod Šibeníkem', 'Bratislava', 'Slovenská republika', '24233', '2011-08-26 21:40:52'),
-	('Dwalin', 'Fundinson', '664278559', 'dwalin.fundinson@example.com', '722320200', 'Na Valech', 'Bratislava', 'Slovenská republika', '38817', '2011-12-30 22:33:51'),
-	('Glóin', 'Gróinson', '825136064', 'gloin.groinson@example.com', '774708871', 'U Stromovky', 'České Budějovice', 'Česká republika', '33224', '2013-08-11 04:57:45'),
-	('Óin', 'Gróinson', '475593160', 'oin.groinson@example.com', '728967994', 'Rolavská', 'Jindřichův Hradec', 'Česká republika', '12173', '2009-12-29 10:05:40'),
-	('Fíli', 'Dísson', '437553456', 'fili.disson@example.com', '774374691', 'Větrná', 'Bratislava', 'Slovenská republika', '19104', '2013-01-16 14:26:20'),
-	('Kíli', 'Dísson', '508469880', 'kili.disson@example.com', '774781488', 'Bezručova', 'Frýdek-Místek', 'Česká republika', '16228', '2009-12-11 19:51:44'),
-	('Bombur', 'Bifurson', '875767596', 'bombur.bifurson@example.com', '731896925', 'Třanovická', 'Frýdek-Místek', 'Česká republika', '39524', '2010-02-02 21:09:42'),
-	('Bofur', 'Bifurson', '140778625', 'bofur.bifurson@example.com', '731226058', 'Třanovická', 'Bratislava', 'Slovenská republika', '45177', '2012-08-15 23:59:55'),
-	('Saruman', 'White', '808934804', 'saruman.white@example.com', '773990794', 'Brigádnická', 'Vsetín', 'Česká republika', '96013', '2011-10-10 01:45:22'),
-	('Gollum', 'Sméagol', '851267186', 'gollum.smeagol@example.com', '776657859', 'Na Záguří', 'Ostrava', 'Česká republika', '16683', '2010-10-01 10:36:07'),
-	('Tom', 'Bombadil', '433344729', 'tom.bombadil@example.com', '737917933', 'Pivovarská', 'Jindřichův Hradec', 'Česká republika', '65279', '2011-05-04 18:23:54'),
-	('Goldberry', 'Riverdaughter', '178916961', 'goldberry.riverdaughter@example.com', '720172644', 'Kubelíkova', 'Pardubice', 'Česká republika', '57355', '2012-12-26 16:00:18'),
-	('Treebeard', 'Fangorn', '725034586', 'treebeard.fangorn@example.com', '737273585', 'Komenského', 'Pardubice', 'Česká republika', '49837', '2010-06-09 20:44:00'),
-	('Quickbeam', 'Fangorn', '683579595', 'quickbeam.fangorn@example.com', '722461793', 'Družební', 'Pardubice', 'Česká republika', '26345', '2010-02-07 23:45:23'),
-	('Bard', 'Bowman', '910479137', 'bard.bowman@example.com', '728851142', 'Fügnerova', 'Ostrava', 'Česká republika', '21606', '2009-01-21 23:20:55'),
-	('Beorn', 'Skinchanger', '471336923', 'beorn.skinchanger@example.com', '773777280', 'ČSA', 'Zlín', 'Česká republika', '39068', '2009-04-03 12:53:08'),
-	('Gríma', 'Wormtongue', '191493178', 'grima.wormtongue@example.com', '776480560', 'U Stromovky', 'Liberec', 'Česká republika', '31820', '2011-10-18 07:37:11'),
-	('Halbarad', 'Dúnadan', '942525915', 'halbarad.dunadan@example.com', '773260298', 'Boženy Němcové', 'Hradec Králové', 'Česká republika', '36557', '2009-06-27 11:46:00'),
-	('Isildur', 'Elendilson', '988338952', 'isildur.elendilson@example.com', '737321257', 'Smrková', 'Hradec Králové', 'Česká republika', '77839', '2009-04-18 03:01:19');
+INSERT INTO customer (name, surname, identity_number, email, phone, street, city, country, zip, created_at, password) VALUES
+	('Bilbo', 'Baggins', '965928264', 'bilbo.baggins@example.com', '737821343', 'Úvoz', 'Zlín', 'Česká republika', '62407', '2010-07-10 06:21:12', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Rosie', 'Cotton', '620928136', 'rosie.cotton@example.com', '720474330', 'Astronautů', 'Vsetín', 'Česká republika', '58952', '2009-01-10 08:23:10', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Hamfast', 'Gamgee', '311539230', 'hamfast.gamgee@example.com', '721752223', 'Mánesova', 'Žďár nad Sázavou', 'Česká republika', '66319', '2012-10-04 08:45:09', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Fredegar', 'Bolger', '524047001', 'fredegar.bolger@example.com', '737437785', 'Dlouhá třída', 'Benešov', 'Česká republika', '43711', '2012-12-21 03:34:36', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Galadriel', 'Lórien', '225091186', 'galadriel.lorien@example.com', '731471201', 'Vilová', 'Most', 'Česká republika', '91025', '2013-07-26 12:05:39', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Celeborn', 'Lórien', '217142956', 'celeborn.lorien@example.com', '773981349', 'Palackého', 'Košice', 'Slovenská republika', '46761', '2013-08-29 21:25:45', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Arwen', 'Undómiel', '430486456', 'arwen.undomiel@example.com', '728428249', 'Karolíny Světlé', 'Zlín', 'Česká republika', '53567', '2009-03-31 11:44:37', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Glorfindel', 'Rivendell', '470255974', 'glorfindel.rivendell@example.com', '727245254', 'K. V. Raise', 'Plzeň', 'Česká republika', '68153', '2009-07-29 20:11:28', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Haldir', 'Lórien', '566113953', 'haldir.lorien@example.com', '774118129', 'Nákladní', 'Jindřichův Hradec', 'Česká republika', '10999', '2009-01-20 05:27:18', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Thranduil', 'Woodland', '488943566', 'thranduil.woodland@example.com', '774248571', 'Tesařská', 'Benešov', 'Česká republika', '83768', '2011-12-22 09:22:36', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Thorin', 'Oakenshield', '300399766', 'thorin.oakenshield@example.com', '776667083', 'Nádražní', 'Frýdek-Místek', 'Česká republika', '68165', '2010-12-30 08:22:15', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Balin', 'Fundinson', '498865468', 'balin.fundinson@example.com', '728960064', 'Pod Šibeníkem', 'Bratislava', 'Slovenská republika', '24233', '2011-08-26 21:40:52', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Dwalin', 'Fundinson', '664278559', 'dwalin.fundinson@example.com', '722320200', 'Na Valech', 'Bratislava', 'Slovenská republika', '38817', '2011-12-30 22:33:51', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Glóin', 'Gróinson', '825136064', 'gloin.groinson@example.com', '774708871', 'U Stromovky', 'České Budějovice', 'Česká republika', '33224', '2013-08-11 04:57:45', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Óin', 'Gróinson', '475593160', 'oin.groinson@example.com', '728967994', 'Rolavská', 'Jindřichův Hradec', 'Česká republika', '12173', '2009-12-29 10:05:40', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Fíli', 'Dísson', '437553456', 'fili.disson@example.com', '774374691', 'Větrná', 'Bratislava', 'Slovenská republika', '19104', '2013-01-16 14:26:20', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Kíli', 'Dísson', '508469880', 'kili.disson@example.com', '774781488', 'Bezručova', 'Frýdek-Místek', 'Česká republika', '16228', '2009-12-11 19:51:44', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Bombur', 'Bifurson', '875767596', 'bombur.bifurson@example.com', '731896925', 'Třanovická', 'Frýdek-Místek', 'Česká republika', '39524', '2010-02-02 21:09:42', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Bofur', 'Bifurson', '140778625', 'bofur.bifurson@example.com', '731226058', 'Třanovická', 'Bratislava', 'Slovenská republika', '45177', '2012-08-15 23:59:55', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Saruman', 'White', '808934804', 'saruman.white@example.com', '773990794', 'Brigádnická', 'Vsetín', 'Česká republika', '96013', '2011-10-10 01:45:22', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Gollum', 'Sméagol', '851267186', 'gollum.smeagol@example.com', '776657859', 'Na Záguří', 'Ostrava', 'Česká republika', '16683', '2010-10-01 10:36:07', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Tom', 'Bombadil', '433344729', 'tom.bombadil@example.com', '737917933', 'Pivovarská', 'Jindřichův Hradec', 'Česká republika', '65279', '2011-05-04 18:23:54', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Goldberry', 'Riverdaughter', '178916961', 'goldberry.riverdaughter@example.com', '720172644', 'Kubelíkova', 'Pardubice', 'Česká republika', '57355', '2012-12-26 16:00:18', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Treebeard', 'Fangorn', '725034586', 'treebeard.fangorn@example.com', '737273585', 'Komenského', 'Pardubice', 'Česká republika', '49837', '2010-06-09 20:44:00', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Quickbeam', 'Fangorn', '683579595', 'quickbeam.fangorn@example.com', '722461793', 'Družební', 'Pardubice', 'Česká republika', '26345', '2010-02-07 23:45:23', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Bard', 'Bowman', '910479137', 'bard.bowman@example.com', '728851142', 'Fügnerova', 'Ostrava', 'Česká republika', '21606', '2009-01-21 23:20:55', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Beorn', 'Skinchanger', '471336923', 'beorn.skinchanger@example.com', '773777280', 'ČSA', 'Zlín', 'Česká republika', '39068', '2009-04-03 12:53:08', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Gríma', 'Wormtongue', '191493178', 'grima.wormtongue@example.com', '776480560', 'U Stromovky', 'Liberec', 'Česká republika', '31820', '2011-10-18 07:37:11', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Halbarad', 'Dúnadan', '942525915', 'halbarad.dunadan@example.com', '773260298', 'Boženy Němcové', 'Hradec Králové', 'Česká republika', '36557', '2009-06-27 11:46:00', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje'),
+	('Isildur', 'Elendilson', '988338952', 'isildur.elendilson@example.com', '737321257', 'Smrková', 'Hradec Králové', 'Česká republika', '77839', '2009-04-18 03:01:19', '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje');
 
 
 -- -----------------------------------------------------
@@ -652,9 +652,3 @@ FROM (VALUES
 	ROW(2, 10, 14, 14, '2013-08-09 05:49:00', '2013-08-31 22:38:56', 6606.43, 15458.52)
 ) AS l (vehicle_id, customer_id, borrower_id, recipient_id, start_at, end_at, distance, price)
 JOIN employee e ON e.id = l.borrower_id;
-
-
--- All seed accounts use the demo password "demo1234" (SHA-256, unsalted - see README).
-UPDATE `customer` SET `password` = '$2y$12$0FNPPaIgC4xKxMpG0CIr3uBBIqD3IROwAhErnBTiOHCbr4WEjSyje';
-UPDATE `employee` SET `password` = '$2y$12$cloW.0OTHQwWSOIJLpNwmujNYUExCJaLAiBYNyGBlXnly.P448cVy';
-
