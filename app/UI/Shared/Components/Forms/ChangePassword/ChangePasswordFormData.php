@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Front\Components\Forms\Profile;
+namespace App\UI\Shared\Components\Forms\ChangePassword;
 
 class ChangePasswordFormData
 {

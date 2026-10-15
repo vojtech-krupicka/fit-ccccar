@@ -22,4 +22,18 @@ class EmployeeRepository extends BaseRepository
         $row = $this->dbconn->table('employee')->where('email', $email)->fetch();
         return $this->employeeDbMapper->load($row);
     }
+
+    public function insert(EmployeeEntity $employee): void
+    {
+        $row = $this->dbconn->table('employee')->insert($this->employeeDbMapper->dump($employee));
+        $employee->id = (int) $row['id'];
+    }
+
+    public function update(EmployeeEntity $employee): void
+    {
+        $row = $this->dbconn->table('employee')->where('id', $employee->id);
+        if ($row != null) {
+            $row->update($this->employeeDbMapper->dump($employee));
+        }
+    }
 }

@@ -5,10 +5,10 @@ namespace App\UI\Front\Customer;
 use App\Core\Authentication\Identity;
 use App\Model\Customer\CustomerEntity;
 use App\Model\Customer\CustomerFacade;
-use App\UI\Front\Components\Forms\Profile\ChangePasswordFormData;
-use App\UI\Front\Components\Forms\Profile\ChangePasswordFormFactory;
 use App\UI\Front\Components\Forms\Profile\ProfileFormData;
 use App\UI\Front\Components\Forms\Profile\ProfileFormFactory;
+use App\UI\Shared\Components\Forms\ChangePassword\ChangePasswordFormData;
+use App\UI\Shared\Components\Forms\ChangePassword\ChangePasswordFormFactory;
 use App\UI\Front;
 use \Nette\Application\UI;
 

@@ -23,12 +23,14 @@ final class RouterFactory
                     'uvod' => 'Home',
                     'prihlaseni' => 'SignIn',
                     'odhlaseni' => 'SignOut',
+                    'zamestnanec' => 'Employee',
                 ),
             ),
             'action' => array(
                 Route::Value => 'default',
                 Route::FilterTable => array(
                     'vychozi' => 'default',
+                    'profil' => 'profile',
                 ),
             ),
             'id' => null,
@@ -53,7 +55,6 @@ final class RouterFactory
                 Route::FilterTable => array(
                     'vychozi' => 'default',
                     'profil' => 'profile',
-                    'vypujcky' => 'loans',
                     'detail' => 'detail',
                 ),
             ),

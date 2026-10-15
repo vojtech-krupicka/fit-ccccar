@@ -2,13 +2,8 @@
 
 namespace App\UI\Front\Components\Forms\Profile;
 
-use App\Model\Customer\CustomerEntity;
-use App\Model\Customer\CustomerFacade;
-use App\UI\Front\Components\Forms\Controls\StrongPassword;
 use App\UI\Shared\Components\Forms\BootstrapFormFactory;
 use Nette\Application\UI;
-use Nette\Utils\Html;
-use Nette\Security;
 
 class ProfileFormFactory
 {
