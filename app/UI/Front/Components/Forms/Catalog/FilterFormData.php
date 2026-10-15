@@ -3,7 +3,9 @@
 namespace App\UI\Front\Components\Forms\Catalog;
 
 use App\Model\Vehicle\VehicleAvailability;
-use App\Model\SortMode;
+use App\Model\Vehicle\VehicleFilter;
+use App\Model\Vehicle\VehicleSortBy;
+use App\Model\SortDirection;
 
 class FilterFormData
 {
@@ -16,7 +18,23 @@ class FilterFormData
         public readonly ?float $costPerUnitFrom,
         public readonly ?float $costPerUnitTo,
         public readonly ?VehicleAvailability $availability,
-        public readonly SortBy $sortBy,
-        public readonly SortMode $sortMode,
+        public readonly VehicleSortBy $sortBy,
+        public readonly SortDirection $sortDirection,
     ) {}
+
+    public function toFilter(): VehicleFilter
+    {
+        return new VehicleFilter(
+            rentalOffice: $this->rentalOffice,
+            fuelType: $this->fuelType,
+            color: $this->color,
+            costPerDayFrom: $this->costPerDayFrom,
+            costPerDayTo: $this->costPerDayTo,
+            costPerUnitFrom: $this->costPerUnitFrom,
+            costPerUnitTo: $this->costPerUnitTo,
+            availability: $this->availability,
+            sortBy: $this->sortBy,
+            sortDirection: $this->sortDirection,
+        );
+    }
 }

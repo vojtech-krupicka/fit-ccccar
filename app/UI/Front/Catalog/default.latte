@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <div class="col-sm-3">{label sortBy/}</div>
                     <div class="col-sm-6">{input sortBy}</div>
-                    <div class="col-sm-3">{input sortMode}</div>
+                    <div class="col-sm-3">{input sortDirection}</div>
                 </div>
             </div>
             <div class="col-md-4 form-buttons">
@@ -66,11 +66,11 @@
     {/form}
 </div>
 
-{if $vehicleList->count() > 0}
+{if count($vehicleList) > 0}
     {control pagination}
 
     <div class="row catalog-items">
-        <div n:foreach="$vehicleList->entities as $vehicle" class="col-md-3">
+        <div n:foreach="$vehicleList as $vehicle" class="col-md-3">
             <div class="item">
                 <h2>
                     <a title="{$vehicle->getFullName()}" n:href="detail, id: $vehicle->id">{$vehicle->getFullName()}, {$vehicle->color->name|lower}</a>

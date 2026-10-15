@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Front\Components\Forms\Catalog;
+namespace App\Model\Vehicle;
 
-enum SortBy: string
+enum VehicleSortBy: string
 {
     case VehicleName = 'vehicle';
     case CostPerDay = 'day_cost';

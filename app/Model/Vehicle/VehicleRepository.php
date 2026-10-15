@@ -2,11 +2,13 @@
 
 namespace App\Model\Vehicle;
 
-use App\Model\Vehicle\VehicleAvailability;
+use App\Model\Vehicle\VehicleDbMapper;
+use App\Model\Vehicle\VehicleEntity;
+use App\Model\Vehicle\VehicleFilter;
+use App\Model\Vehicle\VehicleSortBy;
 use App\Model\BaseRepository;
 use App\Model\EntityList;
-use App\Model\SortMode;
-use App\UI\Front\Components\Forms\Catalog\SortBy;
+use App\Model\PageRequest;
 use Nette\Database\Explorer;
 
 /**
@@ -22,68 +24,45 @@ class VehicleRepository extends BaseRepository
     /**
      * @return EntityList<VehicleEntity>
      */
-    public function find(
-        ?int $rentalOffice = null,
-        ?int $fuelType = null,
-        ?int $color = null,
-        ?float $costPerDayFrom = null,
-        ?float $costPerDayTo = null,
-        ?float $costPerUnitFrom = null,
-        ?float $costPerUnitTo = null,
-        ?VehicleAvailability $availability = null,
-        SortBy $sortBy = SortBy::VehicleName,
-        SortMode $sortMode = SortMode::Ascending,
-        int $page = 1,
-        int $itemsPerPage = 100,
-    ): EntityList {
+    public function find(VehicleFilter $filter, PageRequest $page): EntityList
+    {
         $query = $this->dbconn->table('vehicle');
 
-        if ($rentalOffice !== null) {
-            $query->where('rental_office_id', $rentalOffice);
+        if ($filter->rentalOffice !== null) {
+            $query->where('rental_office_id', $filter->rentalOffice);
         }
-        if ($fuelType !== null) {
-            $query->where('vehicle_fuel_type_id', $fuelType);
+        if ($filter->fuelType !== null) {
+            $query->where('vehicle_fuel_type_id', $filter->fuelType);
         }
-        if ($color !== null) {
-            $query->where('vehicle_color_id', $color);
+        if ($filter->color !== null) {
+            $query->where('vehicle_color_id', $filter->color);
         }
-        if ($costPerDayFrom !== null) {
-            $query->where('cost_per_day >= ?', $costPerDayFrom);
+        if ($filter->costPerDayFrom !== null) {
+            $query->where('cost_per_day >= ?', $filter->costPerDayFrom);
         }
-        if ($costPerDayTo !== null) {
-            $query->where('cost_per_day <= ?', $costPerDayTo);
+        if ($filter->costPerDayTo !== null) {
+            $query->where('cost_per_day <= ?', $filter->costPerDayTo);
         }
-        if ($costPerUnitFrom !== null) {
-            $query->where('cost_per_unit >= ?', $costPerUnitFrom);
+        if ($filter->costPerUnitFrom !== null) {
+            $query->where('cost_per_unit >= ?', $filter->costPerUnitFrom);
         }
-        if ($costPerUnitTo !== null) {
-            $query->where('cost_per_unit <= ?', $costPerUnitTo);
+        if ($filter->costPerUnitTo !== null) {
+            $query->where('cost_per_unit <= ?', $filter->costPerUnitTo);
         }
 
-        switch ($sortBy) {
-            case SortBy::CostPerDay:
-                $query->order('cost_per_day ' . $sortMode->value);
+        switch ($filter->sortBy) {
+            case VehicleSortBy::CostPerDay:
+                $query->order('cost_per_day ' . $filter->sortDirection->value);
                 break;
-            case SortBy::CostPerUnit:
-                $query->order('cost_per_unit ' . $sortMode->value);
+            case VehicleSortBy::CostPerUnit:
+                $query->order('cost_per_unit ' . $filter->sortDirection->value);
                 break;
             default:
-                $query->order('vehicle_type.manufacturer ' . strtoupper($sortMode->value));
-                $query->order('vehicle_type.brand ' . strtoupper($sortMode->value));
+                $query->order('vehicle_type.manufacturer ' . $filter->sortDirection->value);
+                $query->order('vehicle_type.brand ' . $filter->sortDirection->value);
                 break;
         }
 
-        $pageCount = 0;
-        $count = $query->count();
-        $query->page($page, $itemsPerPage, $pageCount);
-
-        $entityList = new EntityList(
-            entities: $this->mapper->loadMany($query->fetchAll()),
-            totalCount: $count,
-            currentPage: $page,
-            pageCount: $pageCount,
-        );
-
-        return $entityList;
+        return $this->fetchList($query, $page);
     }
 }

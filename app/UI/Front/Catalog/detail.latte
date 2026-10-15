@@ -82,7 +82,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">Seznam aktivní rezervací/výpujček</h3></div>
 
-                {if $vehicleReservations->count() > 0}
+                {if count($vehicleReservations) > 0}
                 <table class="table table-striped table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -94,7 +94,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr n:foreach="$vehicleReservations->entities as $rental" n:class="$rental->customerId == $user->id ? 'success'">
+                        <tr n:foreach="$vehicleReservations as $rental" n:class="$rental->customerId == $user->id ? 'success'">
                             <td class="text-center">{$rental->reservedAt|date:'d.m.Y h:s'}</td>
                             <td class="text-center">{$rental->reservedFrom|date:'d.m.Y'}</td>
                             <td class="text-center">{$rental->reservedTo|date:'d.m.Y'}</td>

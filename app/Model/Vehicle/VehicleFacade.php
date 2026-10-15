@@ -8,13 +8,12 @@ use App\Model\Vehicle\FuelType\VehicleFuelTypeEntity;
 use App\Model\Vehicle\FuelType\VehicleFuelTypeRepository;
 use App\Model\Vehicle\Type\VehicleTypeEntity;
 use App\Model\Vehicle\Type\VehicleTypeRepository;
-use App\Model\Vehicle\VehicleAvailability;
 use App\Model\Vehicle\VehicleEntity;
+use App\Model\Vehicle\VehicleFilter;
 use App\Model\Vehicle\VehicleRepository;
 use App\Model\BaseFacade;
 use App\Model\EntityList;
-use App\Model\SortMode;
-use App\UI\Front\Components\Forms\Catalog\SortBy;
+use App\Model\PageRequest;
 
 /**
  * @extends BaseFacade<VehicleEntity, VehicleRepository>
@@ -36,25 +35,25 @@ class VehicleFacade extends BaseFacade
     }
 
     /**
-     * @return list<VehicleColorEntity>
+     * @return EntityList<VehicleColorEntity>
      */
-    public function getColorList(): array
+    public function getColorList(): EntityList
     {
-        return $this->colorRepository->getAll();
+        return $this->colorRepository->getAll(orderBy: 'name');
     }
 
     /**
-     * @return list<VehicleFuelTypeEntity>
+     * @return EntityList<VehicleFuelTypeEntity>
      */
-    public function getFuelTypeList(): array
+    public function getFuelTypeList(): EntityList
     {
-        return $this->fuelTypeRepository->getAll();
+        return $this->fuelTypeRepository->getAll(orderBy: 'fuel');
     }
 
     /**
-     * @return list<VehicleTypeEntity>
+     * @return EntityList<VehicleTypeEntity>
      */
-    public function getTypeList(): array
+    public function getTypeList(): EntityList
     {
         return $this->typeRepository->getAll();
     }
@@ -62,33 +61,10 @@ class VehicleFacade extends BaseFacade
     /**
      * @return EntityList<VehicleEntity>
      */
-    public function getAllVehicles(
-        ?int $rentalOffice = null,
-        ?int $fuelType = null,
-        ?int $color = null,
-        ?float $costPerDayFrom = null,
-        ?float $costPerDayTo = null,
-        ?float $costPerUnitFrom = null,
-        ?float $costPerUnitTo = null,
-        ?VehicleAvailability $availability = null,
-        SortBy $sortBy = SortBy::VehicleName,
-        SortMode $sortMode = SortMode::Ascending,
-        int $page = 1,
-        int $itemsPerPage = 100,
+    public function find(
+        VehicleFilter $filter,
+        PageRequest $page,
     ): EntityList {
-        return $this->repository->find(
-            $rentalOffice,
-            $fuelType,
-            $color,
-            $costPerDayFrom,
-            $costPerDayTo,
-            $costPerUnitFrom,
-            $costPerUnitTo,
-            $availability,
-            $sortBy,
-            $sortMode,
-            $page,
-            $itemsPerPage,
-        );
+        return $this->repository->find($filter, $page);
     }
 }

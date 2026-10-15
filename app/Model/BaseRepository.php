@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use Nette\Database\Table\ActiveRow;
+use Nette\Database\Table\Selection;
 use Nette\Database\Explorer;
 
 /**
@@ -37,12 +39,14 @@ abstract class BaseRepository
     }
 
     /**
-     * @return list<T> Array of all entities of type T.
+     * @return EntityList<T> Entity list of all entities of type T.
      */
-    public function getAll(): array
+    public function getAll(?PageRequest $page = null, string $orderBy = ''): EntityList
     {
-        $rows = $this->dbconn->table($this->table())->fetchAll();
-        return $this->mapper->loadMany($rows);
+        $query = $this->dbconn->table($this->table());
+        $query->order($orderBy !== '' ? $orderBy : implode(', ', (array) $query->getPrimary()));
+
+        return $this->fetchList($query, $page);
     }
 
     /**
@@ -72,5 +76,28 @@ abstract class BaseRepository
             return $row->delete() > 0;
         }
         return false;
+    }
+
+    /**
+     * @param Selection<ActiveRow> $query The database query to fetch the list from.
+     * @param PageRequest|null $page The pagination information, or null for no pagination.
+     * @return EntityList<T>
+     */
+    protected function fetchList(Selection $query, ?PageRequest $page = null): EntityList
+    {
+        $count = null;
+        $pageCount = 1;
+        if ($page !== null) {
+            $count = $query->count();
+            $query->page($page->page, $page->itemsPerPage, $pageCount);
+        }
+
+        $entities = $this->mapper->loadMany($query->fetchAll());
+        return new EntityList(
+            entities: $entities,
+            totalCount: $count ?? count($entities),
+            currentPage: $page !== null ? $page->page : 1,
+            pageCount: $pageCount,
+        );
     }
 }

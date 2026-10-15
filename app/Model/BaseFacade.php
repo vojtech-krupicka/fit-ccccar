@@ -24,11 +24,11 @@ abstract class BaseFacade
     }
 
     /**
-     * @return list<T> Array of all entities of type T.
+     * @return EntityList<T> Entity list of all entities of type T.
      */
-    public function getAll(): array
+    public function getAll(?PageRequest $page = null): EntityList
     {
-        return $this->repository->getAll();
+        return $this->repository->getAll($page);
     }
 
     /**

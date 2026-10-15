@@ -21,7 +21,7 @@ class ReservationFormFactory
             ->setPrompt('--- Vyberte pobočku ---')
             ->setRequired('Vyberte pobočku')
             ->setItems(
-                array_column($this->rentalOfficeFacade->getAll(), 'name', 'id')
+                array_column($this->rentalOfficeFacade->getAll()->toArray(), 'name', 'id')
             );
 
         $form

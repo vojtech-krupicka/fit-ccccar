@@ -5,7 +5,8 @@ namespace App\UI\Front\Components\Forms\Catalog;
 use App\Model\RentalOffice\RentalOfficeFacade;
 use App\Model\Vehicle\VehicleAvailability;
 use App\Model\Vehicle\VehicleFacade;
-use App\Model\SortMode;
+use App\Model\Vehicle\VehicleSortBy;
+use App\Model\SortDirection;
 use App\UI\Shared\Components\Forms\BootstrapFormFactory;
 use Nette\Application\UI;
 
@@ -24,7 +25,7 @@ class FilterFormFactory
             ->addSelect('rentalOffice', 'Pobočka:')
             ->setPrompt('--- Vyberte pobočku ---')
             ->setItems(
-                array_column($this->rentalOfficeFacade->getAll(), 'name', 'id')
+                array_column($this->rentalOfficeFacade->getAll()->toArray(), 'name', 'id')
             );
 
         $form
@@ -40,14 +41,14 @@ class FilterFormFactory
             ->addSelect('fuelType', 'Palivo:')
             ->setPrompt('--- Nezáleží ---')
             ->setItems(
-                array_column($this->vehicleFacade->getFuelTypeList(), 'name', 'id')
+                array_column($this->vehicleFacade->getFuelTypeList()->toArray(), 'name', 'id')
             );
 
         $form
             ->addSelect('color', 'Barva:')
             ->setPrompt('--- Nezáleží ---')
             ->setItems(
-                array_column($this->vehicleFacade->getColorList(), 'name', 'id')
+                array_column($this->vehicleFacade->getColorList()->toArray(), 'name', 'id')
             );
 
         $form
@@ -65,16 +66,16 @@ class FilterFormFactory
         $form
             ->addSelect('sortBy', 'Řadit podle:')
             ->setItems([
-                SortBy::VehicleName->value => 'Název vozidla',
-                SortBy::CostPerDay->value => 'Cena za den',
-                SortBy::CostPerUnit->value => 'Cena za km',
+                VehicleSortBy::VehicleName->value => 'Název vozidla',
+                VehicleSortBy::CostPerDay->value => 'Cena za den',
+                VehicleSortBy::CostPerUnit->value => 'Cena za km',
             ]);
 
         $form
-            ->addSelect('sortMode', 'Režim řazení:')
+            ->addSelect('sortDirection', 'Režim řazení:')
             ->setItems([
-                SortMode::Ascending->value => 'Vzestupně',
-                SortMode::Descending->value => 'Sestupně',
+                SortDirection::Ascending->value => 'Vzestupně',
+                SortDirection::Descending->value => 'Sestupně',
             ]);
 
         $form->addSubmit('filter', 'Filtrovat')->setOption('icon', 'icon-filter');

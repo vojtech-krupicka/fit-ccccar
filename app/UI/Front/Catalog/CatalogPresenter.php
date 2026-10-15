@@ -8,11 +8,12 @@ use App\Model\RentalOffice\RentalOfficeFacade;
 use App\Model\Vehicle\VehicleAvailability;
 use App\Model\Vehicle\VehicleEntity;
 use App\Model\Vehicle\VehicleFacade;
+use App\Model\Vehicle\VehicleSortBy;
 use App\Model\EntityList;
-use App\Model\SortMode;
+use App\Model\PageRequest;
+use App\Model\SortDirection;
 use App\UI\Front\Components\Forms\Catalog\FilterFormData;
 use App\UI\Front\Components\Forms\Catalog\FilterFormFactory;
-use App\UI\Front\Components\Forms\Catalog\SortBy;
 use App\UI\Front\Components\Forms\Reservation\ReservationFormData;
 use App\UI\Front\Components\Forms\Reservation\ReservationFormFactory;
 use App\UI\Shared\Components\Menu\Pagination\PaginationControl;
@@ -69,7 +70,7 @@ final class CatalogPresenter extends Front\BasePresenter
         ?float $costPerUnitTo = null,
         ?string $availability = null,
         ?string $sortBy = null,
-        ?string $sortMode = null,
+        ?string $sortDirection = null,
         int $page = 1,
     ): void {
         if ($page < 1) {
@@ -85,23 +86,13 @@ final class CatalogPresenter extends Front\BasePresenter
             costPerUnitFrom: $costPerUnitFrom,
             costPerUnitTo: $costPerUnitTo,
             availability: $availability !== null ? VehicleAvailability::tryFrom($availability) : null,
-            sortBy: SortBy::tryFrom((string) $sortBy) ?? SortBy::VehicleName,
-            sortMode: SortMode::tryFrom((string) $sortMode) ?? SortMode::Ascending,
+            sortBy: VehicleSortBy::tryFrom((string) $sortBy) ?? VehicleSortBy::VehicleName,
+            sortDirection: SortDirection::tryFrom((string) $sortDirection) ?? SortDirection::Ascending,
         );
 
-        $this->vehicleList = $this->vehicleFacade->getAllVehicles(
-            $this->filterData->rentalOffice,
-            $this->filterData->fuelType,
-            $this->filterData->color,
-            $this->filterData->costPerDayFrom,
-            $this->filterData->costPerDayTo,
-            $this->filterData->costPerUnitFrom,
-            $this->filterData->costPerUnitTo,
-            $this->filterData->availability,
-            $this->filterData->sortBy,
-            $this->filterData->sortMode,
-            $page,
-            itemsPerPage: self::ITEMS_PER_PAGE,
+        $this->vehicleList = $this->vehicleFacade->find(
+            filter: $this->filterData->toFilter(),
+            page: new PageRequest($page, self::ITEMS_PER_PAGE)
         );
 
         if ($page > $this->vehicleList->pageCount) {
@@ -139,7 +130,7 @@ final class CatalogPresenter extends Front\BasePresenter
                 'costPerUnitTo' => $this->filterData->costPerUnitTo,
                 'availability' => $this->filterData->availability?->value,
                 'sortBy' => $this->filterData->sortBy->value,
-                'sortMode' => $this->filterData->sortMode->value,
+                'sortDirection' => $this->filterData->sortDirection->value,
             ]);
         }
 
@@ -157,7 +148,7 @@ final class CatalogPresenter extends Front\BasePresenter
                 'costPerUnitTo' => $values->costPerUnitTo,
                 'availability' => ($values->availability !== null ? $values->availability->value : null),
                 'sortBy' => $values->sortBy->value,
-                'sortMode' => $values->sortMode->value,
+                'sortDirection' => $values->sortDirection->value,
             ]);
         };
         return $form;
