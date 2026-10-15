@@ -14,7 +14,7 @@ final class AdminAuthenticator implements Security\Authenticator
 
     public function authenticate(string $username, string $password): Identity
     {
-        $admin = $this->employeeFacade->getEmployeeByEmail($username);
+        $admin = $this->employeeFacade->getByEmail($username);
         if (!$admin) {
             throw new Security\AuthenticationException('User not found.');
         }

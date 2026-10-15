@@ -169,12 +169,12 @@ final class CatalogPresenter extends Front\BasePresenter
 
     public function actionDetail(int $id): void
     {
-        $this->vehicle = $this->vehicleFacade->getVehicle($id);
+        $this->vehicle = $this->vehicleFacade->get($id);
         if ($this->vehicle === null) {
             $this->error('Vozidlo nebylo nalezeno.');
         }
 
-        $this->vehicleReservations = $this->carRentalFacade->getCarRentalListByVehicleId($id);
+        $this->vehicleReservations = $this->carRentalFacade->getByVehicleId($id);
     }
 
     public function renderDetail(): void
@@ -200,7 +200,7 @@ final class CatalogPresenter extends Front\BasePresenter
 
     public function reservationFormSucceeded(UI\Form $form, ReservationFormData $values): void
     {
-        $rentalOffice = $this->rentalOfficeFacade->getRentalOffice($values->rentalOffice);
+        $rentalOffice = $this->rentalOfficeFacade->get($values->rentalOffice);
         if ($rentalOffice === null || $rentalOffice->id === null) {
             $form->addError('Vybraná pobočka neexistuje.');
             return;

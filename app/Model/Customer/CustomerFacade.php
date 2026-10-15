@@ -2,32 +2,24 @@
 
 namespace App\Model\Customer;
 
+use App\Model\BaseFacade;
 use Nette\Security\Passwords;
 
-class CustomerFacade
+/**
+ * @extends BaseFacade<CustomerEntity, CustomerRepository>
+ */
+class CustomerFacade extends BaseFacade
 {
     public function __construct(
-        private CustomerRepository $customerRepository,
+        CustomerRepository $repository,
         private Passwords $passwords,
-    ) {}
-
-    public function getCustomer(int $id): CustomerEntity|null
-    {
-        return $this->customerRepository->get($id);
+    ) {
+        parent::__construct($repository);
     }
 
-    public function getCustomerByEmail(string $email): CustomerEntity|null
+    public function getByEmail(string $email): CustomerEntity|null
     {
-        return $this->customerRepository->getByEmail($email);
-    }
-
-    public function persist(CustomerEntity $customer): void
-    {
-        if ($customer->id === null) {
-            $this->customerRepository->insert($customer);
-        } else {
-            $this->customerRepository->update($customer);
-        }
+        return $this->repository->getByEmail($email);
     }
 
     public function changePassword(CustomerEntity $customer, string $oldPassword, string $newPassword): bool

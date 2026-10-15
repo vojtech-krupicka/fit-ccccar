@@ -24,7 +24,7 @@ class FilterFormFactory
             ->addSelect('rentalOffice', 'Pobočka:')
             ->setPrompt('--- Vyberte pobočku ---')
             ->setItems(
-                array_column($this->rentalOfficeFacade->getRentalOfficeList(), 'name', 'id')
+                array_column($this->rentalOfficeFacade->getAll(), 'name', 'id')
             );
 
         $form
@@ -40,14 +40,14 @@ class FilterFormFactory
             ->addSelect('fuelType', 'Palivo:')
             ->setPrompt('--- Nezáleží ---')
             ->setItems(
-                array_column($this->vehicleFacade->getVehicleFuelTypeList(), 'name', 'id')
+                array_column($this->vehicleFacade->getFuelTypeList(), 'name', 'id')
             );
 
         $form
             ->addSelect('color', 'Barva:')
             ->setPrompt('--- Nezáleží ---')
             ->setItems(
-                array_column($this->vehicleFacade->getVehicleColorList(), 'name', 'id')
+                array_column($this->vehicleFacade->getColorList(), 'name', 'id')
             );
 
         $form

@@ -14,7 +14,7 @@ final class FrontAuthenticator implements Security\Authenticator
 
     public function authenticate(string $username, string $password): Identity
     {
-        $user = $this->customerFacade->getCustomerByEmail($username);
+        $user = $this->customerFacade->getByEmail($username);
         if (!$user) {
             throw new Security\AuthenticationException('User not found.');
         }

@@ -11,25 +11,26 @@ use App\Model\Vehicle\Type\VehicleTypeRepository;
 use App\Model\Vehicle\VehicleAvailability;
 use App\Model\Vehicle\VehicleEntity;
 use App\Model\Vehicle\VehicleRepository;
+use App\Model\BaseFacade;
 use App\Model\EntityList;
 use App\Model\SortMode;
 use App\UI\Front\Components\Forms\Catalog\SortBy;
 
-class VehicleFacade
+/**
+ * @extends BaseFacade<VehicleEntity, VehicleRepository>
+ */
+class VehicleFacade extends BaseFacade
 {
     public function __construct(
-        private VehicleColorRepository $vehicleColorRepository,
-        private VehicleFuelTypeRepository $vehicleFuelTypeRepository,
-        private VehicleTypeRepository $vehicleTypeRepository,
-        private VehicleRepository $vehicleRepository,
-    ) {}
-
-    public function getVehicle(int $id): VehicleEntity|null
-    {
-        return $this->vehicleRepository->get($id);
+        private VehicleColorRepository $colorRepository,
+        private VehicleFuelTypeRepository $fuelTypeRepository,
+        private VehicleTypeRepository $typeRepository,
+        VehicleRepository $repository,
+    ) {
+        parent::__construct($repository);
     }
 
-    public function getVehicleByVin(string $vin): VehicleEntity|null
+    public function getByVin(string $vin): VehicleEntity|null
     {
         return null;  // $this->vehicleRepository->getByVin($vin);
     }
@@ -37,33 +38,25 @@ class VehicleFacade
     /**
      * @return list<VehicleColorEntity>
      */
-    public function getVehicleColorList(): array
+    public function getColorList(): array
     {
-        return $this->vehicleColorRepository->getAll();
+        return $this->colorRepository->getAll();
     }
 
     /**
      * @return list<VehicleFuelTypeEntity>
      */
-    public function getVehicleFuelTypeList(): array
+    public function getFuelTypeList(): array
     {
-        return $this->vehicleFuelTypeRepository->getAll();
+        return $this->fuelTypeRepository->getAll();
     }
 
     /**
      * @return list<VehicleTypeEntity>
      */
-    public function getVehicleTypeList(): array
+    public function getTypeList(): array
     {
-        return $this->vehicleTypeRepository->getAll();
-    }
-
-    /**
-     * @return int
-     */
-    public function getVehicleCount(): int
-    {
-        return $this->vehicleRepository->count();
+        return $this->typeRepository->getAll();
     }
 
     /**
@@ -83,7 +76,7 @@ class VehicleFacade
         int $page = 1,
         int $itemsPerPage = 100,
     ): EntityList {
-        return $this->vehicleRepository->find(
+        return $this->repository->find(
             $rentalOffice,
             $fuelType,
             $color,

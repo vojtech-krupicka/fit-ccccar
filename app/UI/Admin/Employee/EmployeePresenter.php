@@ -37,7 +37,7 @@ final class EmployeePresenter extends Admin\BasePresenter
             $this->redirect('SignIn:default');
         }
 
-        $employee = $this->employeeFacade->getEmployee($identity->id);
+        $employee = $this->employeeFacade->get($identity->id);
         if ($employee === null) {
             $this->redirect('SignIn:default');
         }
@@ -86,7 +86,7 @@ final class EmployeePresenter extends Admin\BasePresenter
             $this->getPresenter()->redirect('this');
         };
         $form->onSuccess[] = function (UI\Form $form, ProfileFormData $values) {
-            $rentalOffice = $this->rentalOfficeFacade->getRentalOffice($values->rentalOffice);
+            $rentalOffice = $this->rentalOfficeFacade->get($values->rentalOffice);
             if ($rentalOffice === null || $rentalOffice->id === null) {
                 $form->addError('Vybraná pobočka neexistuje.');
                 return;

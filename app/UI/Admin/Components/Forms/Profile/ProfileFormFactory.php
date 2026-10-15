@@ -22,7 +22,7 @@ class ProfileFormFactory
             ->addSelect('rentalOffice', 'Pobočka:')
             ->setPrompt('--- Vyberte pobočku ---')
             ->setItems(
-                array_column($this->rentalOfficeFacade->getRentalOfficeList(), 'name', 'id')
+                array_column($this->rentalOfficeFacade->getAll(), 'name', 'id')
             );
 
         $form

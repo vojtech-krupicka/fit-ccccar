@@ -2,32 +2,24 @@
 
 namespace App\Model\Employee;
 
+use App\Model\BaseFacade;
 use Nette\Security\Passwords;
 
-class EmployeeFacade
+/**
+ * @extends BaseFacade<EmployeeEntity, EmployeeRepository>
+ */
+class EmployeeFacade extends BaseFacade
 {
     public function __construct(
-        private EmployeeRepository $employeeRepository,
+        EmployeeRepository $repository,
         private Passwords $passwords,
-    ) {}
-
-    public function getEmployee(int $id): EmployeeEntity|null
-    {
-        return $this->employeeRepository->get($id);
+    ) {
+        parent::__construct($repository);
     }
 
-    public function getEmployeeByEmail(string $email): EmployeeEntity|null
+    public function getByEmail(string $email): EmployeeEntity|null
     {
-        return $this->employeeRepository->getByEmail($email);
-    }
-
-    public function persist(EmployeeEntity $employee): void
-    {
-        if ($employee->id === null) {
-            $this->employeeRepository->insert($employee);
-        } else {
-            $this->employeeRepository->update($employee);
-        }
+        return $this->repository->getByEmail($email);
     }
 
     public function changePassword(EmployeeEntity $employee, string $oldPassword, string $newPassword): bool

@@ -35,7 +35,7 @@ final class CustomerPresenter extends Front\BasePresenter
             $this->redirect('SignIn:default');
         }
 
-        $customer = $this->customerFacade->getCustomer($identity->id);
+        $customer = $this->customerFacade->get($identity->id);
         if ($customer === null) {
             $this->redirect('SignIn:default');
         }

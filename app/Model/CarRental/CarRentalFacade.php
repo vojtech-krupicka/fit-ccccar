@@ -2,41 +2,24 @@
 
 namespace App\Model\CarRental;
 
+use App\Model\BaseFacade;
 use App\Model\EntityList;
 
-class CarRentalFacade
+/**
+ * @extends BaseFacade<CarRentalEntity, CarRentalRepository>
+ */
+class CarRentalFacade extends BaseFacade
 {
-    public function __construct(
-        private CarRentalRepository $carRentalRepository,
-    ) {}
-
-    public function getCarRental(int $id): CarRentalEntity|null
+    public function __construct(CarRentalRepository $repository)
     {
-        return $this->carRentalRepository->get($id);
-    }
-
-    /**
-     * @return list<CarRentalEntity>
-     */
-    public function getCarRentalList(): array
-    {
-        return $this->carRentalRepository->getAll();
+        parent::__construct($repository);
     }
 
     /**
      * @return EntityList<CarRentalEntity>
      */
-    public function getCarRentalListByVehicleId(int $vehicleId): EntityList
+    public function getByVehicleId(int $vehicleId): EntityList
     {
-        return $this->carRentalRepository->getByVehicleId($vehicleId);
-    }
-
-    public function persist(CarRentalEntity $carRental): void
-    {
-        if ($carRental->id === null) {
-            $this->carRentalRepository->insert($carRental);
-        } else {
-            $this->carRentalRepository->update($carRental);
-        }
+        return $this->repository->getByVehicleId($vehicleId);
     }
 }
