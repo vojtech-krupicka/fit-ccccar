@@ -22,11 +22,19 @@ use Nette\Application\UI;
 
 final class CatalogPresenter extends Front\BasePresenter
 {
-    /** @var EntityList<VehicleEntity> */
+    /**
+     * @var EntityList<VehicleEntity>
+     */
     private ?EntityList $vehicleList = null;
-    private ?FilterFormData $filterData = null;
-    private ?VehicleEntity $vehicle = null;
+
+    /**
+     * @var EntityList<CarRentalEntity>
+     */
     private ?EntityList $vehicleReservations = null;
+
+    private ?FilterFormData $filterData = null;
+
+    private ?VehicleEntity $vehicle = null;
 
     private const ITEMS_PER_PAGE = 8;
 
@@ -110,9 +118,9 @@ final class CatalogPresenter extends Front\BasePresenter
     public function createComponentPagination(): PaginationControl
     {
         return $this->paginationControlFactory->create(
-            page: $this->vehicleList->currentPage,
-            pageCount: $this->vehicleList->pageCount,
-            totalCount: $this->vehicleList->totalCount
+            page: $this->vehicleList->currentPage ?? 1,
+            pageCount: $this->vehicleList->pageCount ?? 1,
+            totalCount: $this->vehicleList->totalCount ?? 0
         );
     }
 
@@ -172,6 +180,10 @@ final class CatalogPresenter extends Front\BasePresenter
     public function renderDetail(): void
     {
         $this->template->pageHeading = 'Detail vozidla';
+        if ($this->vehicle === null) {
+            $this->error('Vozidlo nebylo nalezeno.');
+        }
+
         $this->addBreadcrumb('Catalog:detail', 'Detail vozidla', ['id' => $this->vehicle->id]);
 
         $this->template->vehicle = $this->vehicle;
@@ -189,8 +201,16 @@ final class CatalogPresenter extends Front\BasePresenter
     public function reservationFormSucceeded(UI\Form $form, ReservationFormData $values): void
     {
         $rentalOffice = $this->rentalOfficeFacade->getRentalOffice($values->rentalOffice);
-        if ($rentalOffice === null) {
+        if ($rentalOffice === null || $rentalOffice->id === null) {
             $form->addError('Vybraná pobočka neexistuje.');
+            return;
+        }
+        if ($this->vehicle === null || $this->vehicle->id === null) {
+            $form->addError('Vozidlo nebylo nalezeno.');
+            return;
+        }
+        if ($this->user === null || $this->user->id === null) {
+            $form->addError('Uživatel není přihlášen.');
             return;
         }
 
@@ -198,7 +218,7 @@ final class CatalogPresenter extends Front\BasePresenter
             id: null,
             vehicleId: $this->vehicle->id,
             rentalOfficeId: $rentalOffice->id,
-            customerId: $this->user->id,
+            customerId: (int) $this->user->id,
             borrowerId: null,
             recipientId: null,
             reservedAt: new \DateTime(),

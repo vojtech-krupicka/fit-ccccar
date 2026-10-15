@@ -8,9 +8,9 @@ class PaginationControl extends Control
 {
     public function __construct(
         private int $page,
-        private readonly int $pageCount,
-        private readonly int $totalCount,
-        private readonly int $base = 1,
+        private int $pageCount,
+        private int $totalCount,
+        private int $base = 1,
     ) {
         if ($this->page < 1) {
             $this->page = 1;
@@ -88,18 +88,15 @@ class PaginationControl extends Control
 
     #endregion
 
+    /**
+     * @return list<int>
+     */
     private function generateItems(): array
     {
-        // $items = [];
-        // for ($i = $this->getBase(); $i <= $this->getLastPage(); $i++) {
-        //     $items[] = $i;
-        // }
-        // return $items;
-
         $count = 3;
-        $steps = array();
+        $steps = [];
         if ($this->getPageCount() > 1) {
-            $offset = $left = $right = floor($count / 2);
+            $offset = $left = $right = (int) floor($count / 2);
             if ($this->getPage() <= $offset && $this->getPage() < $this->getFirstPage() - 1 + $count) {
                 $right = $count - $this->getPage();
             }
