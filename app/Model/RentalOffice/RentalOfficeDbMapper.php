@@ -11,6 +11,11 @@ use Nette\Database\Table\ActiveRow;
  */
 class RentalOfficeDbMapper extends BaseMapper
 {
+    public function table(): string
+    {
+        return 'rental_office';
+    }
+
     public function load(?ActiveRow $data): ?RentalOfficeEntity
     {
         return $data ? new RentalOfficeEntity(

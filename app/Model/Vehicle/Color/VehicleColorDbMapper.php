@@ -11,6 +11,11 @@ use Nette\Database\Table\ActiveRow;
  */
 final class VehicleColorDbMapper extends BaseMapper
 {
+    public function table(): string
+    {
+        return 'vehicle_color';
+    }
+
     public function load(?ActiveRow $data): ?VehicleColorEntity
     {
         return $data !== null ? new VehicleColorEntity(

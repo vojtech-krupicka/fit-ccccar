@@ -63,7 +63,7 @@ class VehicleFacade
      */
     public function getVehicleCount(): int
     {
-        return $this->vehicleRepository->getCount();
+        return $this->vehicleRepository->count();
     }
 
     /**

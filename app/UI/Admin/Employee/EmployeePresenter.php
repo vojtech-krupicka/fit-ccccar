@@ -58,7 +58,7 @@ final class EmployeePresenter extends Admin\BasePresenter
             $this->getPresenter()->redirect('this');
         };
         $form->onSuccess[] = function (UI\Form $form, ChangePasswordFormData $values) {
-            if ($this->employeeFacade->changePassword($this->customer, $values->oldPassword, $values->newPassword)) {
+            if ($this->employeeFacade->changePassword($this->employee, $values->oldPassword, $values->newPassword)) {
                 $this->flashMessage('Vaše heslo bylo úspěšně aktualizováno.', 'info');
             } else {
                 $this->flashMessage('Vaše heslo se nepodařilo změnit. Zkontrolujte prosím staré heslo.', 'error');

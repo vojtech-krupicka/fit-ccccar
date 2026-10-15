@@ -7,7 +7,7 @@ use App\Model\BaseEntity;
 final class VehicleFuelTypeEntity extends BaseEntity
 {
     public function __construct(
-        public int $id,
+        public int|null $id,
         public string $name,
     ) {}
 }

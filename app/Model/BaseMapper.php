@@ -10,6 +10,13 @@ use Nette\Database\Table\ActiveRow;
 abstract class BaseMapper
 {
     /**
+     * Returns the name of the database table associated with this mapper.
+     *
+     * @return string The name of the database table associated with this mapper.
+     */
+    abstract public function table(): string;
+
+    /**
      * Loads an entity from the given data.
      *
      * @param ActiveRow|null $data The data to load the entity from.
@@ -41,5 +48,20 @@ abstract class BaseMapper
             }
         }
         return $entities;
+    }
+
+    /**
+     * Dumps multiple entities into an array representation.
+     *
+     * @param iterable<T> $entities The entities to dump.
+     * @return list<array<string, mixed>> The array representation of the entities.
+     */
+    public function dumpMany(iterable $entities): array
+    {
+        $result = [];
+        foreach ($entities as $entity) {
+            $result[] = $this->dump($entity);
+        }
+        return $result;
     }
 }

@@ -7,54 +7,16 @@ use App\Model\BaseRepository;
 use App\Model\EntityList;
 use App\Model\SortMode;
 use App\UI\Front\Components\Forms\Catalog\SortBy;
+use Nette\Database\Explorer;
 
+/**
+ * @extends BaseRepository<VehicleEntity>
+ */
 class VehicleRepository extends BaseRepository
 {
-    public function __construct(
-        private readonly \Nette\Database\Explorer $dbconn,
-        private readonly VehicleDbMapper $vehicleDbMapper,
-    ) {}
-
-    public function get(int $id): VehicleEntity|null
+    public function __construct(Explorer $dbconn, VehicleDbMapper $mapper)
     {
-        $row = $this->dbconn->table('vehicle')->get($id);
-        return $this->vehicleDbMapper->load($row);
-    }
-
-    public function insert(VehicleEntity $vehicle): void
-    {
-        $row = $this->dbconn->table('vehicle')->insert($this->vehicleDbMapper->dump($vehicle));
-        $vehicle->id = (int) $row['id'];
-    }
-
-    public function update(VehicleEntity $vehicle): void
-    {
-        $row = $this->dbconn->table('vehicle')->get($vehicle->id);
-        if ($row != null) {
-            $row->update($this->vehicleDbMapper->dump($vehicle));
-        }
-    }
-
-    public function delete(int $id): void
-    {
-        $row = $this->dbconn->table('vehicle')->get($id);
-        if ($row != null) {
-            $row->delete();
-        }
-    }
-
-    public function getCount(): int
-    {
-        return $this->dbconn->table('vehicle')->count();
-    }
-
-    /**
-     * @return list<VehicleEntity>
-     */
-    public function getAll(): array
-    {
-        $rows = $this->dbconn->table('vehicle')->fetchAll();
-        return $this->vehicleDbMapper->loadMany($rows);
+        parent::__construct($dbconn, $mapper);
     }
 
     /**
@@ -116,7 +78,7 @@ class VehicleRepository extends BaseRepository
         $query->page($page, $itemsPerPage, $pageCount);
 
         $entityList = new EntityList(
-            entities: $this->vehicleDbMapper->loadMany($query->fetchAll()),
+            entities: $this->mapper->loadMany($query->fetchAll()),
             totalCount: $count,
             currentPage: $page,
             pageCount: $pageCount,

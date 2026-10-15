@@ -11,6 +11,11 @@ use Nette\Database\Table\ActiveRow;
  */
 final class VehicleTypeDbMapper extends BaseMapper
 {
+    public function table(): string
+    {
+        return 'vehicle_type';
+    }
+
     public function load(?ActiveRow $data): ?VehicleTypeEntity
     {
         return $data ? new VehicleTypeEntity(

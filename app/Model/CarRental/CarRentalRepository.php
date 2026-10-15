@@ -4,49 +4,16 @@ namespace App\Model\CarRental;
 
 use App\Model\BaseRepository;
 use App\Model\EntityList;
+use Nette\Database\Explorer;
 
+/**
+ * @extends BaseRepository<CarRentalEntity>
+ */
 class CarRentalRepository extends BaseRepository
 {
-    public function __construct(
-        private readonly \Nette\Database\Explorer $dbconn,
-        private readonly CarRentalDbMapper $carRentalDbMapper,
-    ) {}
-
-    public function get(int $id): CarRentalEntity|null
+    public function __construct(Explorer $dbconn, CarRentalDbMapper $mapper)
     {
-        $row = $this->dbconn->table('car_rental')->get($id);
-        return $this->carRentalDbMapper->load($row);
-    }
-
-    public function insert(CarRentalEntity $carRental): void
-    {
-        $row = $this->dbconn->table('car_rental')->insert($this->carRentalDbMapper->dump($carRental));
-        $carRental->id = (int) $row['id'];
-    }
-
-    public function update(CarRentalEntity $carRental): void
-    {
-        $row = $this->dbconn->table('car_rental')->get($carRental->id);
-        if ($row != null) {
-            $row->update($this->carRentalDbMapper->dump($carRental));
-        }
-    }
-
-    public function delete(int $id): void
-    {
-        $row = $this->dbconn->table('car_rental')->get($id);
-        if ($row != null) {
-            $row->delete();
-        }
-    }
-
-    /**
-     * @return list<CarRentalEntity> Array of all car rental entities.
-     */
-    public function getAll(): array
-    {
-        $rows = $this->dbconn->table('car_rental')->fetchAll();
-        return $this->carRentalDbMapper->loadMany($rows);
+        parent::__construct($dbconn, $mapper);
     }
 
     /**
@@ -67,7 +34,7 @@ class CarRentalRepository extends BaseRepository
         $query->page($page, $itemsPerPage, $pageCount);
 
         $entityList = new EntityList(
-            entities: $this->carRentalDbMapper->loadMany($query->fetchAll()),
+            entities: $this->mapper->loadMany($query->fetchAll()),
             totalCount: $count,
             currentPage: $page,
             pageCount: $pageCount,
