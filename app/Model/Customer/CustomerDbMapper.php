@@ -2,11 +2,16 @@
 
 namespace App\Model\Customer;
 
+use App\Model\BaseEntity;
+use App\Model\BaseMapper;
 use Nette\Database\Table\ActiveRow;
 
-abstract class CustomerDbMapper
+/**
+ * @extends BaseMapper<CustomerEntity>
+ */
+class CustomerDbMapper extends BaseMapper
 {
-    public static function load(ActiveRow|null $data): CustomerEntity|null
+    public function load(?ActiveRow $data): ?CustomerEntity
     {
         return $data ? new CustomerEntity(
             id: (int) $data['id'],
@@ -33,7 +38,7 @@ abstract class CustomerDbMapper
      *      country: string, created_at: \DateTime|null}
      *      The array representation of the entity.
      */
-    public static function dump(CustomerEntity $entity): array
+    public function dump(BaseEntity $entity): array
     {
         return [
             'password' => $entity->password,

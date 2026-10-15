@@ -142,11 +142,11 @@ INSERT INTO customer (name, surname, identity_number, email, phone, street, city
 
 
 -- -----------------------------------------------------
--- Table `loan`
+-- Table `car_rental`
 -- -----------------------------------------------------
--- The legacy data has no reservation columns or loan office; derive them: the loan belongs to the
--- borrower's office, the reservation starts when the loan started and lasts until it ended (or 7 days).
-INSERT INTO loan (vehicle_id, rental_office_id, customer_id, borrower_id, recipient_id, reserved_at, reserved_from, reserved_to, start_at, end_at, distance, price)
+-- The legacy data has no reservation columns or car_rental office; derive them: the car_rental belongs to the
+-- borrower's office, the reservation starts when the car_rental started and lasts until it ended (or 7 days).
+INSERT INTO car_rental (vehicle_id, rental_office_id, customer_id, borrower_id, recipient_id, reserved_at, reserved_from, reserved_to, start_at, end_at, distance, price)
 SELECT l.vehicle_id, e.rental_office_id, l.customer_id, l.borrower_id, l.recipient_id,
 	l.start_at, DATE(l.start_at), DATE(COALESCE(l.end_at, l.start_at + INTERVAL 7 DAY)), l.start_at, l.end_at, l.distance, l.price
 FROM (VALUES

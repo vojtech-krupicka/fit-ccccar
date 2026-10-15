@@ -116,7 +116,7 @@ CREATE TABLE `customer` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_czech_ci;
 
-CREATE TABLE `loan` (
+CREATE TABLE `car_rental` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `vehicle_id` INT UNSIGNED NOT NULL,
   `rental_office_id` INT UNSIGNED NOT NULL,
@@ -132,26 +132,26 @@ CREATE TABLE `loan` (
   `price` DECIMAL(10,4) NULL DEFAULT NULL,
   `deleted` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  INDEX `fk_loan_vehicle1_idx` (`vehicle_id`),
-  INDEX `fk_loan_customer1_idx` (`customer_id`),
-  INDEX `fk_loan_employee1_idx` (`borrower_id`),
-  INDEX `fk_loan_employee2_idx` (`recipient_id`),
-  CONSTRAINT `fk_loan_vehicle1`
+  INDEX `fk_car_rental_vehicle1_idx` (`vehicle_id`),
+  INDEX `fk_car_rental_customer1_idx` (`customer_id`),
+  INDEX `fk_car_rental_employee1_idx` (`borrower_id`),
+  INDEX `fk_car_rental_employee2_idx` (`recipient_id`),
+  CONSTRAINT `fk_car_rental_vehicle1`
     FOREIGN KEY (`vehicle_id`)
     REFERENCES `vehicle` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_loan_customer1`
+  CONSTRAINT `fk_car_rental_customer1`
     FOREIGN KEY (`customer_id`)
     REFERENCES `customer` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_loan_employee1`
+  CONSTRAINT `fk_car_rental_employee1`
     FOREIGN KEY (`borrower_id`)
     REFERENCES `employee` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_loan_employee2`
+  CONSTRAINT `fk_car_rental_employee2`
     FOREIGN KEY (`recipient_id`)
     REFERENCES `employee` (`id`)
     ON DELETE RESTRICT

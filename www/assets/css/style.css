@@ -1,5 +1,5 @@
 .pagination {
-    margin: 6px 0;
+    margin: 6px 16px;
 }
 
 .panel {
@@ -14,6 +14,10 @@
 a[href^="#error:"] {
     background: red;
     color: white;
+}
+
+input[type^="date"] {
+    width: 100%;
 }
 
 
@@ -359,6 +363,14 @@ main .detail .info dd {
     color: #23406D;
     line-height: 25px;
     margin-left: 104px;
+}
+
+main .detail .info .color {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border: 1px solid #000;
+    margin-right: 4px;
 }
 
 main .office-detail h4 {

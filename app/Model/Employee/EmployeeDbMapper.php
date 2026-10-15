@@ -2,11 +2,16 @@
 
 namespace App\Model\Employee;
 
+use App\Model\BaseEntity;
+use App\Model\BaseMapper;
 use Nette\Database\Table\ActiveRow;
 
-abstract class EmployeeDbMapper
+/**
+ * @extends BaseMapper<EmployeeEntity>
+ */
+class EmployeeDbMapper extends BaseMapper
 {
-    public static function load(ActiveRow|null $data): EmployeeEntity|null
+    public function load(?ActiveRow $data): ?EmployeeEntity
     {
         return $data ? new EmployeeEntity(
             id: (int) $data['id'],
@@ -28,7 +33,7 @@ abstract class EmployeeDbMapper
      *      password: string, email: string, name: string, surname: string, phone: string}
      *      The array representation of the employee entity.
      */
-    public static function dump(EmployeeEntity $entity): array
+    public function dump(BaseEntity $entity): array
     {
         return [
             'rental_office_id' => $entity->rentalOfficeId,

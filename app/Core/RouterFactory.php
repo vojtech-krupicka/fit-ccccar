@@ -45,6 +45,7 @@ final class RouterFactory
                     'registrace' => 'SignUp',
                     'odhlaseni' => 'SignOut',
                     'zakaznik' => 'Customer',
+                    'katalog' => 'Catalog',
                 ),
             ),
             'action' => array(
@@ -53,6 +54,7 @@ final class RouterFactory
                     'vychozi' => 'default',
                     'profil' => 'profile',
                     'vypujcky' => 'loans',
+                    'detail' => 'detail',
                 ),
             ),
             'id' => null,

@@ -6,21 +6,26 @@ use App\Model\BaseRepository;
 
 class CustomerRepository extends BaseRepository
 {
+    public function __construct(
+        private readonly \Nette\Database\Explorer $dbconn,
+        private readonly CustomerDbMapper $customerDbMapper,
+    ) {}
+
     public function get(int $id): CustomerEntity|null
     {
         $row = $this->dbconn->table('customer')->get($id);
-        return CustomerDbMapper::load($row);
+        return $this->customerDbMapper->load($row);
     }
 
     public function getByEmail(string $email): CustomerEntity|null
     {
         $row = $this->dbconn->table('customer')->where('email', $email)->fetch();
-        return CustomerDbMapper::load($row);
+        return $this->customerDbMapper->load($row);
     }
 
     public function insert(CustomerEntity $customer): void
     {
-        $row = $this->dbconn->table('customer')->insert(CustomerDbMapper::dump($customer));
+        $row = $this->dbconn->table('customer')->insert($this->customerDbMapper->dump($customer));
         $customer->id = (int) $row['id'];
     }
 
@@ -28,7 +33,7 @@ class CustomerRepository extends BaseRepository
     {
         $row = $this->dbconn->table('customer')->where('id', $customer->id);
         if ($row != null) {
-            $row->update(CustomerDbMapper::dump($customer));
+            $row->update($this->customerDbMapper->dump($customer));
         }
     }
 }

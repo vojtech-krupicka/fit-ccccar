@@ -13,3 +13,4 @@ search:
 			- *Factory
 			- *Repository
 			- *Service
+			- *DbMapper

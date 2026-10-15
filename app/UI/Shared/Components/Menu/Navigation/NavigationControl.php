@@ -33,7 +33,7 @@ class NavigationControl extends Control
         $presenter = $this->getPresenter();
         return [
             new NavigationItem($presenter, 'Home:default', 'Domů', 'icon-home'),
-            // new NavigationItem($presenter, 'Catalog:default', 'Katalog vozidel', 'icon-truck'),
+            new NavigationItem($presenter, 'Catalog:default', 'Katalog vozidel', 'icon-truck'),
             new NavigationItem($presenter, 'Home:offices', 'Pobočky', 'icon-globe'),
             new NavigationItem($presenter, 'Home:conditions', 'Obchodní podmínky', 'icon-info-sign'),
             new NavigationItem($presenter, 'Home:faq', 'Užitečné informace', 'icon-question-sign'),

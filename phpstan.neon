@@ -2,4 +2,4 @@ parameters:
 	level: 8
 	paths:
 		- app
-		- tests
+		#- tests
