@@ -4,6 +4,7 @@ namespace App\Model\CarRental;
 
 use App\Model\BaseRepository;
 use App\Model\EntityList;
+use App\Model\PageRequest;
 use Nette\Database\Explorer;
 
 /**
@@ -18,6 +19,7 @@ class CarRentalRepository extends BaseRepository
 
     /**
      * @return EntityList<CarRentalEntity> Array of car rental entities for the specified vehicle ID.
+     * @deprecated Use the find method with CarRentalFilter instead.
      */
     public function getByVehicleId(int $vehicleId, int $page = 1, int $itemsPerPage = 10): EntityList
     {
@@ -41,5 +43,35 @@ class CarRentalRepository extends BaseRepository
         );
 
         return $entityList;
+    }
+
+    /**
+     * @return EntityList<CarRentalEntity>
+     */
+    public function find(CarRentalFilter $filter, ?PageRequest $page = null): EntityList
+    {
+        $query = $this->dbconn->table('car_rental');
+
+        if ($filter->vehicleId !== null) {
+            $query->where('vehicle_id', $filter->vehicleId);
+
+            if ($filter->activeOnly) {
+                $query->where("((`start_at` IS NOT NULL AND `end_at` IS NULL) OR (`start_at` IS NULL AND `deleted` = '0'))");
+            }
+        }
+
+        switch ($filter->sortBy) {
+            case CarRentalSortBy::Latest:
+                $query->order('reserved_at DESC, start_at DESC, end_at DESC');
+                break;
+            case CarRentalSortBy::Oldest:
+                $query->order('reserved_at ASC, start_at ASC, end_at ASC');
+                break;
+            default:
+                $query->order('id ASC');
+                break;
+        }
+
+        return $this->fetchList($query, $page);
     }
 }

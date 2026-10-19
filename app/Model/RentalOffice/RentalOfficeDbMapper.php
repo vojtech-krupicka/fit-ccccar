@@ -2,8 +2,10 @@
 
 namespace App\Model\RentalOffice;
 
+use App\Model\Employee\EmployeeDbMapper;
 use App\Model\BaseEntity;
 use App\Model\BaseMapper;
+use App\Model\EntityList;
 use Nette\Database\Table\ActiveRow;
 
 /**
@@ -11,6 +13,10 @@ use Nette\Database\Table\ActiveRow;
  */
 class RentalOfficeDbMapper extends BaseMapper
 {
+    public function __construct(
+        private EmployeeDbMapper $employeeDbMapper,
+    ) {}
+
     public function table(): string
     {
         return 'rental_office';
@@ -18,6 +24,9 @@ class RentalOfficeDbMapper extends BaseMapper
 
     public function load(?ActiveRow $data): ?RentalOfficeEntity
     {
+        $entities = $this->employeeDbMapper->loadMany(
+            $data->related('employee.rental_office_id')->fetchAll()
+        );
         return $data ? new RentalOfficeEntity(
             id: (int) $data['id'],
             supervisorId: (int) $data['supervisor_id'],
@@ -30,6 +39,11 @@ class RentalOfficeDbMapper extends BaseMapper
             email: (string) $data['email'],
             latitude: (float) $data['lat'],
             longitude: (float) $data['lon'],
+            supervisor: $this->employeeDbMapper->load($data['supervisor']),
+            employeeList: new EntityList(
+                entities: $entities,
+                totalCount: count($entities)
+            )
         ) : null;
     }
 

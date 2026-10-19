@@ -26,9 +26,9 @@ abstract class BaseFacade
     /**
      * @return EntityList<T> Entity list of all entities of type T.
      */
-    public function getAll(?PageRequest $page = null): EntityList
+    public function getAll(?PageRequest $page = null, string $orderBy = ''): EntityList
     {
-        return $this->repository->getAll($page);
+        return $this->repository->getAll($page, $orderBy);
     }
 
     /**

@@ -6,6 +6,8 @@ use App\Model\BaseEntity;
 
 final class EmployeeEntity extends BaseEntity
 {
+    public readonly string $fullname;
+
     public function __construct(
         public int|null $id = null,
         public int|null $rentalOfficeId = null,
@@ -14,5 +16,7 @@ final class EmployeeEntity extends BaseEntity
         public string $firstname = '',
         public string $surname = '',
         public string $phone = '',
-    ) {}
+    ) {
+        $this->fullname = $firstname . ' ' . $surname;
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Model\RentalOffice;
 
+use App\Model\Employee\EmployeeEntity;
 use App\Model\BaseEntity;
+use App\Model\EntityList;
 
 final class RentalOfficeEntity extends BaseEntity
 {
@@ -18,5 +20,7 @@ final class RentalOfficeEntity extends BaseEntity
         public string $email,
         public float $latitude,
         public float $longitude,
+        public ?EmployeeEntity $supervisor = null,
+        public ?EntityList $employeeList = null,
     ) {}
 }

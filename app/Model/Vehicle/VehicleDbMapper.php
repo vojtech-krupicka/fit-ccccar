@@ -15,17 +15,17 @@ use Nette\Database\Table\ActiveRow;
  */
 final class VehicleDbMapper extends BaseMapper
 {
-    public function table(): string
-    {
-        return 'vehicle';
-    }
-
     public function __construct(
         private VehicleFuelTypeDbMapper $fuelTypeDbMapper,
         private VehicleColorDbMapper $colorDbMapper,
         private VehicleTypeDbMapper $typeDbMapper,
         private RentalOfficeDbMapper $rentalOfficeDbMapper,
     ) {}
+
+    public function table(): string
+    {
+        return 'vehicle';
+    }
 
     public function load(?ActiveRow $data): ?VehicleEntity
     {

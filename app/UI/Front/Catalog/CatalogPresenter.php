@@ -4,6 +4,8 @@ namespace App\UI\Front\Catalog;
 
 use App\Model\CarRental\CarRentalEntity;
 use App\Model\CarRental\CarRentalFacade;
+use App\Model\CarRental\CarRentalFilter;
+use App\Model\CarRental\CarRentalSortBy;
 use App\Model\RentalOffice\RentalOfficeFacade;
 use App\Model\Vehicle\VehicleAvailability;
 use App\Model\Vehicle\VehicleEntity;
@@ -165,7 +167,13 @@ final class CatalogPresenter extends Front\BasePresenter
             $this->error('Vozidlo nebylo nalezeno.');
         }
 
-        $this->vehicleReservations = $this->carRentalFacade->getByVehicleId($id);
+        $this->vehicleReservations = $this->carRentalFacade->find(
+            new CarRentalFilter(
+                vehicleId: $id,
+                activeOnly: true,
+                sortBy: CarRentalSortBy::Latest,
+            ),
+        );
     }
 
     public function renderDetail(): void

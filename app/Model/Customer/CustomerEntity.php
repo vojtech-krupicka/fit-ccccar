@@ -6,6 +6,8 @@ use App\Model\BaseEntity;
 
 final class CustomerEntity extends BaseEntity
 {
+    public readonly string $fullname;
+
     public function __construct(
         public int|null $id,
         public string $password,
@@ -19,5 +21,7 @@ final class CustomerEntity extends BaseEntity
         public string $zip = '',
         public string $country = '',
         public \DateTime $created = new \DateTime(),
-    ) {}
+    ) {
+        $this->fullname = $firstname . ' ' . $surname;
+    }
 }

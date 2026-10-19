@@ -21,6 +21,8 @@ readonly class EntityList implements \IteratorAggregate, \Countable
         public readonly int|null $pageCount = null,
     ) {}
 
+    #region Implementation of interfaces
+
     /**
      * @return \ArrayIterator<int, T>
      */
@@ -36,6 +38,10 @@ readonly class EntityList implements \IteratorAggregate, \Countable
     {
         return count($this->entities);
     }
+
+    #endregion
+
+    #region Entity access methods
 
     public function isEmpty(): bool
     {
@@ -57,6 +63,10 @@ readonly class EntityList implements \IteratorAggregate, \Countable
     {
         return $this->entities === [] ? null : $this->entities[array_key_last($this->entities)];
     }
+
+    #endregion
+
+    #region Conversion and higher-order functions
 
     /**
      * @return list<T>
@@ -120,4 +130,6 @@ readonly class EntityList implements \IteratorAggregate, \Countable
         }
         return $result;
     }
+
+    #endregion
 }

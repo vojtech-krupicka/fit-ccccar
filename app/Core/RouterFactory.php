@@ -56,6 +56,7 @@ final class RouterFactory
                     'vychozi' => 'default',
                     'profil' => 'profile',
                     'detail' => 'detail',
+                    'pobocky' => 'offices',
                 ),
             ),
             'id' => null,

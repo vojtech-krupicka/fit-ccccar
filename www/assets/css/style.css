@@ -384,7 +384,7 @@ main .office-detail dt {
     font-weight: 600;
     line-height: 25px;
     text-align: left;
-    width: 144px;
+    width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -393,9 +393,8 @@ main .office-detail dd {
     line-height: 25px;
     text-align: left;
     width: 290px;
-    overflow: hidden;
     text-overflow: ellipsis;
-    margin-left: 144px;
+    margin-left: 160px;
 }
 
 #map-container {

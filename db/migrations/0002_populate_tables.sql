@@ -652,3 +652,17 @@ FROM (VALUES
 	ROW(2, 10, 14, 14, '2013-08-09 05:49:00', '2013-08-31 22:38:56', 6606.43, 15458.52)
 ) AS l (vehicle_id, customer_id, borrower_id, recipient_id, start_at, end_at, distance, price)
 JOIN employee e ON e.id = l.borrower_id;
+
+-- Set all supervisors for rental offices
+UPDATE rental_office AS ro
+JOIN (VALUES
+    ROW(1, 2),
+    ROW(2, 1),
+    ROW(3, 8),
+    ROW(4, 10),
+    ROW(5, 11),
+    ROW(6, 13),
+    ROW(7, 15)
+) AS v (rental_office_id, supervisor_id)
+    ON v.rental_office_id = ro.id
+SET ro.supervisor_id = v.supervisor_id;

@@ -1,0 +1,40 @@
+{block content}
+
+<div n:foreach="$officeList as $office" class="row office-detail">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">{$office->name}</h3></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4><span class="icon-envelope"></span> Kontakt</h4>
+                        <address>
+                            {$office->street}<br />
+                            {$office->zip} {$office->city}<br />
+                            {$office->country}<br /><br />
+                            tel: {$office->phone}<br />
+                            e-mail: <a href="mailto:{$office->email}" title="{$office->email}">{$office->email}</a>
+                        </address>
+                    </div>
+                    <div n:if="$office->supervisor" class="col-md-3">
+                        <h4><span class="icon-male"></span> Zodpovědná osoba</h4>
+                        <address>
+                            <strong>{$office->supervisor->fullname}</strong><br />
+                            {$office->supervisor->phone}<br />
+                            <a href="mailto:{$office->supervisor->email}" title="{$office->supervisor->email}">{$office->supervisor->email}</a><br />
+                        </address>
+                    </div>
+                    <div n:if="!$office->employeeList->isEmpty()" class="col-md-6">
+                        <h4><span class="icon-group"></span> Zaměstnanci na této pobočce</h4>
+                        <dl class="dl-horizontal">
+                            {foreach $office->employeeList as $employee}
+                            <dt>{$employee->fullname}</dt>
+                            <dd>{$employee->phone}, <a href="mailto:{$employee->email}" title="{$employee->email}">{$employee->email}</a></dd>
+                            {/foreach}
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
