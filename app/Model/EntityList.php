@@ -96,7 +96,7 @@ readonly class EntityList implements \IteratorAggregate, \Countable
      */
     public function map(callable $callback): array
     {
-        return array_values(array_map($callback, $this->entities));
+        return array_map($callback, $this->entities);
     }
 
     /**

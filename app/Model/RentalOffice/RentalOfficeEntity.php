@@ -8,6 +8,9 @@ use App\Model\EntityList;
 
 final class RentalOfficeEntity extends BaseEntity
 {
+    /**
+     * @param EntityList<EmployeeEntity> $employeeList
+     */
     public function __construct(
         public int|null $id,
         public int|null $supervisorId,

@@ -24,12 +24,15 @@ class RentalOfficeDbMapper extends BaseMapper
 
     public function load(?ActiveRow $data): ?RentalOfficeEntity
     {
+        if ($data === null) {
+            return null;
+        }
         $entities = $this->employeeDbMapper->loadMany(
             $data->related('employee.rental_office_id')->fetchAll()
         );
-        return $data ? new RentalOfficeEntity(
+        return new RentalOfficeEntity(
             id: (int) $data['id'],
-            supervisorId: (int) $data['supervisor_id'],
+            supervisorId: $data['supervisor_id'] !== null ? (int) $data['supervisor_id'] : null,
             name: (string) $data['name'],
             street: (string) $data['street'],
             city: (string) $data['city'],
@@ -44,7 +47,7 @@ class RentalOfficeDbMapper extends BaseMapper
                 entities: $entities,
                 totalCount: count($entities)
             )
-        ) : null;
+        );
     }
 
     /**
