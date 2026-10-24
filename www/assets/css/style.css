@@ -36,6 +36,12 @@ body {
     padding: 30px;
 }
 
+#container-wide {
+    margin: 0 auto;
+    width: 1600px;
+    background-color: #FFFFFF;
+    padding: 30px;
+}
 
 /** ************************************************************************* */
 /** HEADER                                                                    */

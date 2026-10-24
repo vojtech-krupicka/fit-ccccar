@@ -1,0 +1,20 @@
+{if count($entityList) > 0}
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            {foreach $control->columns as $column}
+            {$column->renderHeader()|noescape}
+            {/foreach}
+        </tr>
+    </thead>
+    <tbody>
+        <tr n:foreach="$entityList as $entity">
+            {foreach $control->columns as $column}
+            {$column->renderCell($entity)|noescape}
+            {/foreach}
+        </tr>
+    </tbody>
+</table>
+{else}
+<div class="alert alert-danger">Nebyly nalezeny žádné entity!</div>
+{/if}

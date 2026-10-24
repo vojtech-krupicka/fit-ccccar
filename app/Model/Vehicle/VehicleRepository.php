@@ -24,7 +24,7 @@ class VehicleRepository extends BaseRepository
     /**
      * @return EntityList<VehicleEntity>
      */
-    public function find(VehicleFilter $filter, PageRequest $page): EntityList
+    public function find(VehicleFilter $filter, ?PageRequest $page): EntityList
     {
         $query = $this->dbconn->table('vehicle');
 

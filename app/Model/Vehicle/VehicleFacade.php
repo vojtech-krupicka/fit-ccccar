@@ -63,7 +63,7 @@ class VehicleFacade extends BaseFacade
      */
     public function find(
         VehicleFilter $filter,
-        PageRequest $page,
+        ?PageRequest $page,
     ): EntityList {
         return $this->repository->find($filter, $page);
     }
