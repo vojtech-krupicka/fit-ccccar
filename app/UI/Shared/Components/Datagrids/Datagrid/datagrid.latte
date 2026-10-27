@@ -2,19 +2,19 @@
 <table class="table table-bordered table-condensed">
     <thead>
         <tr>
-            {foreach $control->columns as $column}
-            {$column->renderHeader()|noescape}
-            {/foreach}
+            <th n:foreach="$control->columns as $column" n:class="$column->getCssClasses()">
+                {$column->title ?? '&nbsp;'|noescape}
+            </th>
         </tr>
     </thead>
     <tbody>
         <tr n:foreach="$entityList as $entity">
-            {foreach $control->columns as $column}
-            {$column->renderCell($entity)|noescape}
-            {/foreach}
+            <td n:foreach="$control->columns as $column" n:class="$column->getCssClasses()">
+                {$column->getCellContent($entity) ?? $column->getEmptyValue()}
+            </td>
         </tr>
     </tbody>
 </table>
 {else}
-<div class="alert alert-danger">Nebyly nalezeny žádné entity!</div>
+<div class="alert alert-danger">{$control->noDataMsg}</div>
 {/if}

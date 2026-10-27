@@ -14,7 +14,7 @@ class FloatColumn extends BaseColumn
     public protected(set) string $decPoint = '.';
     public protected(set) string $thousandsSep = ',';
 
-    protected function renderCellContent(BaseEntity $entity): string|null
+    public function getCellContent(BaseEntity $entity): string|null
     {
         $value = $this->getFieldValue($entity);
         return is_float($value) ? number_format($value, $this->decimals, $this->decPoint, $this->thousandsSep) : null;

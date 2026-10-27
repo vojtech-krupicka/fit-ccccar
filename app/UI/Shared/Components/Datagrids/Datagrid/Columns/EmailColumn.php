@@ -11,7 +11,7 @@ use Nette\Utils\Html;
  */
 class EmailColumn extends StringColumn
 {
-    protected function renderCellContent(BaseEntity $entity): Html|null
+    public function getCellContent(BaseEntity $entity): Html|null
     {
         $value = $this->getFieldValue($entity);
         return is_string($value) ? Html::el('a')->href('mailto:' . $value)->setText($value) : null;

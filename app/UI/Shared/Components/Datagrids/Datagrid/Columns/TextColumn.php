@@ -11,29 +11,17 @@ use Nette\Utils\Html;
  */
 class TextColumn extends StringColumn
 {
-    /** @var (\Closure(T): string)|null */
-    public protected(set) ?\Closure $callback = null;
-
     /**
      * @param T $entity
      */
-    protected function renderCellContent(BaseEntity $entity): Html|string|null
+    public function getCellContent(BaseEntity $entity): Html|string|null
     {
-        if ($this->callback !== null) {
-            $content = ($this->callback)($entity);
-        } else {
-            $content = $this->getFieldValue($entity);
-        }
+        $value = $this->getFieldValue($entity);
 
-        return $content;
-    }
-
-    /**
-     * @param (\Closure(T): string)|null $callback
-     */
-    public function setCallback(?\Closure $callback): static
-    {
-        $this->callback = $callback;
-        return $this;
+        return match (true) {
+            $value instanceof Html, is_string($value) => $value,
+            is_scalar($value) => (string) $value,
+            default => null,
+        };
     }
 }

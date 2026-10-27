@@ -1,0 +1,25 @@
+{if count($entityList) > 0}
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+        <tr>
+            <th n:foreach="$control->columns as $column" n:class="$column->getHeaderCss()">
+                {$column->title ?? '&nbsp;'|noescape}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr n:foreach="$entityList as $entity" n:class="$control->getRowCss($entity, $iterator)">
+            <td n:foreach="$control->columns as $column" n:class="$column->getCellCss()">
+                {$column->getCellContent($entity) ?? $column->getEmptyValue()}
+            </td>
+            <td class="text-center" n:if="$control->actions">
+                {foreach $control->actions as $action}
+                    {$action->render($entity)}
+                {/foreach}
+            </td>
+        </tr>
+    </tbody>
+</table>
+{else}
+<div class="alert alert-danger">{$control->noDataMsg}</div>
+{/if}

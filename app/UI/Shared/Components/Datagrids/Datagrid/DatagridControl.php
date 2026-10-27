@@ -4,6 +4,8 @@ namespace App\UI\Shared\Components\Datagrids\Datagrid;
 
 use App\Model\BaseEntity;
 use App\Model\EntityList;
+use App\UI\Shared\Components\Datagrids\Datagrid\Utils\ColumnWidth;
+use App\UI\Shared\Components\Datagrids\Datagrid\Utils\TextAlign;
 use App\UI\Shared\Components\Datagrids\Datagrid\Columns;
 use App\UI\Shared\Components\Datagrids\Datagrid\Options;
 use Nette\Application\UI\Control;
@@ -58,7 +60,7 @@ class DatagridControl extends Control
     public function addTextColumn(string $name, string|Html $title, ?callable $callback = null): Columns\TextColumn
     {
         $column = new Columns\TextColumn($this, $name, $title);
-        $column->setCallback($callback);
+        $column->setValueCallback($callback);
         $this->columns[] = $column;
 
         return $column;
@@ -101,6 +103,18 @@ class DatagridControl extends Control
     }
 
     /**
+     * @return Columns\ColorColumn<T>
+     */
+    public function addColorColumn(string $name, string|Html $title): Columns\ColorColumn
+    {
+        $this->columns[] = $column = new Columns\ColorColumn($this, $name, $title);
+        $column
+            ->setWidth(ColumnWidth::Width01)
+            ->setTextAlign(TextAlign::Center);
+        return $column;
+    }
+
+    /**
      * @return Columns\EmailColumn<T>
      */
     public function addEmailColumn(string $name, string|Html $title): Columns\EmailColumn
@@ -110,10 +124,10 @@ class DatagridControl extends Control
     }
 
     /**
-     * @param array<string, mixed> $args
+     * @param array<string, mixed>|(\Closure(T): array<string, mixed>) $args
      * @return Columns\LinkColumn<T>
      */
-    public function addLinkColumn(string $name, string|Html $title, string $target, array $args = []): Columns\LinkColumn
+    public function addLinkColumn(string $name, string|Html $title, string $target, array|\Closure $args = []): Columns\LinkColumn
     {
         $this->columns[] = $column = new Columns\LinkColumn($this, $name, $title);
         $column->setTarget($target);

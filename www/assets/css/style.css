@@ -20,6 +20,14 @@ input[type^="date"] {
     width: 100%;
 }
 
+span.color-box {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border: 1px solid #000;
+    margin-right: 4px;
+}
+
 
 /** ************************************************************************* */
 /** BODY                                                                     */

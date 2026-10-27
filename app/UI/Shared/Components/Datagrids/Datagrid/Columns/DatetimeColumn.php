@@ -12,7 +12,7 @@ class DatetimeColumn extends BaseColumn
 {
     public protected(set) ?string $format = 'Y-m-d H:i:s';
 
-    protected function renderCellContent(BaseEntity $entity): string|null
+    public function getCellContent(BaseEntity $entity): string|null
     {
         $value = $this->getFieldValue($entity);
         return $value instanceof \DateTimeInterface ? $value->format($this->getFormat()) : null;

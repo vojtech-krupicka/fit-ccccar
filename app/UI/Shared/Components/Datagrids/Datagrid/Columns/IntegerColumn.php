@@ -10,7 +10,7 @@ use App\Model\BaseEntity;
  */
 class IntegerColumn extends BaseColumn
 {
-    protected function renderCellContent(BaseEntity $entity): string|null
+    public function getCellContent(BaseEntity $entity): string|null
     {
         $value = $this->getFieldValue($entity);
         return is_int($value) ? (string) $value : null;

@@ -12,6 +12,8 @@ use Nette\Utils\Html;
  */
 abstract class BaseColumn
 {
+    /** @var (\Closure(T): string)|null */
+    public protected(set) ?\Closure $valueCallback = null;
     public protected(set) Utils\TextAlign $textAlign = Utils\TextAlign::Center;
     public protected(set) Utils\ColumnWidth $width = Utils\ColumnWidth::NoWidth;
     public protected(set) bool $sortable = false;
@@ -28,46 +30,46 @@ abstract class BaseColumn
         public protected(set) Html|string|null $title = null
     ) {}
 
-    abstract protected function renderCellContent(BaseEntity $entity): Html|string|null;
+    abstract public function getCellContent(BaseEntity $entity): Html|string|int|float|null;
 
-    public function renderHeader(): string
-    {
-        $css = [];
-        $css[] = "text-{$this->textAlign->value}";
-        if ($this->width !== Utils\ColumnWidth::NoWidth) {
-            $css[] = $this->width->value;
-        }
+    // public function renderHeader(): string
+    // {
+    //     $css = [];
+    //     $css[] = "text-{$this->textAlign->value}";
+    //     if ($this->width !== Utils\ColumnWidth::NoWidth) {
+    //         $css[] = $this->width->value;
+    //     }
 
-        if ($this->title instanceof Html) {
-            $content = $this->title->toHtml();
-        } else if ($this->title !== null) {
-            $content = (string) $this->title;
-        } else {
-            $content = '&nbsp;';
-        }
+    //     if ($this->title instanceof Html) {
+    //         $content = $this->title->toHtml();
+    //     } else if ($this->title !== null) {
+    //         $content = (string) $this->title;
+    //     } else {
+    //         $content = '&nbsp;';
+    //     }
 
-        $class = join(' ', $css);
-        return "<th class=\"{$class}\">{$content}</th>";
-    }
+    //     $class = join(' ', $css);
+    //     return "<th class=\"{$class}\">{$content}</th>";
+    // }
 
-    public function renderCell(BaseEntity $entity): string
-    {
-        $content = $this->renderCellContent($entity);
+    // public function renderCell(BaseEntity $entity): string
+    // {
+    //     $content = $this->renderCellContent($entity);
 
-        if ($content instanceof Html) {
-            $content = $content->toHtml();
-        } else if ($content !== null) {
-            $content = (string) $content;
-        } else {
-            $content = $this->getEmptyValue();
-        }
+    //     if ($content instanceof Html) {
+    //         $content = $content->toHtml();
+    //     } else if ($content !== null) {
+    //         $content = (string) $content;
+    //     } else {
+    //         $content = $this->getEmptyValue();
+    //     }
 
-        $css = [];
-        $css[] = "text-{$this->textAlign->value}";
+    //     $css = [];
+    //     $css[] = "text-{$this->textAlign->value}";
 
-        $class = join(' ', $css);
-        return "<td class=\"{$class}\">{$content}</td>";
-    }
+    //     $class = join(' ', $css);
+    //     return "<td class=\"{$class}\">{$content}</td>";
+    // }
 
     #region Setters
 
@@ -95,9 +97,13 @@ abstract class BaseColumn
         return $this;
     }
 
-    public function getEmptyValue(): string
+    /**
+     * @param (\Closure(T): string)|null $callback
+     */
+    public function setValueCallback(?\Closure $callback): static
     {
-        return $this->emptyValue ?? $this->datagrid->emptyValue;
+        $this->valueCallback = $callback;
+        return $this;
     }
 
     public function setEmptyValue(?string $emptyValue): static
@@ -106,8 +112,24 @@ abstract class BaseColumn
         return $this;
     }
 
+    #endregion
+
+    #region Getters
+
+    public function getEmptyValue(): string
+    {
+        return $this->emptyValue ?? $this->datagrid->emptyValue;
+    }
+
+    /**
+     * @param T $entity
+     */
     protected function getFieldValue(BaseEntity $entity): mixed
     {
+        if ($this->valueCallback !== null) {
+            return ($this->valueCallback)($entity);
+        }
+
         $parts = explode('.', $this->name);
         $current = $entity;
         foreach ($parts as $part) {
@@ -118,6 +140,15 @@ abstract class BaseColumn
         }
 
         return $current;
+    }
+
+    public function getCssClasses(): string
+    {
+        $css = [$this->textAlign->value];
+        if ($this->width !== Utils\ColumnWidth::NoWidth) {
+            $css[] = $this->width->value;
+        }
+        return implode(' ', $css);
     }
 
     #endregion

@@ -1,0 +1,34 @@
+<?php declare(strict_types=1);
+
+namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Types;
+
+use App\Model\BaseEntity;
+use Nette\Utils\Html;
+
+/**
+ * @template T of BaseEntity
+ */
+trait LinkArgsTrait
+{
+    /**
+     * @var array<string, mixed>|(\Closure(T): array<string, mixed>)
+     */
+    public protected(set) array|\Closure|null $args = null;
+
+    /**
+     * @param T $entity
+     * @return array<string, mixed>
+     */
+    protected function buildArgs(BaseEntity $entity): array
+    {
+        $args = [];
+        if ($this->args instanceof \Closure) {
+            $args = ($this->args)($entity);
+        } elseif ($this->args === null) {
+            $args = ['id' => $entity->id];
+        } elseif (is_array($this->args)) {
+            $args = $this->args;
+        }
+        return $args;
+    }
+}

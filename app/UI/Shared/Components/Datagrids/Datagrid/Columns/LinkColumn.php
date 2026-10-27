@@ -14,14 +14,15 @@ class LinkColumn extends StringColumn
     public private(set) string $target;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, mixed>|(\Closure(T): array<string, mixed>)
      */
-    public private(set) array $args;
+    public private(set) array|\Closure $args = [];
 
-    protected function renderCellContent(BaseEntity $entity): Html|null
+    public function getCellContent(BaseEntity $entity): Html|null
     {
         $value = $this->getFieldValue($entity);
-        $link = $this->datagrid->getPresenter()->link($this->target, $this->args);
+        $args = $this->args instanceof \Closure ? ($this->args)($entity) : $this->args;
+        $link = $this->datagrid->getPresenter()->link($this->target, $args);
         return is_string($value) ? Html::el('a')->href($link)->setText($value) : null;
     }
 
@@ -32,9 +33,9 @@ class LinkColumn extends StringColumn
     }
 
     /**
-     * @param array<string, mixed> $args
+     * @param array<string, mixed>|(\Closure(T): array<string, mixed>) $args
      */
-    public function setArgs(array $args): static
+    public function setArgs(array|\Closure $args): static
     {
         $this->args = $args;
         return $this;
