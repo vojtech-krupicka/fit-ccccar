@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Types;
+namespace App\UI\Shared\Components\Datagrids\Datagrid\Types;
 
 enum TextAlign: string
 {

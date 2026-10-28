@@ -6,11 +6,11 @@ use App\Model\Vehicle\VehicleEntity;
 use App\Model\Vehicle\VehicleFacade;
 use App\Model\Vehicle\VehicleFilter;
 use App\Model\EntityList;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\ActionSeverity;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\ColumnWidth;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\TextAlign;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\DatagridControl;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\DatagridControlFactory;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\ActionSeverity;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\ColumnWidth;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\TextAlign;
+use App\UI\Shared\Components\Datagrids\Datagrid\DatagridControl;
+use App\UI\Shared\Components\Datagrids\Datagrid\DatagridControlFactory;
 use App\UI\Admin;
 
 final class VehiclePresenter extends Admin\BaseSecuredPresenter
@@ -62,7 +62,7 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
             ->addTextColumn('rentalOffice', 'Pobočka', 'rentalOffice.name')
             ->addLinkFormatter(
                 'RentalOffice:default',
-                fn(VehicleEntity $vehicle) => ['id' => $vehicle->rentalOffice?->id ?? null]
+                fn(VehicleEntity $vehicle) => ['id' => $vehicle->rentalOffice?->id]
             );
         $grid
             ->addTextColumn('fuelType.name', 'Palivo')
@@ -70,14 +70,14 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
             ->setTextAlign(TextAlign::Center)
             ->addLinkFormatter(
                 'fuelTypeEdit',
-                fn(VehicleEntity $vehicle) => ['id' => $vehicle->fuelType?->id ?? null]
+                fn(VehicleEntity $vehicle) => ['id' => $vehicle->fuelType?->id]
             );
         $grid
             ->addTextColumn('color', 'Barva', 'color.name')
             ->addColorFormatter('color.hex')
             ->addLinkFormatter(
                 'colorEdit',
-                fn(VehicleEntity $vehicle) => ['id' => $vehicle->color?->id ?? null]
+                fn(VehicleEntity $vehicle) => ['id' => $vehicle->color?->id]
             );
         $grid
             ->addFloatColumn('costPerDay', 'Cena/den (Kč)')

@@ -3,6 +3,7 @@
 namespace App\UI\Shared\Components\Datagrids\Datagrid\Columns;
 
 use App\Model\BaseEntity;
+use Nette\Utils\Html;
 
 /**
  * @template T of BaseEntity
@@ -10,9 +11,12 @@ use App\Model\BaseEntity;
  */
 class IntegerColumn extends BaseColumn
 {
-    public function getCellContent(BaseEntity $entity): string|null
+    /**
+     * @param T $entity
+     */
+    public function getCellValue(BaseEntity $entity): string|null
     {
-        $value = $this->getFieldValue($entity);
+        $value = $this->getEntityField($entity, $this->field);
         return is_int($value) ? (string) $value : null;
     }
 }

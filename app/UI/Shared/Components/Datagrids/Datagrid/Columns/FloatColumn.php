@@ -3,6 +3,7 @@
 namespace App\UI\Shared\Components\Datagrids\Datagrid\Columns;
 
 use App\Model\BaseEntity;
+use Nette\Utils\Html;
 
 /**
  * @template T of BaseEntity
@@ -14,9 +15,12 @@ class FloatColumn extends BaseColumn
     public protected(set) string $decPoint = '.';
     public protected(set) string $thousandsSep = ',';
 
-    public function getCellContent(BaseEntity $entity): string|null
+    /**
+     * @param T $entity
+     */
+    public function getCellValue(BaseEntity $entity): string|null
     {
-        $value = $this->getFieldValue($entity);
+        $value = $this->getEntityField($entity, $this->field);
         return is_float($value) ? number_format($value, $this->decimals, $this->decPoint, $this->thousandsSep) : null;
     }
 

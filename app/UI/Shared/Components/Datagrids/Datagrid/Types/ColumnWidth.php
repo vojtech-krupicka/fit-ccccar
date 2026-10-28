@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Shared\Components\Datagrids\Datagrid\Utils;
+namespace App\UI\Shared\Components\Datagrids\Datagrid\Types;
 
 enum ColumnWidth: string
 {
@@ -17,4 +17,9 @@ enum ColumnWidth: string
     case Width10 = 'col-md-10';
     case Width11 = 'col-md-11';
     case Width12 = 'col-md-12';
+
+    public function getWidth(): string
+    {
+        return $this !== self::NoWidth ? $this->value : '';
+    }
 }

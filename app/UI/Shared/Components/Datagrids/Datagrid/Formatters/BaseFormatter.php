@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Formatters;
+namespace App\UI\Shared\Components\Datagrids\Datagrid\Formatters;
 
 use App\Model\BaseEntity;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Columns\BaseColumn;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\GetEntityFieldTrait;
+use App\UI\Shared\Components\Datagrids\Datagrid\Columns\BaseColumn;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\GetEntityFieldTrait;
 use Nette\Utils\Html;
 
 /**
@@ -12,11 +12,12 @@ use Nette\Utils\Html;
  */
 abstract class BaseFormatter
 {
+    /** @use GetEntityFieldTrait<T> */
     use GetEntityFieldTrait;
 
     /**
      * @param BaseColumn<T> $column
-     * @param (\Closure(T): string|null)|string $field
+     * @param (\Closure(T): (string|null))|string $field
      */
     public function __construct(
         public readonly BaseColumn $column,

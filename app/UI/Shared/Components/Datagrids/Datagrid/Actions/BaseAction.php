@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Actions;
+namespace App\UI\Shared\Components\Datagrids\Datagrid\Actions;
 
 use App\Model\BaseEntity;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\ActionSeverity;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\GetEntityFieldTrait;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\Types\LinkArgsTrait;
-use App\UI\Shared\Components\Datagrids\NewDatagrid\DatagridControl;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\ActionSeverity;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\GetEntityFieldTrait;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types\LinkArgsTrait;
+use App\UI\Shared\Components\Datagrids\Datagrid\DatagridControl;
 use Nette\Utils\Html;
 
 /**
@@ -14,7 +14,9 @@ use Nette\Utils\Html;
  */
 abstract class BaseAction
 {
+    /** @use GetEntityFieldTrait<T> */
     use GetEntityFieldTrait;
+    /** @use LinkArgsTrait<T> */
     use LinkArgsTrait;
 
     const DEFAULT_ACTION_CSS = 'btn btn-default btn-xs';
@@ -26,7 +28,7 @@ abstract class BaseAction
 
     public protected(set) string|null $title = null;
 
-    public protected(set) ?string $target = null;
+    public protected(set) string $target = '';
 
     public protected(set) string|null $icon = null;
 
@@ -42,10 +44,7 @@ abstract class BaseAction
         public readonly string $name,
         ?string $target = null,
     ) {
-        $this->target = $target;
-        if ($this->target === null) {
-            $this->target = $this->name;
-        }
+        $this->target = $target ?? $this->name;
     }
 
     /**
@@ -89,7 +88,7 @@ abstract class BaseAction
         return $this;
     }
 
-    public function setTarget(?string $target): static
+    public function setTarget(string $target): static
     {
         $this->target = $target;
         return $this;

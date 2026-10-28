@@ -4,7 +4,8 @@ namespace App\UI\Shared\Components\Datagrids\Datagrid\Columns;
 
 use App\Model\BaseEntity;
 use App\UI\Shared\Components\Datagrids\Datagrid\DatagridControl;
-use App\UI\Shared\Components\Datagrids\Datagrid\Utils;
+use App\UI\Shared\Components\Datagrids\Datagrid\Formatters;
+use App\UI\Shared\Components\Datagrids\Datagrid\Types;
 use Nette\Utils\Html;
 
 /**
@@ -12,10 +13,13 @@ use Nette\Utils\Html;
  */
 abstract class BaseColumn
 {
-    /** @var (\Closure(T): string)|null */
-    public protected(set) ?\Closure $valueCallback = null;
-    public protected(set) Utils\TextAlign $textAlign = Utils\TextAlign::Center;
-    public protected(set) Utils\ColumnWidth $width = Utils\ColumnWidth::NoWidth;
+    /** @use Types\GetEntityFieldTrait<T> */
+    use Types\GetEntityFieldTrait;
+
+    /** @var list<Formatters\BaseFormatter<T>> */
+    public protected(set) array $formatters = [];
+    public protected(set) Types\TextAlign $textAlign = Types\TextAlign::Center;
+    public protected(set) Types\ColumnWidth $width = Types\ColumnWidth::NoWidth;
     public protected(set) bool $sortable = false;
     public protected(set) ?string $emptyValue = null;
 
@@ -23,53 +27,102 @@ abstract class BaseColumn
      * @param DatagridControl<T> $datagrid
      * @param string $name
      * @param Html|string|null $title
+     * @param (\Closure(T): mixed)|string|null $field
      */
     public function __construct(
         public readonly DatagridControl $datagrid,
         public readonly string $name,
-        public protected(set) Html|string|null $title = null
-    ) {}
+        public protected(set) Html|string|null $title = null,
+        \Closure|string|null $field = null
+    ) {
+        $this->field = $field !== null ? $field : $this->name;
+    }
 
-    abstract public function getCellContent(BaseEntity $entity): Html|string|int|float|null;
+    /**
+     * @param T $entity
+     */
+    abstract public function getCellValue(BaseEntity $entity): Html|string|null;
 
-    // public function renderHeader(): string
-    // {
-    //     $css = [];
-    //     $css[] = "text-{$this->textAlign->value}";
-    //     if ($this->width !== Utils\ColumnWidth::NoWidth) {
-    //         $css[] = $this->width->value;
-    //     }
+    #region Formatters
 
-    //     if ($this->title instanceof Html) {
-    //         $content = $this->title->toHtml();
-    //     } else if ($this->title !== null) {
-    //         $content = (string) $this->title;
-    //     } else {
-    //         $content = '&nbsp;';
-    //     }
+    /**
+     * @param (\Closure(T): (string|null))|string $field
+     */
+    public function addColorFormatter(\Closure|string $field): static
+    {
+        $this->formatters[] = new Formatters\ColorFormatter($this, $field);
+        return $this;
+    }
 
-    //     $class = join(' ', $css);
-    //     return "<th class=\"{$class}\">{$content}</th>";
-    // }
+    /**
+     * @param (\Closure(T): array<string, mixed>)|array<string, mixed>|null $args
+     */
+    public function addLinkFormatter(string $target, \Closure|array|null $args = null): static
+    {
+        $this->formatters[] = new Formatters\LinkFormatter($this, $target, $args);
+        return $this;
+    }
 
-    // public function renderCell(BaseEntity $entity): string
-    // {
-    //     $content = $this->renderCellContent($entity);
+    /**
+     * @param (\Closure(T): (string|null))|string $field
+     */
+    public function addUrlFormatter(\Closure|string $field): static
+    {
+        $this->formatters[] = new Formatters\UrlFormatter($this, $field);
+        return $this;
+    }
 
-    //     if ($content instanceof Html) {
-    //         $content = $content->toHtml();
-    //     } else if ($content !== null) {
-    //         $content = (string) $content;
-    //     } else {
-    //         $content = $this->getEmptyValue();
-    //     }
+    /**
+     * @param (\Closure(T): (string|null))|string $field
+     */
+    public function addEmailFormatter(\Closure|string $field): static
+    {
+        $this->formatters[] = new Formatters\EmailFormatter($this, $field);
+        return $this;
+    }
 
-    //     $css = [];
-    //     $css[] = "text-{$this->textAlign->value}";
+    #endregion
 
-    //     $class = join(' ', $css);
-    //     return "<td class=\"{$class}\">{$content}</td>";
-    // }
+    #region Getters
+
+    /**
+     * @param T $entity
+     */
+    public function getCellContent(BaseEntity $entity): Html|string
+    {
+        $value = $this->getCellValue($entity);
+        if ($value === null || $value === '') {
+            return $this->getEmptyValue();
+        }
+
+        // apply formatters (email/ulr/link/color)
+        foreach ($this->formatters as $formatter) {
+            $value = $formatter->format($entity, $value);
+        }
+
+        return $value;
+    }
+
+    public function getHeaderCss(): string
+    {
+        $css = [$this->textAlign->value];
+        if ($this->width !== Types\ColumnWidth::NoWidth) {
+            $css[] = $this->width->value;
+        }
+        return implode(' ', $css);
+    }
+
+    public function getCellCss(): string
+    {
+        return $this->textAlign->value;
+    }
+
+    public function getEmptyValue(): string
+    {
+        return $this->emptyValue ?? $this->datagrid->emptyValue;
+    }
+
+    #endregion
 
     #region Setters
 
@@ -85,24 +138,15 @@ abstract class BaseColumn
         return $this;
     }
 
-    public function setWidth(Utils\ColumnWidth $width): static
+    public function setWidth(Types\ColumnWidth $width): static
     {
         $this->width = $width;
         return $this;
     }
 
-    public function setTextAlign(Utils\TextAlign $textAlign): static
+    public function setTextAlign(Types\TextAlign $textAlign): static
     {
         $this->textAlign = $textAlign;
-        return $this;
-    }
-
-    /**
-     * @param (\Closure(T): string)|null $callback
-     */
-    public function setValueCallback(?\Closure $callback): static
-    {
-        $this->valueCallback = $callback;
         return $this;
     }
 
@@ -110,45 +154,6 @@ abstract class BaseColumn
     {
         $this->emptyValue = $emptyValue;
         return $this;
-    }
-
-    #endregion
-
-    #region Getters
-
-    public function getEmptyValue(): string
-    {
-        return $this->emptyValue ?? $this->datagrid->emptyValue;
-    }
-
-    /**
-     * @param T $entity
-     */
-    protected function getFieldValue(BaseEntity $entity): mixed
-    {
-        if ($this->valueCallback !== null) {
-            return ($this->valueCallback)($entity);
-        }
-
-        $parts = explode('.', $this->name);
-        $current = $entity;
-        foreach ($parts as $part) {
-            if ($current === null) {
-                return null;
-            }
-            $current = $current->{$part} ?? null;
-        }
-
-        return $current;
-    }
-
-    public function getCssClasses(): string
-    {
-        $css = [$this->textAlign->value];
-        if ($this->width !== Utils\ColumnWidth::NoWidth) {
-            $css[] = $this->width->value;
-        }
-        return implode(' ', $css);
     }
 
     #endregion

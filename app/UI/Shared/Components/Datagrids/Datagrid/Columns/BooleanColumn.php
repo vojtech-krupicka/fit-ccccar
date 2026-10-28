@@ -14,9 +14,12 @@ class BooleanColumn extends BaseColumn
     public protected(set) Html|string $trueValue = 'true';
     public protected(set) Html|string $falseValue = 'false';
 
-    public function getCellContent(BaseEntity $entity): Html|string
+    /**
+     * @param T $entity
+     */
+    public function getCellValue(BaseEntity $entity): Html|string
     {
-        $value = $this->getFieldValue($entity);
+        $value = $this->getEntityField($entity, $this->field);
         return ($value === true) ? $this->trueValue : $this->falseValue;
     }
 

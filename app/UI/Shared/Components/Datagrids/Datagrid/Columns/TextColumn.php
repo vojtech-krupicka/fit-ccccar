@@ -7,21 +7,16 @@ use Nette\Utils\Html;
 
 /**
  * @template T of BaseEntity
- * @extends StringColumn<T>
+ * @extends BaseColumn<T>
  */
-class TextColumn extends StringColumn
+class TextColumn extends BaseColumn
 {
     /**
      * @param T $entity
      */
-    public function getCellContent(BaseEntity $entity): Html|string|null
+    public function getCellValue(BaseEntity $entity): string|null
     {
-        $value = $this->getFieldValue($entity);
-
-        return match (true) {
-            $value instanceof Html, is_string($value) => $value,
-            is_scalar($value) => (string) $value,
-            default => null,
-        };
+        $value = $this->getEntityField($entity, $this->field);
+        return is_string($value) ? $value : null;
     }
 }

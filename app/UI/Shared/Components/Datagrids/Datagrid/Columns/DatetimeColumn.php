@@ -3,6 +3,7 @@
 namespace App\UI\Shared\Components\Datagrids\Datagrid\Columns;
 
 use App\Model\BaseEntity;
+use Nette\Utils\Html;
 
 /**
  * @template T of BaseEntity
@@ -10,22 +11,21 @@ use App\Model\BaseEntity;
  */
 class DatetimeColumn extends BaseColumn
 {
-    public protected(set) ?string $format = 'Y-m-d H:i:s';
+    public protected(set) ?string $format = null;
 
-    public function getCellContent(BaseEntity $entity): string|null
+    /**
+     * @param T $entity
+     */
+    public function getCellValue(BaseEntity $entity): string|null
     {
-        $value = $this->getFieldValue($entity);
-        return $value instanceof \DateTimeInterface ? $value->format($this->getFormat()) : null;
+        $value = $this->getEntityField($entity, $this->field);
+        $format = $this->format !== null ? $this->format : $this->datagrid->dateFormat;
+        return $value instanceof \DateTimeInterface ? $value->format($format) : null;
     }
 
-    public function setFormat(string $format): static
+    public function setFormat(?string $format): static
     {
         $this->format = $format;
         return $this;
-    }
-
-    public function getFormat(): string
-    {
-        return $this->format ?? $this->datagrid->dateFormat;
     }
 }

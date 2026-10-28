@@ -1,10 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Types;
+namespace App\UI\Shared\Components\Datagrids\Datagrid\Types;
 
 use App\Model\BaseEntity;
-use Nette\Utils\Html;
 
+/**
+ * @template T of BaseEntity
+ */
 trait LinkArgsTrait
 {
     /**
@@ -23,7 +25,7 @@ trait LinkArgsTrait
             $args = ($this->args)($entity);
         } elseif ($this->args === null) {
             $args = ['id' => $entity->id];
-        } elseif (is_array($this->args)) {
+        } else {
             $args = $this->args;
         }
         return $args;

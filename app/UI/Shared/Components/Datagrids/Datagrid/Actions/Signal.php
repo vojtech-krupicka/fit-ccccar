@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Actions;
+namespace App\UI\Shared\Components\Datagrids\Datagrid\Actions;
 
 use App\Model\BaseEntity;
 use Nette\Utils\Html;
