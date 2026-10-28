@@ -5,9 +5,6 @@ namespace App\UI\Shared\Components\Datagrids\NewDatagrid\Types;
 use App\Model\BaseEntity;
 use Nette\Utils\Html;
 
-/**
- * @template T of BaseEntity
- */
 trait LinkArgsTrait
 {
     /**

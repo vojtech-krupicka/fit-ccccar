@@ -19,27 +19,17 @@ use Nette\Utils\Html;
 class DatagridControl extends Control
 {
     /**
-     * @var list<Columns\BaseColumn<T>>
+     * @var array<string, Columns\BaseColumn<T>>
      */
     public array $columns = [];
 
     /**
-     * @var array<string, Columns\BaseColumn<T>>
-     */
-    private array $columnsMap = [];
-
-    /**
-     * @var list<Actions\BaseAction>
-     */
-    public array $actions = [];
-
-    /**
      * @var array<string, Actions\BaseAction>
      */
-    private array $actionsMap = [];
+    private array $actions = [];
 
     /**
-     * @var (\Closure(T, CachingIterator): string|null)|null
+     * @var (\Closure(T, CachingIterator): string)|null
      */
     public protected(set) ?\Closure $rowCssCallback = null;
 
@@ -63,28 +53,41 @@ class DatagridControl extends Control
 
     public function getColumn(string $name): ?Columns\BaseColumn
     {
-        return $this->columnsMap[$name] ?? null;
+        return $this->columns[$name] ?? null;
     }
 
     public function getAction(string $name): ?Actions\BaseAction
     {
-        return $this->actionsMap[$name] ?? null;
+        return $this->actions[$name] ?? null;
     }
 
     /**
      * @param T $entity
      * @param CachingIterator $iterator
      */
-    public function getRowCss(BaseEntity $entity, CachingIterator $iterator)
+    public function getRowCss(BaseEntity $entity, CachingIterator $iterator): string
     {
         if ($this->rowCssCallback !== null) {
-            return $this->rowCssCallback($entity, $iterator);
+            return ($this->rowCssCallback)($entity, $iterator);
         }
 
-        return $iterator->isOdd() ? 'odd' : '';
+        return '';
     }
 
     #region Columns Management
+
+    /**
+     * @template C of Columns\BaseColumn<T>
+     * @param C $column
+     * @return C
+     */
+    protected function registerColumn(Columns\BaseColumn $column): Columns\BaseColumn
+    {
+        if (isset($this->columns[$column->name])) {
+            throw new \InvalidArgumentException("Column '{$column->name}' already exists.");
+        }
+        return $this->columns[$column->name] = $column;
+    }
 
     /**
      * @param (\Closure(T): Html|string)|null $callback
@@ -92,10 +95,10 @@ class DatagridControl extends Control
      */
     public function addCallableColumn(string $name, string|Html $title, \Closure $callback, ?string $field = null): Columns\CallableColumn
     {
-        $this->columns[] = $column = new Columns\CallableColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
+        $column = new Columns\CallableColumn($this, $name, $title, $field);
         $column->setCallback($callback);
 
+        $this->registerColumn($column);
         return $column;
     }
 
@@ -104,9 +107,8 @@ class DatagridControl extends Control
      */
     public function addTextColumn(string $name, string|Html $title, ?string $field = null): Columns\TextColumn
     {
-        $this->columns[] = $column = new Columns\TextColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
-
+        $column = new Columns\TextColumn($this, $name, $title, $field);
+        $this->registerColumn($column);
         return $column;
     }
 
@@ -115,8 +117,8 @@ class DatagridControl extends Control
      */
     public function addBoolColumn(string $name, string|Html $title, ?string $field = null): Columns\BooleanColumn
     {
-        $this->columns[] = $column = new Columns\BooleanColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
+        $column = new Columns\BooleanColumn($this, $name, $title, $field);
+        $this->registerColumn($column);
         return $column;
     }
 
@@ -125,8 +127,8 @@ class DatagridControl extends Control
      */
     public function addIntegerColumn(string $name, string|Html $title, ?string $field = null): Columns\IntegerColumn
     {
-        $this->columns[] = $column = new Columns\IntegerColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
+        $column = new Columns\IntegerColumn($this, $name, $title, $field);
+        $this->registerColumn($column);
         return $column;
     }
 
@@ -135,8 +137,8 @@ class DatagridControl extends Control
      */
     public function addFloatColumn(string $name, string|Html $title, ?string $field = null): Columns\FloatColumn
     {
-        $this->columns[] = $column = new Columns\FloatColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
+        $column = new Columns\FloatColumn($this, $name, $title, $field);
+        $this->registerColumn($column);
         return $column;
     }
 
@@ -145,27 +147,28 @@ class DatagridControl extends Control
      */
     public function addDatetimeColumn(string $name, string|Html $title, ?string $field = null): Columns\DatetimeColumn
     {
-        $this->columns[] = $column = new Columns\DatetimeColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
-        return $column;
-    }
-
-    /**
-     * @return Columns\ColorColumn<T>
-     */
-    public function addColorColumn(string $name, string|Html $title, ?string $field = null): Columns\ColorColumn
-    {
-        $this->columns[] = $column = new Columns\ColorColumn($this, $name, $title, $field);
-        $this->columnsMap[$name] = $column;
-        $column
-            ->setWidth(ColumnWidth::Width01)
-            ->setTextAlign(TextAlign::Center);
+        $column = new Columns\DatetimeColumn($this, $name, $title, $field);
+        $this->registerColumn($column);
         return $column;
     }
 
     #endregion
 
     #region Action Management
+
+    /**
+     * @template C of Columns\BaseColumn<T>
+     * @param C $column
+     * @return C
+     */
+    protected function registerAction(Actions\BaseAction $action): Actions\BaseAction
+    {
+        if (isset($this->actions[$action->name])) {
+            throw new \InvalidArgumentException("Action '{$action->name}' already exists.");
+        }
+
+        return $this->actions[$action->name] = $action;
+    }
 
     /**
      * @return Actions\Signal<T>
@@ -177,12 +180,12 @@ class DatagridControl extends Control
         ?string $target = null,
         ActionSeverity $severity = ActionSeverity::Info,
     ): Actions\Signal {
-        $this->actions[] = $action = new Actions\Signal($this, $name, $target);
+        $action = new Actions\Signal($this, $name, $target);
+        $this->registerAction($action);
+
         $action->setIcon($icon);
         $action->setTitle($title);
         $action->setSeverity($severity);
-
-        $this->actionsMap[$name] = $action;
         return $action;
     }
 
@@ -196,12 +199,12 @@ class DatagridControl extends Control
         ?string $target = null,
         ActionSeverity $severity = ActionSeverity::Info,
     ): Actions\SideEffect {
-        $this->actions[] = $action = new Actions\SideEffect($this, $name, $target);
+        $action = new Actions\SideEffect($this, $name, $target);
+        $this->registerAction($action);
+
         $action->setIcon($icon);
         $action->setTitle($title);
         $action->setSeverity($severity);
-
-        $this->actionsMap[$name] = $action;
         return $action;
     }
 
@@ -222,7 +225,7 @@ class DatagridControl extends Control
     }
 
     /**
-     * @param (\Closure(T, CachingIterator): string|null)|null $rowCssCallback
+     * @param (\Closure(T, CachingIterator): string)|null $rowCssCallback
      */
     public function setRowCssCallback(\Closure $rowCssCallback): static
     {

@@ -17,7 +17,7 @@ class ColorFormatter extends BaseFormatter
     public function format(BaseEntity $entity, Html|string $value): Html|string
     {
         $color = $this->getEntityField($entity, $this->field);
-        $color = preg_match('/^[0-9A-Fa-f]{6}$/', $color) === 1 ? $color : 'AAAAAA';
+        $color = ($color !== null && preg_match('/^[0-9A-Fa-f]{6}$/', $color) === 1) ? $color : 'AAAAAA';
         $swatch = Html::el('span', [
             'class' => 'color-box',
             'style' => "background-color: #{$color}",

@@ -35,10 +35,7 @@ class LinkFormatter extends BaseFormatter
         $args = $this->buildArgs($entity);
         $link = $this->column->datagrid->getPresenter()->link($this->target, $args);
 
-        $el = Html::el('a')
-            ->href($link)
-            ->title($value);
-
+        $el = Html::el('a')->href($link);
         return $this->setContent($value, $el);
     }
 }

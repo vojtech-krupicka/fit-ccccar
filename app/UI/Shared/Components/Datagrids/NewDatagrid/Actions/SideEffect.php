@@ -30,7 +30,7 @@ class SideEffect extends BaseAction
         ];
 
         if ($this->confirmMsg !== null) {
-            $attrs['onclick'] = "return confirm('{$this->confirmMsg}');";
+            $attrs['onclick'] = "return confirm('{json_encode($this->confirmMsg)}');";
         }
 
         return Html::el('button', $attrs)

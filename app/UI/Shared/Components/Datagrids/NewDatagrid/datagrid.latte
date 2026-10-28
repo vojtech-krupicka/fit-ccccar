@@ -3,8 +3,9 @@
     <thead>
         <tr>
             <th n:foreach="$control->columns as $column" n:class="$column->getHeaderCss()">
-                {$column->title ?? '&nbsp;'|noescape}
+                {if $column->title !== null}{$column->title}{else}&nbsp;{/if}
             </th>
+            <th class="text-center" n:if="$control->actions">&nbsp;</th>
         </tr>
     </thead>
     <tbody>

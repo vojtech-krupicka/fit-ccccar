@@ -36,7 +36,7 @@ abstract class BaseColumn
         $this->field = $field !== null ? $field : $this->name;
     }
 
-    abstract public function getCellValue(BaseEntity $entity): Html|string|int|float|null;
+    abstract public function getCellValue(BaseEntity $entity): Html|string|null;
 
     #region Formatters
 
@@ -84,7 +84,7 @@ abstract class BaseColumn
     {
         $value = $this->getCellValue($entity);
         if ($value === null || $value === '') {
-            $value = $this->getEmptyValue();
+            return $this->getEmptyValue();
         }
 
         // apply formatters (email/ulr/link/color)

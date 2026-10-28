@@ -19,7 +19,7 @@ class ColorColumn extends BaseColumn
             return null;
         }
 
-        $hex = preg_match('/^[0-9A-Fa-f]{6}$/', $value->hex) === 1 ? $value->hex : '#AAAAAA';
+        $hex = ($value->hex !== null && preg_match('/^[0-9A-Fa-f]{6}$/', $value->hex) === 1) ? $value->hex : 'AAAAAA';
 
         $swatch = Html::el('span', [
             'class' => 'color-box',
