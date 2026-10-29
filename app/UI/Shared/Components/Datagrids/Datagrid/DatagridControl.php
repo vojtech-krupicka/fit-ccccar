@@ -11,13 +11,13 @@ use App\UI\Shared\Components\Datagrids\Datagrid\Columns;
 use App\UI\Shared\Components\Menu\Pagination\PaginationControl;
 use App\UI\Shared\Components\Menu\Pagination\PaginationControlFactory;
 use Latte\Essential\CachingIterator;
-use Nette\Application\UI\Control;
+use Nette\Application\UI;
 use Nette\Utils\Html;
 
 /**
  * @template T of BaseEntity
  */
-class DatagridControl extends Control
+class DatagridControl extends UI\Control
 {
     /**
      * @var array<string, Columns\BaseColumn<T>>
@@ -50,6 +50,13 @@ class DatagridControl extends Control
     public protected(set) SortDirection $defaultSortDirection = SortDirection::Ascending;
 
     /**
+     * @var list<int>
+     */
+    public protected(set) array $perPageOptions = [];
+
+    public protected(set) ?int $itemsPerPage = null;
+
+    /**
      * @param EntityList<T> $entityList
      */
     public function __construct(
@@ -74,6 +81,29 @@ class DatagridControl extends Control
             pageCount: $this->entityList->pageCount ?? 1,
             totalCount: $this->entityList->totalCount
         );
+    }
+
+    public function createComponentPerPageForm(): UI\Form
+    {
+        $form = new UI\Form();
+        $form
+            ->addSelect('itemsPerPage', 'Na stránku:', array_combine($this->perPageOptions, $this->perPageOptions))
+            ->setDefaultValue($this->itemsPerPage)
+            ->setHtmlAttribute('onchange', 'this.form.submit()');
+
+        $form
+            ->addSubmit('apply', 'Zobrazit')
+            ->setOption('icon', 'icon-ok');
+
+        $form
+            ->onSuccess[] = function (UI\Form $form, \stdClass $values): void {
+                $this->getPresenter()->redirect('this', [
+                    'page' => null,
+                    'itemsPerPage' => (int) $values->itemsPerPage,
+                ]);
+            };
+
+        return $form;
     }
 
     #endregion
@@ -335,6 +365,17 @@ class DatagridControl extends Control
     public function setSortDirection(SortDirection $sortDirection): static
     {
         $this->sortDirection = $sortDirection;
+        return $this;
+    }
+
+    /**
+     * @param list<int> $options The available items per page options
+     * @param int $current The currently selected items per page
+     */
+    public function setPerPageOptions(array $options, int $current): static
+    {
+        $this->perPageOptions = $options;
+        $this->itemsPerPage = $current;
         return $this;
     }
 

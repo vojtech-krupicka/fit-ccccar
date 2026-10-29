@@ -248,6 +248,17 @@ main .breadcrumb li.active a {
 }
 
 
+main .datagrid-form {
+    margin: 6px -14px 6px -10px;
+}
+
+main .datagrid-form label {
+    font-weight: normal;
+    color: #999999;
+    font-size: 12px;
+}
+
+
 main .catalog-filter {
     background: #EEEEEE;
     padding: 15px 15px 5px 15px;

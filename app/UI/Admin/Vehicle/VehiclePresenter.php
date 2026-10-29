@@ -21,6 +21,10 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
     /** @var EntityList<VehicleEntity> */
     private EntityList $vehicleList;
     private VehicleFilter $filter;
+    private int $itemsPerPage;
+
+    private const PER_PAGE_OPTIONS = [5, 10, 20, 50];
+    private const DEFAULT_ITEMS_PER_PAGE = 10;
 
     public function __construct(
         private readonly VehicleFacade $vehicleFacade,
@@ -29,14 +33,17 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
 
     public function actionDefault(
         int $page = 1,
+        int $itemsPerPage = self::DEFAULT_ITEMS_PER_PAGE,
         ?string $sortBy = null,
         ?string $sortDirection = null,
     ): void {
+        $this->itemsPerPage = in_array($itemsPerPage, self::PER_PAGE_OPTIONS, true) ? $itemsPerPage : self::DEFAULT_ITEMS_PER_PAGE;
+
         $this->filter = new VehicleFilter(
             sortBy: VehicleSortBy::tryFrom((string) $sortBy) ?? VehicleSortBy::Id,
             sortDirection: SortDirection::tryFrom((string) $sortDirection) ?? SortDirection::Ascending,
         );
-        $pageRequest = new PageRequest(page: $page, itemsPerPage: 10);
+        $pageRequest = new PageRequest(page: $page, itemsPerPage: $this->itemsPerPage);
         $this->vehicleList = $this->vehicleFacade->find($this->filter, $pageRequest);
     }
 
@@ -60,6 +67,7 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
         $grid->addGridSignal('add', 'Přidat vozidlo', 'icon-plus-sign');
         $grid->setSortBy($this->filter->sortBy);
         $grid->setSortDirection($this->filter->sortDirection);
+        $grid->setPerPageOptions(self::PER_PAGE_OPTIONS, $this->itemsPerPage);
 
         $grid
             ->addIntegerColumn('id', 'ID')

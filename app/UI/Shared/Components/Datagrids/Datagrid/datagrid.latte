@@ -1,7 +1,19 @@
 
 <div class="row">
-{control pagination}
+    <div class="col-md-12">
+        {if $control->perPageOptions && $control->itemsPerPage !== null}
+            {form perPageForm, class: 'form-inline pull-right datagrid-form'}
+                <div class="col-md-12 form-group">
+                    {label itemsPerPage/}
+                    {input itemsPerPage, class: 'input-sm form-control'}
+                    {input apply, class: 'btn btn-sm btn-default'}
+                </div>
+            {/form}
+        {/if}
+        {control pagination}
+    </div>
 </div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -20,6 +32,18 @@
         </div>
     </div>
 </div>
+
 <div class="row">
-{control pagination}
+    <div class="col-md-12">
+        {if $control->perPageOptions && $control->itemsPerPage !== null}
+            {form perPageForm, class: 'form-inline pull-right datagrid-form'}
+                <div class="col-md-12 form-group">
+                    {label itemsPerPage/}
+                    {input itemsPerPage, class: 'input-sm form-control'}
+                    {input apply, class: 'btn btn-sm btn-default'}
+                </div>
+            {/form}
+        {/if}
+        {control pagination}
+    </div>
 </div>
