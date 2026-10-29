@@ -67,7 +67,9 @@
 </div>
 
 {if count($vehicleList) > 0}
+    <div class="row">
     {control pagination}
+    </div>
 
     <div class="row catalog-items">
         <div n:foreach="$vehicleList as $vehicle" class="col-md-3">
@@ -93,7 +95,9 @@
         <div class="clearfix"></div>
     </div>
 
+    <div class="row">
     {control pagination}
+    </div>
 {else}
     <div class="alert alert-danger">Nebyla nalezena žádná vozidla!</div>
 {/if}

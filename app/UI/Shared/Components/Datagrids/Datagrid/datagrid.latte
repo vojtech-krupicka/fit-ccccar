@@ -1,26 +1,25 @@
-{if count($entityList) > 0}
-<table class="table table-bordered table-condensed table-striped">
-    <thead>
-        <tr>
-            <th n:foreach="$control->columns as $column" n:class="$column->getHeaderCss()">
-                {if $column->title !== null}{$column->title}{else}&nbsp;{/if}
-            </th>
-            <th class="text-center" n:if="$control->actions">&nbsp;</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr n:foreach="$entityList as $entity" n:class="$control->getRowCss($entity, $iterator)">
-            <td n:foreach="$control->columns as $column" n:class="$column->getCellCss()">
-                {$column->getCellContent($entity) ?? $column->getEmptyValue()}
-            </td>
-            <td class="text-center" n:if="$control->actions">
-                {foreach $control->actions as $action}
-                    {$action->render($entity)}
-                {/foreach}
-            </td>
-        </tr>
-    </tbody>
-</table>
-{else}
-<div class="alert alert-danger">{$control->noDataMsg}</div>
-{/if}
+
+<div class="row">
+{control pagination}
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6"><h3 class="panel-title">{$control->heading}</h3></div>
+                    <div class="col-md-6">
+                        {foreach $control->gridActions as $action}
+                            <a class="btn btn-default btn-xs pull-right" href="{plink $action->target}" title="{$action->title}"><span class="{$action->icon}"></span> {$action->title}</a>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+
+            {include table.latte}
+        </div>
+    </div>
+</div>
+<div class="row">
+{control pagination}
+</div>

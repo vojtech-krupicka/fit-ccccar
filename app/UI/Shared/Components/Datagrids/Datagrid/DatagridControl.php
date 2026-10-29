@@ -4,9 +4,12 @@ namespace App\UI\Shared\Components\Datagrids\Datagrid;
 
 use App\Model\BaseEntity;
 use App\Model\EntityList;
+use App\Model\SortDirection;
 use App\UI\Shared\Components\Datagrids\Datagrid\Types\ActionSeverity;
 use App\UI\Shared\Components\Datagrids\Datagrid\Actions;
 use App\UI\Shared\Components\Datagrids\Datagrid\Columns;
+use App\UI\Shared\Components\Menu\Pagination\PaginationControl;
+use App\UI\Shared\Components\Menu\Pagination\PaginationControlFactory;
 use Latte\Essential\CachingIterator;
 use Nette\Application\UI\Control;
 use Nette\Utils\Html;
@@ -24,7 +27,12 @@ class DatagridControl extends Control
     /**
      * @var array<string, Actions\BaseAction<T>>
      */
-    public array $actions = [];
+    public array $rowActions = [];
+
+    /**
+     * @var array<string, Actions\BaseAction<T>>
+     */
+    public array $gridActions = [];
 
     /**
      * @var (\Closure(T, CachingIterator): string)|null
@@ -35,12 +43,20 @@ class DatagridControl extends Control
 
     public protected(set) string $emptyValue = 'N/A';
 
+    public protected(set) ?\BackedEnum $sortBy = null;
+
+    public protected(set) SortDirection $sortDirection = SortDirection::Ascending;
+
+    public protected(set) SortDirection $defaultSortDirection = SortDirection::Ascending;
+
     /**
      * @param EntityList<T> $entityList
      */
     public function __construct(
+        private readonly PaginationControlFactory $paginationFactory,
+        public string $heading,
         protected readonly EntityList $entityList,
-        public ?string $noDataMsg = null
+        public string $noDataMsg = 'No data available'
     ) {}
 
     public function render(): void
@@ -48,6 +64,21 @@ class DatagridControl extends Control
         $this->template->entityList = $this->entityList;
         $this->template->render(__DIR__ . '/datagrid.latte');
     }
+
+    #region Subcomponents
+
+    public function createComponentPagination(): PaginationControl
+    {
+        return $this->paginationFactory->create(
+            page: $this->entityList->currentPage ?? 1,
+            pageCount: $this->entityList->pageCount ?? 1,
+            totalCount: $this->entityList->totalCount
+        );
+    }
+
+    #endregion
+
+    #region Getters
 
     /**
      * @return Columns\BaseColumn<T>|null
@@ -60,9 +91,9 @@ class DatagridControl extends Control
     /**
      * @return Actions\BaseAction<T>|null
      */
-    public function getAction(string $name): ?Actions\BaseAction
+    public function getRowAction(string $name): ?Actions\BaseAction
     {
-        return $this->actions[$name] ?? null;
+        return $this->rowActions[$name] ?? null;
     }
 
     /**
@@ -77,6 +108,8 @@ class DatagridControl extends Control
 
         return '';
     }
+
+    #endregion
 
     #region Columns Management
 
@@ -158,26 +191,26 @@ class DatagridControl extends Control
 
     #endregion
 
-    #region Action Management
+    #region Row action Management
 
     /**
      * @template A of Actions\BaseAction<T>
      * @param A $action
      * @return A
      */
-    protected function registerAction(Actions\BaseAction $action): Actions\BaseAction
+    protected function registerRowAction(Actions\BaseAction $action): Actions\BaseAction
     {
-        if (isset($this->actions[$action->name])) {
+        if (isset($this->rowActions[$action->name])) {
             throw new \InvalidArgumentException("Action '{$action->name}' already exists.");
         }
 
-        return $this->actions[$action->name] = $action;
+        return $this->rowActions[$action->name] = $action;
     }
 
     /**
      * @return Actions\Signal<T>
      */
-    public function addSignal(
+    public function addRowSignal(
         string $name,
         string|null $title,
         string $icon,
@@ -185,7 +218,7 @@ class DatagridControl extends Control
         ActionSeverity $severity = ActionSeverity::Info,
     ): Actions\Signal {
         $action = new Actions\Signal($this, $name, $target);
-        $this->registerAction($action);
+        $this->registerRowAction($action);
 
         $action->setIcon($icon);
         $action->setTitle($title);
@@ -196,7 +229,7 @@ class DatagridControl extends Control
     /**
      * @return Actions\SideEffect<T>
      */
-    public function addSideEffect(
+    public function addRowSideEffect(
         string $name,
         string|null $title,
         string $icon,
@@ -204,7 +237,63 @@ class DatagridControl extends Control
         ActionSeverity $severity = ActionSeverity::Info,
     ): Actions\SideEffect {
         $action = new Actions\SideEffect($this, $name, $target);
-        $this->registerAction($action);
+        $this->registerRowAction($action);
+
+        $action->setIcon($icon);
+        $action->setTitle($title);
+        $action->setSeverity($severity);
+        return $action;
+    }
+
+    #endregion
+
+    #region Grid action Management
+
+    /**
+     * @template A of Actions\BaseAction<T>
+     * @param A $action
+     * @return A
+     */
+    protected function registerGridAction(Actions\BaseAction $action): Actions\BaseAction
+    {
+        if (isset($this->gridActions[$action->name])) {
+            throw new \InvalidArgumentException("Action '{$action->name}' already exists.");
+        }
+
+        return $this->gridActions[$action->name] = $action;
+    }
+
+    /**
+     * @return Actions\Signal<T>
+     */
+    public function addGridSignal(
+        string $name,
+        string|null $title,
+        string $icon,
+        ?string $target = null,
+        ActionSeverity $severity = ActionSeverity::Info,
+    ): Actions\Signal {
+        $action = new Actions\Signal($this, $name, $target);
+        $this->registerGridAction($action);
+
+        $action->setIcon($icon);
+        $action->setTitle($title);
+        $action->setSeverity($severity);
+        return $action;
+    }
+
+    /**
+     * @return Actions\SideEffect<T>
+     */
+    public function addGridSideEffect(
+        string $name,
+        string|null $title,
+        string $icon,
+        ?string $target = null,
+        ActionSeverity $severity = ActionSeverity::Info,
+    ): Actions\SideEffect {
+        $action = new Actions\SideEffect($this, $name, $target);
+        $this->registerGridAction($action);
 
         $action->setIcon($icon);
         $action->setTitle($title);
@@ -234,6 +323,18 @@ class DatagridControl extends Control
     public function setRowCssCallback(?\Closure $rowCssCallback): static
     {
         $this->rowCssCallback = $rowCssCallback;
+        return $this;
+    }
+
+    public function setSortBy(?\BackedEnum $sortBy): static
+    {
+        $this->sortBy = $sortBy;
+        return $this;
+    }
+
+    public function setSortDirection(SortDirection $sortDirection): static
+    {
+        $this->sortDirection = $sortDirection;
         return $this;
     }
 

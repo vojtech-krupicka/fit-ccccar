@@ -12,5 +12,5 @@ interface DatagridControlFactory
      * @param EntityList<T> $entityList
      * @return DatagridControl<T>
      */
-    public function create(EntityList $entityList): DatagridControl;
+    public function create(string $heading, EntityList $entityList, string $noDataMsg): DatagridControl;
 }

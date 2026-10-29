@@ -20,7 +20,7 @@ abstract class BaseColumn
     public protected(set) array $formatters = [];
     public protected(set) Types\TextAlign $textAlign = Types\TextAlign::Center;
     public protected(set) Types\ColumnWidth $width = Types\ColumnWidth::NoWidth;
-    public protected(set) bool $sortable = false;
+    public protected(set) ?\BackedEnum $sortableKey = null;
     public protected(set) ?string $emptyValue = null;
 
     /**
@@ -132,9 +132,9 @@ abstract class BaseColumn
         return $this;
     }
 
-    public function setSortable(bool $sortable): static
+    public function setSortableKey(?\BackedEnum $sortableKey): static
     {
-        $this->sortable = $sortable;
+        $this->sortableKey = $sortableKey;
         return $this;
     }
 

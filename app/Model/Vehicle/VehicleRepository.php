@@ -50,16 +50,29 @@ class VehicleRepository extends BaseRepository
             $query->where('cost_per_unit <= ?', $filter->costPerUnitTo);
         }
 
+        $sortDirection = strtoupper($filter->sortDirection->value);
         switch ($filter->sortBy) {
+            case VehicleSortBy::Id:
+                $query->order('id ' . $sortDirection);
+                break;
+            case VehicleSortBy::PlateNumber:
+                $query->order('plate_number ' . $sortDirection);
+                break;
+            case VehicleSortBy::Mileage:
+                $query->order('mileage ' . $sortDirection);
+                break;
+            case VehicleSortBy::Year:
+                $query->order('year ' . $sortDirection);
+                break;
             case VehicleSortBy::CostPerDay:
-                $query->order('cost_per_day ' . $filter->sortDirection->value);
+                $query->order('cost_per_day ' . $sortDirection);
                 break;
             case VehicleSortBy::CostPerUnit:
-                $query->order('cost_per_unit ' . $filter->sortDirection->value);
+                $query->order('cost_per_unit ' . $sortDirection);
                 break;
             default:
-                $query->order('vehicle_type.manufacturer ' . $filter->sortDirection->value);
-                $query->order('vehicle_type.brand ' . $filter->sortDirection->value);
+                $query->order('vehicle_type.manufacturer ' . $sortDirection);
+                $query->order('vehicle_type.brand ' . $sortDirection);
                 break;
         }
 
