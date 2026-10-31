@@ -35,6 +35,11 @@ class DatagridControl extends UI\Control
     public array $gridActions = [];
 
     /**
+     * @var array<string, Actions\BulkAction>
+     */
+    public array $bulkActions = [];
+
+    /**
      * @var (\Closure(T, CachingIterator): string)|null
      */
     public protected(set) ?\Closure $rowCssCallback = null;
@@ -106,6 +111,47 @@ class DatagridControl extends UI\Control
         return $form;
     }
 
+    public function createComponentBulkActionForm(): UI\Form
+    {
+        $bulkActions = array_map(fn(Actions\BulkAction $action): string => $action->label, $this->bulkActions);
+        $idsOnThisPage = array_map(fn(BaseEntity $entity): ?int => $entity->id, $this->entityList->entities);
+        $confirmMessages = [];
+        foreach ($this->bulkActions as $name => $action) {
+            if ($action->confirmMsg !== null) {
+                $confirmMessages[$name] = $action->confirmMsg;
+            }
+        }
+
+        $form = new UI\Form();
+        $form->setHtmlAttribute('onsubmit',
+            "const o = this.elements['bulkAction'].selectedOptions[0];"
+                . ' return !o || !o.dataset.confirm || confirm(o.dataset.confirm);');
+
+        $form
+            ->addCheckboxList('bulkActionIds', null, array_fill_keys($idsOnThisPage, ''))
+            ->setRequired('Vyberte alespoň jednu položku.');
+        $form
+            ->addSelect('bulkAction', null, $bulkActions)
+            ->setPrompt('--- Hromadná akce ---')
+            ->setOptionAttribute('data-confirm:', $confirmMessages)
+            ->setRequired('Vyberte hromadnou akci, kterou chcete provést.');
+
+        $form->addSubmit('bulkActionSubmit', 'Provést');
+
+        $form->onSuccess[] = function (UI\Form $form, \stdClass $values): void {
+            $action = $this->getBulkAction($values->bulkAction);
+            if ($action === null) {
+                $this->getPresenter()->flashMessage("Neplatná hromadná akce '{$values->bulkAction}'!", 'danger');
+            } else {
+                $action->execute(array_values(array_map('intval', $values->bulkActionIds)));
+            }
+
+            $this->getPresenter()->redirect('this');
+        };
+
+        return $form;
+    }
+
     #endregion
 
     #region Getters
@@ -124,6 +170,22 @@ class DatagridControl extends UI\Control
     public function getRowAction(string $name): ?Actions\BaseAction
     {
         return $this->rowActions[$name] ?? null;
+    }
+
+    /**
+     * @return Actions\BaseAction<T>|null
+     */
+    public function getGridAction(string $name): ?Actions\BaseAction
+    {
+        return $this->gridActions[$name] ?? null;
+    }
+
+    /**
+     * @return Actions\BulkAction|null
+     */
+    public function getBulkAction(string $name): ?Actions\BulkAction
+    {
+        return $this->bulkActions[$name] ?? null;
     }
 
     /**
@@ -221,7 +283,7 @@ class DatagridControl extends UI\Control
 
     #endregion
 
-    #region Row action Management
+    #region Row Actions
 
     /**
      * @template A of Actions\BaseAction<T>
@@ -231,7 +293,7 @@ class DatagridControl extends UI\Control
     protected function registerRowAction(Actions\BaseAction $action): Actions\BaseAction
     {
         if (isset($this->rowActions[$action->name])) {
-            throw new \InvalidArgumentException("Action '{$action->name}' already exists.");
+            throw new \InvalidArgumentException("Row action with name '{$action->name}' already exists.");
         }
 
         return $this->rowActions[$action->name] = $action;
@@ -277,7 +339,7 @@ class DatagridControl extends UI\Control
 
     #endregion
 
-    #region Grid action Management
+    #region Grid Actions
 
     /**
      * @template A of Actions\BaseAction<T>
@@ -287,7 +349,7 @@ class DatagridControl extends UI\Control
     protected function registerGridAction(Actions\BaseAction $action): Actions\BaseAction
     {
         if (isset($this->gridActions[$action->name])) {
-            throw new \InvalidArgumentException("Action '{$action->name}' already exists.");
+            throw new \InvalidArgumentException("Grid action with name '{$action->name}' already exists.");
         }
 
         return $this->gridActions[$action->name] = $action;
@@ -329,6 +391,24 @@ class DatagridControl extends UI\Control
         $action->setTitle($title);
         $action->setSeverity($severity);
         return $action;
+    }
+
+    #endregion
+
+    #region Bulk Actions
+
+    /**
+     * @param \Closure(list<int>): void $callback
+     * @return Actions\BulkAction
+     */
+    public function addBulkAction(string $name, string $label, \Closure $callback, ?string $confirmMsg = null): Actions\BulkAction
+    {
+        if (isset($this->bulkActions[$name])) {
+            throw new \InvalidArgumentException("Bulk action with name '{$name}' already exists.");
+        }
+
+        $action = new Actions\BulkAction($name, $label, $callback, $confirmMsg);
+        return $this->bulkActions[$action->name] = $action;
     }
 
     #endregion

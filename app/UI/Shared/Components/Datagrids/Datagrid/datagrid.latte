@@ -28,7 +28,15 @@
                 </div>
             </div>
 
-            {include table.latte}
+
+            {if $control->bulkActions}
+                {form bulkActionForm}
+                <div n:foreach="$form->getErrors() as $error" class="alert alert-warning">{$error}</div>
+                    {include table.latte}
+                {/form}
+            {else}
+                {include table.latte}
+            {/if}
         </div>
     </div>
 </div>

@@ -21,11 +21,6 @@ abstract class BaseAction
 
     const DEFAULT_ACTION_CSS = 'btn btn-default btn-xs';
 
-    /**
-     * @var array<string, mixed>|(\Closure(T): array<string, mixed>)
-     */
-    public protected(set) array|\Closure|null $args = null;
-
     public protected(set) string|null $title = null;
 
     public protected(set) string $target = '';

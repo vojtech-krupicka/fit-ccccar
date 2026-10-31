@@ -69,6 +69,35 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
         $grid->setSortDirection($this->filter->sortDirection);
         $grid->setPerPageOptions(self::PER_PAGE_OPTIONS, $this->itemsPerPage);
 
+        if (true) {
+            $grid->addBulkAction(
+                'activate',
+                'Aktivovat vozidla',
+                function (array $ids): void {
+                    $idsLine = implode(', ', $ids);
+                    $this->flashMessage("Vybraná vozidla byla aktivována ({$idsLine}).");
+                },
+                'Opravdu chcete aktivovat vybraná vozidla?'
+            );
+            $grid->addBulkAction(
+                'deactivate',
+                'Deaktivovat vozidla',
+                function (array $ids): void {
+                    $idsLine = implode(', ', $ids);
+                    $this->flashMessage("Vybraná vozidla byla deaktivována ({$idsLine}).");
+                }
+            );
+            $grid->addBulkAction(
+                'delete',
+                'Smazat vozidla',
+                function (array $ids): void {
+                    $idsLine = implode(', ', $ids);
+                    $this->flashMessage("Vybraná vozidla byla smazána ({$idsLine}).");
+                },
+                'Opravdu chcete smazat vybraná vozidla?'
+            );
+        }
+
         $grid
             ->addIntegerColumn('id', 'ID')
             ->setSortableKey(VehicleSortBy::Id);
