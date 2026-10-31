@@ -11,7 +11,8 @@ use Nette\Utils\Html;
  */
 class SideEffect extends BaseAction
 {
-    protected ?string $confirmMsg = null;
+    /** @var (\Closure(T): string)|string|null */
+    protected \Closure|string|null $confirmMsg = null;
 
     /**
      * @param T $entity
@@ -30,7 +31,8 @@ class SideEffect extends BaseAction
         ];
 
         if ($this->confirmMsg !== null) {
-            $attrs['onclick'] = "return confirm('{json_encode($this->confirmMsg)}');";
+            $attrs['data-confirm'] = $this->confirmMsg instanceof \Closure ? ($this->confirmMsg)($entity) : $this->confirmMsg;
+            $attrs['onclick'] = 'return confirm(this.dataset.confirm);';
         }
 
         return Html::el('button', $attrs)
@@ -38,7 +40,10 @@ class SideEffect extends BaseAction
             ->setHtml($icon);
     }
 
-    public function setConfirmMsg(string $confirmMsg): static
+    /**
+     * @param (\Closure(T): string)|string|null $confirmMsg
+     */
+    public function setConfirmMsg(\Closure|string|null $confirmMsg): static
     {
         $this->confirmMsg = $confirmMsg;
         return $this;

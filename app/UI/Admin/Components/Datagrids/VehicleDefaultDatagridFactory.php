@@ -101,7 +101,7 @@ class VehicleDefaultDatagridFactory
             ->addRowSignal('edit', 'Spravovat vozidlo', 'icon-edit');
         $grid
             ->addRowSideEffect('delete', 'Smazat vozidlo', 'icon-remove', severity: ActionSeverity::Danger)
-            ->setConfirmMsg('Opravdu chcete smazat toto vozidlo?');
+            ->setConfirmMsg(fn(VehicleEntity $vehicle) => "Opravdu chcete smazat vozidlo s id #{$vehicle->id}?");
 
         return $grid;
     }
