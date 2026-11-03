@@ -2,6 +2,7 @@
 
 namespace App\UI\Admin\RentalOffice;
 
+use App\Core\Attributes\PostSideEffect;
 use App\Model\RentalOffice\RentalOfficeEntity;
 use App\Model\RentalOffice\RentalOfficeFacade;
 use App\Model\RentalOffice\RentalOfficeFilter;
@@ -27,6 +28,35 @@ final class RentalOfficePresenter extends Admin\BaseSecuredPresenter
         private readonly RentalOfficeFacade $rentalOfficeFacade,
         private readonly RentalOfficeDefaultDatagridFactory $defaultDatagridFactory
     ) {}
+
+    #region Other actions
+
+    #[PostSideEffect]
+    public function actionDelete(int $id): void
+    {
+        $rentalOffice = $this->rentalOfficeFacade->get($id);
+        if ($rentalOffice === null) {
+            $this->flashMessage("Pobočka s ID {$id} nebyla nalezena.", 'danger');
+        } else {
+            $this->flashMessage("Pobočka s ID {$id} byla smazána (FAKE).");
+        }
+
+        $this->redirect('default');
+    }
+
+    public function actionAdd(): void
+    {
+        $this->flashMessage("Funkcionalita 'přidat pobočku' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    public function actionEdit(int $id): void
+    {
+        $this->flashMessage("Funkcionalita 'upravit pobočku #{$id}' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    #endregion
 
     public function actionDefault(
         int $page = 1,
