@@ -54,10 +54,9 @@ class CarRentalRepository extends BaseRepository
 
         if ($filter->vehicleId !== null) {
             $query->where('vehicle_id', $filter->vehicleId);
-
-            if ($filter->activeOnly) {
-                $query->where("((`start_at` IS NOT NULL AND `end_at` IS NULL) OR (`start_at` IS NULL AND `deleted` = '0'))");
-            }
+        }
+        if ($filter->activeOnly) {
+            $query->where("((`start_at` IS NOT NULL AND `end_at` IS NULL) OR (`start_at` IS NULL AND `deleted` = '0'))");
         }
 
         $sortDirection = $filter->sortDirection->toSql();

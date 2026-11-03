@@ -34,7 +34,11 @@ abstract class DatabaseTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        self::container()->getByType(Connection::class)->rollBack();
+        $connection = self::container()->getByType(Connection::class);
+        $connection->rollBack();
+        // Close the connection now: a container is not freed immediately, and every test opens its own,
+        // so the open connections would add up past the MySQL limit.
+        $connection->disconnect();
         // A fresh container for every test: services created in one test (and the objects they hold,
         // like the signed-in user) must not leak into the next one.
         self::$container = null;
