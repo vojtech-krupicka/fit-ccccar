@@ -23,6 +23,24 @@ final class HomePresenter extends Front\BasePresenter
         $this->template->pageHeading = "Vítejte na {$this->appSettings->info->company}";
     }
 
+    public function renderConditions(): void
+    {
+        $this->template->pageHeading = 'Obchodní podmínky';
+        $this->addBreadcrumb('Home:conditions', 'Obchodní podmínky');
+    }
+
+    public function renderFaq(): void
+    {
+        $this->template->pageHeading = 'Často kladené otázky';
+        $this->addBreadcrumb('Home:faq', 'Často kladené otázky');
+    }
+
+    public function renderContact(): void
+    {
+        $this->template->pageHeading = 'Kontakt';
+        $this->addBreadcrumb('Home:contact', 'Kontakt');
+    }
+
     public function actionOffices(): void
     {
         $this->officeList = $this->officeFacade->getAll(orderBy: 'name, city');
