@@ -133,12 +133,18 @@ CREATE TABLE `car_rental` (
   `deleted` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_car_rental_vehicle1_idx` (`vehicle_id`),
+  INDEX `fk_car_rental_rental_office1_idx` (`rental_office_id`),
   INDEX `fk_car_rental_customer1_idx` (`customer_id`),
   INDEX `fk_car_rental_employee1_idx` (`borrower_id`),
   INDEX `fk_car_rental_employee2_idx` (`recipient_id`),
   CONSTRAINT `fk_car_rental_vehicle1`
     FOREIGN KEY (`vehicle_id`)
     REFERENCES `vehicle` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_car_rental_rental_office1`
+    FOREIGN KEY (`rental_office_id`)
+    REFERENCES `rental_office` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_car_rental_customer1`

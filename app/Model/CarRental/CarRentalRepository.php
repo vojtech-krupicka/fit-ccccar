@@ -60,6 +60,7 @@ class CarRentalRepository extends BaseRepository
             }
         }
 
+        $sortDirection = $filter->sortDirection?->toSql() ?? 'ASC';
         switch ($filter->sortBy) {
             case CarRentalSortBy::Latest:
                 $query->order('reserved_at DESC, start_at DESC, end_at DESC');
@@ -67,8 +68,42 @@ class CarRentalRepository extends BaseRepository
             case CarRentalSortBy::Oldest:
                 $query->order('reserved_at ASC, start_at ASC, end_at ASC');
                 break;
+            case CarRentalSortBy::Vehicle:
+                $query->order('vehicle.vehicle_type.manufacturer ' . $sortDirection);
+                $query->order('vehicle.vehicle_type.brand ' . $sortDirection);
+                break;
+            case CarRentalSortBy::RentalOffice:
+                $query->order('rental_office.name ' . $sortDirection);
+                break;
+            case CarRentalSortBy::Customer:
+                $query->order('customer.name ' . $sortDirection);
+                $query->order('customer.surname ' . $sortDirection);
+                break;
+            case CarRentalSortBy::Borrower:
+                $query->order('borrower.name ' . $sortDirection);
+                $query->order('borrower.surname ' . $sortDirection);
+                break;
+            case CarRentalSortBy::Recipient:
+                $query->order('recipient.name ' . $sortDirection);
+                $query->order('recipient.surname ' . $sortDirection);
+                break;
+            case CarRentalSortBy::Distance:
+                $query->order('distance ' . $sortDirection);
+                break;
+            case CarRentalSortBy::Price:
+                $query->order('price ' . $sortDirection);
+                break;
+            case CarRentalSortBy::ReservedAt:
+                $query->order('reserved_at ' . $sortDirection);
+                break;
+            case CarRentalSortBy::StartAt:
+                $query->order('start_at ' . $sortDirection);
+                break;
+            case CarRentalSortBy::Deleted:
+                $query->order('deleted ' . $sortDirection);
+                break;
             default:
-                $query->order('id ASC');
+                $query->order('id ' . $sortDirection);
                 break;
         }
 

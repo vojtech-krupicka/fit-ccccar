@@ -2,6 +2,10 @@
 
 namespace App\Model\CarRental;
 
+use App\Model\Customer\CustomerDbMapper;
+use App\Model\Employee\EmployeeDbMapper;
+use App\Model\RentalOffice\RentalOfficeDbMapper;
+use App\Model\Vehicle\VehicleDbMapper;
 use App\Model\BaseEntity;
 use App\Model\BaseMapper;
 use Nette\Database\Table\ActiveRow;
@@ -11,6 +15,13 @@ use Nette\Database\Table\ActiveRow;
  */
 class CarRentalDbMapper extends BaseMapper
 {
+    public function __construct(
+        private EmployeeDbMapper $employeeDbMapper,
+        private VehicleDbMapper $vehicleDbMapper,
+        private RentalOfficeDbMapper $rentalOfficeDbMapper,
+        private CustomerDbMapper $customerDbMapper,
+    ) {}
+
     public function table(): string
     {
         return 'car_rental';
@@ -33,6 +44,11 @@ class CarRentalDbMapper extends BaseMapper
             distance: (float) $data['distance'],
             price: (float) $data['price'],
             deleted: (bool) $data['deleted'],
+            vehicle: $this->vehicleDbMapper->load($data['vehicle']),
+            rentalOffice: $this->rentalOfficeDbMapper->load($data['rental_office']),
+            customer: $this->customerDbMapper->load($data['customer']),
+            borrower: isset($data['borrower']) ? $this->employeeDbMapper->load($data['borrower']) : null,
+            recipient: isset($data['recipient']) ? $this->employeeDbMapper->load($data['recipient']) : null,
         ) : null;
     }
 

@@ -24,6 +24,10 @@ final class RouterFactory
                     'prihlaseni' => 'SignIn',
                     'odhlaseni' => 'SignOut',
                     'zamestnanec' => 'Employee',
+                    'zakaznik' => 'Customer',
+                    'pobocky' => 'RentalOffice',
+                    'vozidla' => 'Vehicle',
+                    'vypujcky' => 'CarRental',
                 ),
             ),
             'action' => array(
@@ -31,6 +35,9 @@ final class RouterFactory
                 Route::FilterTable => array(
                     'vychozi' => 'default',
                     'profil' => 'profile',
+                    'pridat' => 'add',
+                    'upravit' => 'edit',
+                    'smazat' => 'delete',
                 ),
             ),
             'id' => null,

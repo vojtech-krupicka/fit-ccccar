@@ -30,7 +30,7 @@ class CustomerDbMapper extends BaseMapper
             city: (string) $data['city'],
             zip: (string) $data['zip'],
             country: (string) $data['country'],
-            created: $data['created'] ?? new \DateTime(),
+            created: $data['created_at'] ?? new \DateTime(),
         ) : null;
     }
 

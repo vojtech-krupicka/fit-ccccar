@@ -21,4 +21,9 @@ enum SortDirection: string
     {
         return $this === self::Descending;
     }
+
+    public function toSql(): string
+    {
+        return $this === self::Ascending ? 'ASC' : 'DESC';
+    }
 }

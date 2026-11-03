@@ -19,7 +19,53 @@ readonly class EntityList implements \IteratorAggregate, \Countable
         public readonly int $totalCount,
         public readonly int|null $currentPage = null,
         public readonly int|null $pageCount = null,
+        public readonly int|null $itemsPerPage = null,
     ) {}
+
+    #region Getters
+
+    /**
+     * @return list<T>
+     */
+    public function getEntities(): array
+    {
+        return $this->entities;
+    }
+
+    public function getCount(): int
+    {
+        return count($this->entities);
+    }
+
+    public function getTotalCount(): int
+    {
+        return $this->totalCount;
+    }
+
+    public function getCurrentPage(): ?int
+    {
+        return $this->currentPage;
+    }
+
+    public function getPageCount(): ?int
+    {
+        return $this->pageCount;
+    }
+
+    public function getMinIndex(): int
+    {
+        return $this->currentPage !== null && $this->itemsPerPage !== null && $this->currentPage > 0
+            ? ($this->currentPage - 1) * $this->itemsPerPage + 1
+            : 1;
+    }
+
+    public function getMaxIndex(): int
+    {
+        $maxIndex = $this->currentPage !== null && $this->itemsPerPage !== null
+            ? $this->getMinIndex() + $this->itemsPerPage - 1
+            : $this->getTotalCount();
+        return min($maxIndex, $this->getTotalCount());
+    }
 
     #region Implementation of interfaces
 

@@ -3,6 +3,8 @@
 namespace App\Model\Customer;
 
 use App\Model\BaseFacade;
+use App\Model\EntityList;
+use App\Model\PageRequest;
 use Nette\Security\Passwords;
 
 /**
@@ -31,5 +33,15 @@ class CustomerFacade extends BaseFacade
         $customer->password = $this->passwords->hash($newPassword);
         $this->persist($customer);
         return true;
+    }
+
+    /**
+     * @return EntityList<CustomerEntity>
+     */
+    public function find(
+        CustomerFilter $filter,
+        ?PageRequest $page,
+    ): EntityList {
+        return $this->repository->find($filter, $page);
     }
 }

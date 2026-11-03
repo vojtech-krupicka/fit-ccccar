@@ -98,6 +98,7 @@ abstract class BaseRepository
             totalCount: $count ?? count($entities),
             currentPage: $page !== null ? $page->page : 1,
             pageCount: $pageCount,
+            itemsPerPage: $page !== null ? $page->itemsPerPage : count($entities)
         );
     }
 }
