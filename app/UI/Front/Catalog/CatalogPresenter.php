@@ -98,8 +98,10 @@ final class CatalogPresenter extends Front\BasePresenter
             page: new PageRequest($page, self::ITEMS_PER_PAGE)
         );
 
-        if ($page > $this->vehicleList->pageCount) {
-            $this->redirect('this', ['page' => $this->vehicleList->pageCount]);
+        // an empty result has zero pages, but the first page must still be shown (not redirected to page 0 forever)
+        $lastPage = max(1, $this->vehicleList->pageCount ?? 1);
+        if ($page > $lastPage) {
+            $this->redirect('this', ['page' => $lastPage]);
         }
     }
 

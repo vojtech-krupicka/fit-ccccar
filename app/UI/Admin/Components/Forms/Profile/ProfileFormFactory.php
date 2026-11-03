@@ -21,6 +21,7 @@ class ProfileFormFactory
         $form
             ->addSelect('rentalOffice', 'Pobočka:')
             ->setPrompt('--- Vyberte pobočku ---')
+            ->setRequired('Vyberte pobočku, na které pracujete.')
             ->setItems(
                 array_column($this->rentalOfficeFacade->getAll()->toArray(), 'name', 'id')
             );

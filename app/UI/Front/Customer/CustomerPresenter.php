@@ -98,7 +98,10 @@ final class CustomerPresenter extends Front\BasePresenter
             $this->customer->zip = $values->zip;
             $this->customer->country = $values->country;
 
-            $this->customerFacade->persist($this->customer);
+            if (!$this->customerFacade->persist($this->customer)) {
+                $form->addError('Profil se nepodařilo uložit. Zkontrolujte, zda zadaný e-mail nepoužívá jiný zákazník.');
+                return;
+            }
 
             $this->flashMessage('Váš profil byl úspěšně aktualizován.', 'info');
             $this->redirect('this');

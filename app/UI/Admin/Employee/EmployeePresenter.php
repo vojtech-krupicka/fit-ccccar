@@ -98,7 +98,10 @@ final class EmployeePresenter extends Admin\BasePresenter
             $this->employee->surname = $values->lastName;
             $this->employee->phone = $values->phone;
 
-            $this->employeeFacade->persist($this->employee);
+            if (!$this->employeeFacade->persist($this->employee)) {
+                $form->addError('Profil se nepodařilo uložit. Zkontrolujte, zda zadaný e-mail nepoužívá jiný zaměstnanec.');
+                return;
+            }
 
             $this->flashMessage('Váš profil byl úspěšně aktualizován.', 'info');
             $this->redirect('this');
