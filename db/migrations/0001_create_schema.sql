@@ -27,7 +27,7 @@ CREATE TABLE `employee` (
   `password` CHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_employee_rental_office_idx` (`rental_office_id`),
-  UNIQUE INDEX `uq_customer_email` (`email`),
+  UNIQUE INDEX `uq_employee_email` (`email`),
   CONSTRAINT `fk_employee_rental_office`
     FOREIGN KEY (`rental_office_id`)
     REFERENCES `rental_office` (`id`)
