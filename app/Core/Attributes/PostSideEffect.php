@@ -6,7 +6,7 @@ use Nette\Application\Attributes\Requires;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class Signal extends Requires
+class PostSideEffect extends Requires
 {
     public function __construct()
     {

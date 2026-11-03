@@ -2,12 +2,12 @@
 
 namespace App\UI\Admin\SignOut;
 
-use App\Core\Attributes;
+use App\Core\Attributes\PostSideEffect;
 use App\UI\Admin;
 
 final class SignOutPresenter extends Admin\BaseSecuredPresenter
 {
-    #[Attributes\Signal]
+    #[PostSideEffect]
     public function actionDefault(): void
     {
         if (!$this->user->isLoggedIn()) {
