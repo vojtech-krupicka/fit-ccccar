@@ -17,12 +17,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr n:foreach="$reservations as $rental" n:class="$rental->customerId == $user->id ? 'success'">
-                        <td class="text-center">{$rental->reservedAt|date:'d.m.Y h:s'}</td>
+                    <tr n:foreach="$reservations as $rental" n:class="$rental->endAt === null ? 'warning'">
+                        <td class="text-center">{$rental->reservedAt|date:'d.m.Y H:i'}</td>
                         <td class="text-center">{$rental->reservedFrom|date:'d.m.Y'}</td>
                         <td class="text-center">{$rental->reservedTo|date:'d.m.Y'}</td>
-                        <td class="text-center">{ifset $rental->startAt}{$rental->startAt|date:'d.m.Y h:s'}{else}<em>Nevypůjčeno</em>{/ifset}</td>
-                        <td class="text-center">{ifset $rental->endAt}{$rental->endAt|date:'d.m.Y h:s'}{else}<em>Nevráceno</em>{/ifset}</td>
+                        <td class="text-center">{ifset $rental->startAt}{$rental->startAt|date:'d.m.Y H:i'}{else}<em>Nevypůjčeno</em>{/ifset}</td>
+                        <td class="text-center">{ifset $rental->endAt}{$rental->endAt|date:'d.m.Y H:i'}{else}<em>Nevráceno</em>{/ifset}</td>
                     </tr>
                 </tbody>
             </table>

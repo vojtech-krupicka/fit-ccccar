@@ -52,6 +52,40 @@ final class CarRentalRepositoryTest extends DatabaseTestCase
         $this->assertLessThan($all->getCount(), $active->getCount());
     }
 
+    public function testFilterByCustomer(): void
+    {
+        $list = $this->repository->find(new CarRentalFilter(customerId: 4), null);
+
+        $this->assertNotEmpty($list->entities);
+        foreach ($list->entities as $rental) {
+            $this->assertSame(4, $rental->customerId);
+        }
+    }
+
+    public function testFilterByCustomerAndVehicleNarrowsBoth(): void
+    {
+        $all = $this->repository->find(new CarRentalFilter(customerId: 4), null);
+        $both = $this->repository->find(new CarRentalFilter(vehicleId: 1, customerId: 4), null);
+
+        $this->assertLessThanOrEqual($all->getCount(), $both->getCount());
+        foreach ($both->entities as $rental) {
+            $this->assertSame([1, 4], [$rental->vehicleId, $rental->customerId]);
+        }
+    }
+
+    public function testActiveOnlyAlsoWorksWithoutAVehicle(): void
+    {
+        $all = $this->repository->find(new CarRentalFilter(), null);
+        $active = $this->repository->find(new CarRentalFilter(activeOnly: true), null);
+
+        $this->assertLessThan($all->getCount(), $active->getCount(), 'activeOnly must not depend on another filter');
+        foreach ($active->entities as $rental) {
+            $this->assertTrue(
+                ($rental->startAt !== null && $rental->endAt === null) || ($rental->startAt === null && !$rental->deleted),
+            );
+        }
+    }
+
     public function testRelatedEntitiesAreLoaded(): void
     {
         $rental = $this->repository->find(new CarRentalFilter(vehicleId: 1), null)->getFirst();

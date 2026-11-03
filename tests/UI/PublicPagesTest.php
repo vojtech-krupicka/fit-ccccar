@@ -86,7 +86,7 @@ final class PublicPagesTest extends PresenterTestCase
         yield 'conditions' => ['Front:Home', 'conditions', true];
         yield 'faq' => ['Front:Home', 'faq', true];
         yield 'contact' => ['Front:Home', 'contact', true];
-        yield 'customer loans' => ['Front:Customer', 'loans', false];
+        yield 'customer loans' => ['Front:Customer', 'loans', true];
         yield 'offices' => ['Front:Home', 'offices', true];
         yield 'catalog' => ['Front:Catalog', 'default', true];
         yield 'customer profile' => ['Front:Customer', 'profile', true];

@@ -3,6 +3,7 @@
 namespace Tests\UI;
 
 use App\Core\Authentication\Identity;
+use App\Model\CarRental\CarRentalEntity;
 use App\Model\CarRental\CarRentalFacade;
 use Nette\Application\Responses\RedirectResponse;
 use Tests\PresenterTestCase;
@@ -57,6 +58,26 @@ final class CatalogReservationTest extends PresenterTestCase
         $this->submitForm('Front:Catalog', 'reservationForm', self::POST, ['action' => 'detail', 'id' => 1]);
 
         $this->assertSame($before, $this->rentals->getCount());
+    }
+
+    public function testTheDetailListsActiveReservationsWithTheirTimes(): void
+    {
+        $this->rentals->persist(new CarRentalEntity(
+            id: null,
+            vehicleId: 1,
+            rentalOfficeId: 1,
+            customerId: 2,
+            borrowerId: null,
+            recipientId: null,
+            reservedAt: new \DateTime('2031-05-20 14:35:00'),
+            reservedFrom: new \DateTime('2031-06-01'),
+            reservedTo: new \DateTime('2031-06-03'),
+        ));
+
+        $html = $this->renderPage($this->runPresenter('Front:Catalog', ['action' => 'detail', 'id' => 1]));
+
+        $this->assertStringContainsString('20.05.2031 14:35', $html, 'hours and minutes, not 12-hour clock and seconds');
+        $this->assertStringContainsString('01.06.2031', $html);
     }
 
     public function testUnknownVehicleIsNotFound(): void

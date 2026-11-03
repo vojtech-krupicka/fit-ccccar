@@ -125,14 +125,10 @@ final class CustomerPresenter extends Front\BasePresenter
 
     public function actionLoans(): void
     {
-        if ($this->customer === null) {
-            $this->error('Uživatel nebyl nalezen.');
-        }
-
+        // startup() has already redirected guests and unknown customers, so $this->customer is always set
         $this->vehicleReservations = $this->carRentalFacade->find(
             new CarRentalFilter(
                 customerId: $this->customer->id,
-                activeOnly: true,
                 sortBy: CarRentalSortBy::Latest,
             ),
         );
