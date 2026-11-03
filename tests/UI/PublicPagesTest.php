@@ -40,6 +40,40 @@ final class PublicPagesTest extends PresenterTestCase
     }
 
     /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function providePagesWithText(): iterable
+    {
+        yield 'front home' => ['Front:Home', 'default'];
+        yield 'conditions' => ['Front:Home', 'conditions'];
+        yield 'faq' => ['Front:Home', 'faq'];
+        yield 'contact' => ['Front:Home', 'contact'];
+        yield 'admin help' => ['Admin:Home', 'default'];
+    }
+
+    #[DataProvider('providePagesWithText')]
+    public function testNoPlaceholderTextIsLeft(string $presenter, string $action): void
+    {
+        $this->loginAs(new Identity(id: 1, roles: ['admin'], email: 'frodo.baggins@ccccar.cz', firstname: 'Frodo', surname: 'Baggins'));
+
+        $html = $this->renderPage($this->runPresenter($presenter, ['action' => $action]));
+
+        $this->assertStringNotContainsStringIgnoringCase('lorem ipsum', $html);
+    }
+
+    public function testTheAdminHelpDoesNotDescribeMissingFeatures(): void
+    {
+        $this->loginAs(new Identity(id: 1, roles: ['admin'], email: 'frodo.baggins@ccccar.cz', firstname: 'Frodo', surname: 'Baggins'));
+
+        $html = $this->renderPage($this->runPresenter('Admin:Home', ['action' => 'default']));
+
+        // the old help came from a CMS: this application has no pages, files or galleries to manage
+        $this->assertStringNotContainsString('toc_cms', $html);
+        $this->assertStringNotContainsString('toc_gallery', $html);
+        $this->assertStringContainsString('Správa vozidel', $html);
+    }
+
+    /**
      * Pages that the navigation links to. Each must exist, so the menu has no dead links.
      *
      * The last value says whether the page exists yet. Four menu items still lead nowhere: those cases are
@@ -49,9 +83,9 @@ final class PublicPagesTest extends PresenterTestCase
      */
     public static function provideNavigationTargets(): iterable
     {
-        yield 'conditions' => ['Front:Home', 'conditions', false];
-        yield 'faq' => ['Front:Home', 'faq', false];
-        yield 'contact' => ['Front:Home', 'contact', false];
+        yield 'conditions' => ['Front:Home', 'conditions', true];
+        yield 'faq' => ['Front:Home', 'faq', true];
+        yield 'contact' => ['Front:Home', 'contact', true];
         yield 'customer loans' => ['Front:Customer', 'loans', false];
         yield 'offices' => ['Front:Home', 'offices', true];
         yield 'catalog' => ['Front:Catalog', 'default', true];

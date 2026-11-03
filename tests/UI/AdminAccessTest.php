@@ -53,6 +53,7 @@ final class AdminAccessTest extends PresenterTestCase
         yield 'delete vehicle' => ['Admin:Vehicle', ['action' => 'delete', 'id' => 1]];
         yield 'delete customer' => ['Admin:Customer', ['action' => 'delete', 'id' => 1]];
         yield 'delete car rental' => ['Admin:CarRental', ['action' => 'delete', 'id' => 1]];
+        yield 'delete rental office' => ['Admin:RentalOffice', ['action' => 'delete', 'id' => 1]];
     }
 
     /**
@@ -96,6 +97,34 @@ final class AdminAccessTest extends PresenterTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertStringNotContainsString('_fid=', $response->getUrl(), 'the action must not run');
         $this->assertStringContainsString('smazat', $response->getUrl());
+    }
+
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
+    public static function providePlaceholderActions(): iterable
+    {
+        foreach (['Admin:Vehicle', 'Admin:Customer', 'Admin:RentalOffice', 'Admin:CarRental'] as $presenter) {
+            yield "$presenter add" => [$presenter, ['action' => 'add']];
+            yield "$presenter edit" => [$presenter, ['action' => 'edit', 'id' => 1]];
+        }
+    }
+
+    /**
+     * The grids link to add/edit on every list, so each page must answer (with a notice that it is not built yet)
+     * instead of a "page not found".
+     *
+     * @param array<string, mixed> $params
+     */
+    #[DataProvider('providePlaceholderActions')]
+    public function testEveryGridLinkLeadsSomewhere(string $presenter, array $params): void
+    {
+        $this->loginAsAdmin();
+
+        $response = $this->runPresenter($presenter, $params);
+
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertStringContainsString('_fid=', $response->getUrl(), 'a notice explains that the function is missing');
     }
 
     public function testSignOutRefusesGetRequests(): void
