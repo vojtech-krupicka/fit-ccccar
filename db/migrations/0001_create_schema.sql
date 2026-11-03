@@ -27,6 +27,7 @@ CREATE TABLE `employee` (
   `password` CHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_employee_rental_office_idx` (`rental_office_id`),
+  UNIQUE INDEX `uq_customer_email` (`email`),
   CONSTRAINT `fk_employee_rental_office`
     FOREIGN KEY (`rental_office_id`)
     REFERENCES `rental_office` (`id`)
@@ -113,7 +114,8 @@ CREATE TABLE `customer` (
   `country` VARCHAR(64) NOT NULL DEFAULT '',
   `zip` VARCHAR(10) NOT NULL DEFAULT '',
   `created_at` DATETIME NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_customer_email` (`email`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_czech_ci;
 
 CREATE TABLE `car_rental` (

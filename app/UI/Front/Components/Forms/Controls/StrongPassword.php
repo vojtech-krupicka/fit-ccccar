@@ -16,7 +16,7 @@ class StrongPassword
         // Validation will be handled by the rule added to the control below
         $control = $container->addPassword($name, $label);
         $control
-            ->addRule(UI\Form::MinLength, 'Heslo musí být dlouhé alespoň %d znaků!', 5)
+            ->addRule(UI\Form::MinLength, 'Heslo musí být dlouhé alespoň %d znaků!', 10)
             ->addRule(UI\Form::Pattern, 'Heslo musí obsahovat alespoň jedno malé písmeno.', '.*[a-z].*')
             ->addRule(UI\Form::Pattern, 'Heslo musí obsahovat alespoň jedno velké písmeno.', '.*[A-Z].*')
             ->addRule(UI\Form::Pattern, 'Heslo musí obsahovat alespoň jedno číslo.', '.*\d.*')

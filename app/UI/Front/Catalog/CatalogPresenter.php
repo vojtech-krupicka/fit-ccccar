@@ -2,6 +2,7 @@
 
 namespace App\UI\Front\Catalog;
 
+use App\Core\Authentication\Identity;
 use App\Model\CarRental\CarRentalEntity;
 use App\Model\CarRental\CarRentalFacade;
 use App\Model\CarRental\CarRentalFilter;
@@ -199,6 +200,12 @@ final class CatalogPresenter extends Front\BasePresenter
 
     public function reservationFormSucceeded(UI\Form $form, ReservationFormData $values): void
     {
+        $identity = $this->user->getIdentity();
+        if (!$this->user->isLoggedIn() || !$identity instanceof Identity) {
+            $form->addError('Pro rezervaci se musíte přihlásit.');
+            return;
+        }
+
         $rentalOffice = $this->rentalOfficeFacade->get($values->rentalOffice);
         if ($rentalOffice === null || $rentalOffice->id === null) {
             $form->addError('Vybraná pobočka neexistuje.');
@@ -206,10 +213,6 @@ final class CatalogPresenter extends Front\BasePresenter
         }
         if ($this->vehicle === null || $this->vehicle->id === null) {
             $form->addError('Vozidlo nebylo nalezeno.');
-            return;
-        }
-        if ($this->user === null || $this->user->id === null) {
-            $form->addError('Uživatel není přihlášen.');
             return;
         }
 
