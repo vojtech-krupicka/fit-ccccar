@@ -20,14 +20,14 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-6">
-                        <h3 class="panel-title">
+                        <h3 class="panel-title" style="padding: 6px 0;">
                             {$control->heading}
                             <span class="badge badge-light">{$entityList->getMinIndex()} - {$entityList->getMaxIndex()} / {$entityList->getTotalCount()}</span>
                         </h3>
                     </div>
                     <div class="col-md-6">
                         {foreach $control->gridActions as $action}
-                            <a class="btn btn-default btn-xs pull-right" href="{plink $action->target}" title="{$action->title}"><span class="{$action->icon}"></span> {$action->title}</a>
+                            <a class="btn btn-default btn-sm pull-right" href="{plink $action->target}" title="{$action->title}"><span class="{$action->icon}"></span> {$action->title}</a>
                         {/foreach}
                     </div>
                 </div>
