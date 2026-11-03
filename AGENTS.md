@@ -2,10 +2,10 @@
 
 It is my fervent wish that this file guide every AI coding agent working with code in this repository.
 
-This is a **Nette 3.3 web project skeleton** with a Docker development environment, SQL migrations,
-PHPUnit tests against a real test database, and PHPStan level 8. It contains one welcome page and one
-tiny example feature; the application is built on top of it. `README.md` explains setup and the
-checklist for starting a new project from this skeleton.
+This is **CCC Car**, a small car rental web application on Nette 3.3 (a legacy PHP project rewritten as a
+learning project) with a Docker development environment, SQL migrations, PHPUnit tests against a real
+test database, and PHPStan level 8. It has a public part (`Front` module) and an administration
+(`Admin` module). `README.md` explains setup, features, architecture and the known limitations.
 
 ## First: equip your agent
 
@@ -60,18 +60,20 @@ file. This file is a signpost, not the manual.
 ```
 app/
 ├── Bootstrap.php              # Debug mode, config loading (config/local.$APP_ENV.neon)
-├── Core/RouterFactory.php     # URL routing
-├── Model/                     # BaseFacade, BaseEntity, one folder per feature (Example/ is a demo)
-└── Presentation/
-    ├── @layout.latte
-    ├── Home/                  # the welcome page
-    └── Error/                 # Error4xx (templates per status code) and Error5xx (standalone page)
+├── Core/                      # RouterFactory (Czech URLs), authenticators, PostSideEffect attribute
+├── Model/                     # Base classes + one folder per entity (Vehicle, Customer, CarRental, …)
+└── UI/                        # Presenters and templates, one folder per module
+    ├── Front/                 # public part, with its own Components/ (forms)
+    ├── Admin/                 # administration, with its own Components/ (forms, datagrids)
+    ├── Error/                 # Error4xx (templates per status code) and Error5xx (standalone page)
+    └── Shared/Components/     # datagrid, pagination, menus, form factories used by both modules
 config/
 ├── common.neon                # framework configuration, non-secret defaults
-├── services.neon              # DI services + auto-discovery (*Facade, *Factory, …)
+├── services.neon              # DI services + auto-discovery (*Facade, *Factory, *Repository, *DbMapper, …)
 └── local.<dev|test|prod>.neon # per-environment values; dev and prod are git-ignored
-db/                            # migrations/ plus the scripts migrate, dump, restore, test-reset
-tests/                         # bootstrap + DatabaseTestCase, PresenterTestCase and examples
+db/                            # migrations/ plus the scripts migrate, reset, dump, restore, test-reset
+docs/                          # screenshots used in the README
+tests/                         # bootstrap, DatabaseTestCase, PresenterTestCase and the tests
 www/index.php                  # HTTP entry point (the only web-accessible folder)
 ```
 
@@ -103,13 +105,28 @@ create (for example in `temp/` and `log/`) become unwritable for the `dev` user.
   `app/`. Nette's DI scan fails for a class that autoloading cannot find. There is no RobotLoader.
 
 **Model**
-- Facades extend `BaseFacade` and are **not `final`**, so tests can mock them. Entities are `final`,
-  extend `BaseEntity` and implement `fromActiveRow(): static`.
-- `BaseEntity::fromSelection()` returns a **list**, not an array keyed by id. Never use array keys as
-  database ids.
-- Entity ids are `?int` (null until saved). Check for `null` before using a looked-up entity.
+- One chain per entity: `Entity` (final, plain public properties, extends `BaseEntity`) ← `DbMapper`
+  (extends `BaseMapper`, `load()`/`dump()`/`table()`, injected, not static) ← `Repository` (extends
+  `BaseRepository`, queries) ← `Facade` (extends `BaseFacade`, use cases, **not `final`** so tests can
+  mock it). The base classes are generic through PHPDoc `@template` / `@extends`; keep those tags
+  correct, PHPStan depends on them. Nette DI cannot read them, so each concrete class has a small
+  constructor that passes its concrete mapper or repository to the parent.
+- **Presenters and components use facades only**, never repositories or mappers.
+- Searches take an immutable filter object per entity (for example `VehicleFilter`) with a sort enum
+  and `SortDirection`, plus a shared `PageRequest`, and return an `EntityList` (iterable, with paging
+  info). Sort enums are mapped to fixed SQL in the repository; never put request values into `ORDER BY`.
+- Entity ids are `?int` (null until saved), declared once in `BaseEntity`. Check for `null` before
+  using a looked-up entity. `EntityList` is a **list**, not an array keyed by id; use `toPairs()` or
+  `indexBy()` when you need a map.
+- New `*Facade`, `*Repository`, `*DbMapper`, `*Factory` and `*Service` classes are registered by the
+  `search` section in `config/services.neon`; other names must be registered by hand.
 
 **Presenters and templates**
+- Modules `Front` and `Admin` have their own base presenters, which keep the two logins apart (session
+  namespaces `front` / `admin`); admin pages extend `Admin\BaseSecuredPresenter` or check the login
+  themselves. Check `isLoggedIn()`, not just the identity: an identity can outlive an expired login.
+- State-changing actions that are reached by a link or button (delete, sign out) carry
+  `#[PostSideEffect]` (POST and same-origin only).
 - Concrete presenters use constructor injection; shared dependencies of a base presenter use
   `#[Inject]` properties.
 - State set in an `action*()` method goes into a non-nullable, uninitialized property. The action
@@ -117,8 +134,11 @@ create (for example in `temp/` and `log/`) become unwritable for the `dev` user.
 - Links from controls and components to presenters use `{plink}`, not `n:href`.
 - Signals (`handleXxx`) and forms require a same-origin request (Nette 3.3). Anything destructive
   must check that the record exists.
-- AJAX: use Naja (add it yourself), mark links/forms with `class="ajax"` and wrap the redrawn part
-  in a `{snippet}`.
+- AJAX: Naja is installed (`www/assets/js/naja.min.js`); mark links/forms with `class="ajax"` and wrap
+  the redrawn part in a `{snippet}`.
+- Templates do not know PHP namespaces: keep enum and class names out of Latte (give the enum or the
+  component a method instead). Do not use `|noescape` on values from the database; build markup with
+  `Nette\Utils\Html`, which escapes text.
 
 **Configuration**
 - No secrets in `common.neon`. Environment-specific values go in `config/local.<env>.neon`.
@@ -129,7 +149,8 @@ create (for example in `temp/` and `log/`) become unwritable for the `dev` user.
   `local.prod.neon` uses literal values because shared hosting cannot set environment variables.
 
 **Database**
-- Change the schema or the mock data with a **new** numbered migration. Never edit an applied one.
+- Change the schema or the mock data with a **new** numbered migration. Never edit an applied one
+  (the first release was prepared before any deployment, so `0001` and `0002` were still edited then).
   Do not let an editor auto-format the SQL files in `db/migrations/`.
 - Tests use the separate `<MYSQL_DATABASE>_test` database. Never point tests at the development database.
 
@@ -152,11 +173,18 @@ create (for example in `temp/` and `log/`) become unwritable for the `dev` user.
 
 - Any behaviour change needs a test. Run `composer run test` and make sure a new test **fails** when
   the code under test is broken.
-- Base classes: `Tests\DatabaseTestCase` wraps each test in a rolled-back transaction and refuses to
-  run when the database name does not end in `_test`. `Tests\PresenterTestCase` adds
-  `runPresenter()`, `renderPage()`, `submitForm()` and `signal()`.
-- Forms only accept same-origin submissions; `tests/bootstrap.php` sets `Sec-Fetch-Site: same-origin`
-  for that reason.
+- Base classes: `Tests\DatabaseTestCase` wraps each test in a rolled-back transaction with a fresh DI
+  container and refuses to run when the database name does not end in `_test`.
+  `Tests\PresenterTestCase` adds `runPresenter()`, `renderPage()`, `submitForm()`, `signal()`,
+  `followRedirect()` and `loginAs()` / `keepIdentityButLogOut()` (an in-memory login, no PHP session).
+  `Tests\CustomerFixture` creates customers that can really sign in.
+- Each `runPresenter()` call gets its own HTTP request with the given method and the
+  `Sec-Fetch-Site` header (`$this->fetchSite`, default `same-origin`), because Nette checks the real
+  HTTP request. A cross-site request is answered with a redirect, not an error.
+- Nette posts a form control whose name clashes with a DOM property under a different name (a button
+  called `reset` is posted as `_reset`).
+- Test the behaviour you changed in the way a user reaches it: through the presenter and the form.
+  Check that a new test fails when you break the code (mutation check), then restore the code.
 - Many assertions depend on the mock data in the migrations. After changing it, run `composer run test:db`.
 - PHPUnit 13 specifics: use `expectExceptionMessageIs()` (the plain `expectExceptionMessage()` is
   deprecated), and do not call `with()` on a mock method without `expects()`.
