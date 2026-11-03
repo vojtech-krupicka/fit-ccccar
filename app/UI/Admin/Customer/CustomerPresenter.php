@@ -2,6 +2,7 @@
 
 namespace App\UI\Admin\Customer;
 
+use App\Core\Attributes\PostSideEffect;
 use App\Model\Customer\CustomerEntity;
 use App\Model\Customer\CustomerFacade;
 use App\Model\Customer\CustomerFilter;
@@ -27,6 +28,35 @@ final class CustomerPresenter extends Admin\BaseSecuredPresenter
         private readonly CustomerFacade $customerFacade,
         private readonly CustomerDefaultDatagridFactory $defaultDatagridFactory
     ) {}
+
+    #region Other actions
+
+    #[PostSideEffect]
+    public function actionDelete(int $id): void
+    {
+        $customer = $this->customerFacade->get($id);
+        if ($customer === null) {
+            $this->flashMessage("Zákazník s ID {$id} nebyl nalezen.", 'danger');
+        } else {
+            $this->flashMessage("Zákazník s ID {$id} byl smazán (FAKE).");
+        }
+
+        $this->redirect('default');
+    }
+
+    public function actionAdd(): void
+    {
+        $this->flashMessage("Funkcionalita 'přidat zákazníka' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    public function actionEdit(int $id): void
+    {
+        $this->flashMessage("Funkcionalita 'upravit zákazníka #{$id}' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    #endregion
 
     public function actionDefault(
         int $page = 1,

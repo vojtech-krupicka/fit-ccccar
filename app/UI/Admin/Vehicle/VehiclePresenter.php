@@ -2,6 +2,7 @@
 
 namespace App\UI\Admin\Vehicle;
 
+use App\Core\Attributes\PostSideEffect;
 use App\Model\Vehicle\VehicleEntity;
 use App\Model\Vehicle\VehicleFacade;
 use App\Model\Vehicle\VehicleFilter;
@@ -27,6 +28,35 @@ final class VehiclePresenter extends Admin\BaseSecuredPresenter
         private readonly VehicleFacade $vehicleFacade,
         private readonly VehicleDefaultDatagridFactory $defaultDatagridFactory
     ) {}
+
+    #region Other actions
+
+    #[PostSideEffect]
+    public function actionDelete(int $id): void
+    {
+        $vehicle = $this->vehicleFacade->get($id);
+        if ($vehicle === null) {
+            $this->flashMessage("Vozidlo s ID {$id} nebylo nalezeno.", 'danger');
+        } else {
+            $this->flashMessage("Vozidlo s ID {$id} bylo smazáno (FAKE).");
+        }
+
+        $this->redirect('default');
+    }
+
+    public function actionAdd(): void
+    {
+        $this->flashMessage("Funkcionalita 'přidat vozidlo' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    public function actionEdit(int $id): void
+    {
+        $this->flashMessage("Funkcionalita 'upravit vozidlo #{$id}' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    #endregion
 
     public function actionDefault(
         int $page = 1,

@@ -2,6 +2,7 @@
 
 namespace App\UI\Admin\CarRental;
 
+use App\Core\Attributes\PostSideEffect;
 use App\Model\CarRental\CarRentalEntity;
 use App\Model\CarRental\CarRentalFacade;
 use App\Model\CarRental\CarRentalFilter;
@@ -24,9 +25,38 @@ final class CarRentalPresenter extends Admin\BaseSecuredPresenter
     private const DEFAULT_ITEMS_PER_PAGE = 10;
 
     public function __construct(
-        private readonly CarRentalFacade $rentalOfficeFacade,
+        private readonly CarRentalFacade $carRentalFacade,
         private readonly CarRentalDefaultDatagridFactory $defaultDatagridFactory
     ) {}
+
+    #region Other actions
+
+    #[PostSideEffect]
+    public function actionDelete(int $id): void
+    {
+        $carRental = $this->carRentalFacade->get($id);
+        if ($carRental === null) {
+            $this->flashMessage("Výpůjčka s ID {$id} nebyla nalezena.", 'danger');
+        } else {
+            $this->flashMessage("Výpůjčka s ID {$id} byla smazána (FAKE).");
+        }
+
+        $this->redirect('default');
+    }
+
+    public function actionAdd(): void
+    {
+        $this->flashMessage("Funkcionalita 'přidat výpůjčku' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    public function actionEdit(int $id): void
+    {
+        $this->flashMessage("Funkcionalita 'upravit výpůjčku #{$id}' není implementována.", 'warning');
+        $this->redirect('default');
+    }
+
+    #endregion
 
     public function actionDefault(
         int $page = 1,
@@ -42,7 +72,7 @@ final class CarRentalPresenter extends Admin\BaseSecuredPresenter
         );
 
         $pageRequest = new PageRequest(page: $page, itemsPerPage: $this->itemsPerPage);
-        $this->carRentalList = $this->rentalOfficeFacade->find($this->filter, $pageRequest);
+        $this->carRentalList = $this->carRentalFacade->find($this->filter, $pageRequest);
     }
 
     public function renderDefault(): void
