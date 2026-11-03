@@ -80,6 +80,14 @@ final class CatalogReservationTest extends PresenterTestCase
         $this->assertStringContainsString('01.06.2031', $html);
     }
 
+    public function testTheDetailShowsThePriceInsteadOfFree(): void
+    {
+        $html = $this->renderPage($this->runPresenter('Front:Catalog', ['action' => 'detail', 'id' => 1]));
+
+        $this->assertStringContainsString('450Kč', $html);
+        $this->assertStringNotContainsString('ZDARMA', $html);
+    }
+
     public function testUnknownVehicleIsNotFound(): void
     {
         $this->expectException(\Nette\Application\BadRequestException::class);

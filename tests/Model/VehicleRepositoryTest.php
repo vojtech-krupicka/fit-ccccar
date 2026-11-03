@@ -54,19 +54,20 @@ final class VehicleRepositoryTest extends DatabaseTestCase
 
     public function testFindFiltersByPriceRange(): void
     {
-        $this->insertVehicle('CHEAP', 100.0);
-        $this->insertVehicle('MIDDLE', 200.0);
-        $this->insertVehicle('PRICEY', 300.0);
+        // prices far outside the mock data (360 - 1040 Kč per day), so only these vehicles can match
+        $this->insertVehicle('CHEAP', 1.0);
+        $this->insertVehicle('MIDDLE', 7777.0);
+        $this->insertVehicle('PRICEY', 99999.0);
 
-        $list = $this->repository->find(new VehicleFilter(costPerDayFrom: 150.0, costPerDayTo: 250.0), null);
+        $list = $this->repository->find(new VehicleFilter(costPerDayFrom: 5000.0, costPerDayTo: 50000.0), null);
 
         $this->assertSame(['MIDDLE'], array_map(fn(VehicleEntity $v) => $v->model, $list->entities));
     }
 
     public function testFindSortsByPriceInBothDirections(): void
     {
-        $this->insertVehicle('CHEAP', 100.0);
-        $this->insertVehicle('PRICEY', 300.0);
+        $this->insertVehicle('CHEAP', 1.0);
+        $this->insertVehicle('PRICEY', 99999.0);
 
         $descending = $this->repository->find(
             new VehicleFilter(sortBy: VehicleSortBy::CostPerDay, sortDirection: SortDirection::Descending),
@@ -78,7 +79,42 @@ final class VehicleRepositoryTest extends DatabaseTestCase
         );
 
         $this->assertSame('PRICEY', $descending->entities[0]->model);
-        $this->assertSame(0.0, $ascending->entities[0]->costPerDay, 'the mock data is free, so it sorts first');
+        $this->assertSame('CHEAP', $ascending->entities[0]->model);
+    }
+
+    public function testTheMockVehiclesHaveRealisticPrices(): void
+    {
+        $vehicles = $this->repository->find(new VehicleFilter(), null);
+
+        foreach ($vehicles as $vehicle) {
+            $this->assertGreaterThan(0.0, $vehicle->costPerDay, "vehicle #{$vehicle->id} has no daily price");
+            $this->assertGreaterThan(0.0, $vehicle->costPerUnit, "vehicle #{$vehicle->id} has no price per km");
+            $this->assertLessThan($vehicle->costPerDay, $vehicle->costPerUnit, 'a kilometer costs less than a day');
+        }
+    }
+
+    public function testPriceFilterNarrowsTheMockData(): void
+    {
+        $all = $this->repository->find(new VehicleFilter(), null);
+
+        $expensive = $this->repository->find(new VehicleFilter(costPerDayFrom: 800.0), null);
+
+        $this->assertNotEmpty($expensive->entities, 'the mock data has vehicles above 800 Kč per day');
+        $this->assertLessThan($all->getCount(), $expensive->getCount());
+        foreach ($expensive as $vehicle) {
+            $this->assertGreaterThanOrEqual(800.0, $vehicle->costPerDay);
+        }
+    }
+
+    public function testPricePerKilometerCanBeFilteredToo(): void
+    {
+        $list = $this->repository->find(new VehicleFilter(costPerUnitFrom: 5.0, costPerUnitTo: 6.0), null);
+
+        $this->assertNotEmpty($list->entities);
+        foreach ($list as $vehicle) {
+            $this->assertGreaterThanOrEqual(5.0, $vehicle->costPerUnit);
+            $this->assertLessThanOrEqual(6.0, $vehicle->costPerUnit);
+        }
     }
 
     private function insertVehicle(string $model, float $costPerDay): void

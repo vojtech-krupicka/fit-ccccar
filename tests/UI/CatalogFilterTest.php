@@ -48,6 +48,23 @@ final class CatalogFilterTest extends PresenterTestCase
         $this->assertSame(5, $this->itemsOn($this->catalog(['rentalOffice' => 1])));
     }
 
+    public function testThePriceFilterNarrowsTheCatalog(): void
+    {
+        $all = $this->itemsOn($this->catalog());
+        $expensive = $this->itemsOn($this->catalog(['costPerDayFrom' => 800]));
+
+        $this->assertGreaterThan(0, $expensive);
+        $this->assertLessThan($all, $expensive);
+    }
+
+    public function testTheCatalogShowsThePrices(): void
+    {
+        $html = $this->catalog(['sortBy' => 'cost_per_day', 'sortDirection' => 'desc']);
+
+        $this->assertMatchesRegularExpression('/<strong>1040Kč\/den<\/strong>/', $html, 'the most expensive vehicle comes first');
+        $this->assertStringNotContainsString('<strong>0Kč/den', $html);
+    }
+
     public function testAnImpossiblePriceRangeFindsNothing(): void
     {
         $html = $this->catalog(['costPerDayFrom' => 1000000]);
