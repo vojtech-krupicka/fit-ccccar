@@ -3,8 +3,13 @@
 namespace App\UI\Front\Customer;
 
 use App\Core\Authentication\Identity;
+use App\Model\CarRental\CarRentalEntity;
+use App\Model\CarRental\CarRentalFacade;
+use App\Model\CarRental\CarRentalFilter;
+use App\Model\CarRental\CarRentalSortBy;
 use App\Model\Customer\CustomerEntity;
 use App\Model\Customer\CustomerFacade;
+use App\Model\EntityList;
 use App\UI\Front\Components\Forms\Profile\ProfileFormData;
 use App\UI\Front\Components\Forms\Profile\ProfileFormFactory;
 use App\UI\Shared\Components\Forms\ChangePassword\ChangePasswordFormData;
@@ -16,10 +21,16 @@ final class CustomerPresenter extends Front\BasePresenter
 {
     private CustomerEntity $customer;
 
+    /**
+     * @var EntityList<CarRentalEntity>
+     */
+    private ?EntityList $vehicleReservations = null;
+
     public function __construct(
         private readonly ProfileFormFactory $profileFormFactory,
         private readonly ChangePasswordFormFactory $changePasswordFormFactory,
-        private readonly CustomerFacade $customerFacade
+        private readonly CustomerFacade $customerFacade,
+        private readonly CarRentalFacade $carRentalFacade,
     ) {}
 
     public function startup(): void
@@ -109,4 +120,31 @@ final class CustomerPresenter extends Front\BasePresenter
 
         return $form;
     }
+
+    #region Action loans
+
+    public function actionLoans(): void
+    {
+        if ($this->customer === null) {
+            $this->error('Uživatel nebyl nalezen.');
+        }
+
+        $this->vehicleReservations = $this->carRentalFacade->find(
+            new CarRentalFilter(
+                customerId: $this->customer->id,
+                activeOnly: true,
+                sortBy: CarRentalSortBy::Latest,
+            ),
+        );
+    }
+
+    public function renderLoans(): void
+    {
+        $this->template->pageHeading = 'Moje půjčky';
+        $this->addBreadcrumb('Customer:loans', 'Moje půjčky');
+
+        $this->template->reservations = $this->vehicleReservations;
+    }
+
+    #endregion
 }
