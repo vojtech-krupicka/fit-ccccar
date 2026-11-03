@@ -47,7 +47,7 @@ class CarRentalDefaultDatagridFactory
             ->setSortableKey(CarRentalSortBy::Id);
 
         $grid
-            ->addCallableColumn('vehicle', 'Vozidlo', fn(CarRentalEntity $carRental) => $carRental->vehicle->getFullName())
+            ->addCallableColumn('vehicle', 'Vozidlo', fn(CarRentalEntity $carRental) => $carRental->vehicle?->getFullName() ?? '')
             ->setSortableKey(CarRentalSortBy::Vehicle)
             ->addLinkFormatter('Vehicle:edit')
             ->setWidth(ColumnWidth::Width02);
@@ -90,9 +90,9 @@ class CarRentalDefaultDatagridFactory
                 Html::el()->addText('Rezervováno od')->addHtml('<br>')->addText('Rezervováno do'),
                 fn(CarRentalEntity $carRental) =>
                     Html::el()
-                        ->addText($carRental->reservedFrom->format('Y-m-d H:i') ?? '-')
+                        ->addText($carRental->reservedFrom->format('Y-m-d H:i'))
                         ->addHtml('<br>')
-                        ->addText($carRental->reservedTo->format('Y-m-d H:i') ?? '-')
+                        ->addText($carRental->reservedTo->format('Y-m-d H:i'))
             )
             ->setSortableKey(CarRentalSortBy::ReservedFrom);
 

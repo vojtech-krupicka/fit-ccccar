@@ -60,7 +60,7 @@ class CarRentalRepository extends BaseRepository
             }
         }
 
-        $sortDirection = $filter->sortDirection?->toSql() ?? 'ASC';
+        $sortDirection = $filter->sortDirection->toSql();
         switch ($filter->sortBy) {
             case CarRentalSortBy::Latest:
                 $query->order('reserved_at DESC, start_at DESC, end_at DESC');
