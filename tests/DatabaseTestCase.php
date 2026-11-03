@@ -35,5 +35,8 @@ abstract class DatabaseTestCase extends TestCase
     protected function tearDown(): void
     {
         self::container()->getByType(Connection::class)->rollBack();
+        // A fresh container for every test: services created in one test (and the objects they hold,
+        // like the signed-in user) must not leak into the next one.
+        self::$container = null;
     }
 }

@@ -4,18 +4,19 @@ namespace Tests\Core;
 
 use App\Core\Authentication\AdminAuthenticator;
 use App\Core\Authentication\FrontAuthenticator;
-use App\Model\Customer\CustomerEntity;
-use App\Model\Customer\CustomerFacade;
 use App\Model\Employee\EmployeeFacade;
 use Nette\Security\AuthenticationException;
 use Nette\Security\Passwords;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\CustomerFixture;
 use Tests\DatabaseTestCase;
 
 #[CoversClass(FrontAuthenticator::class)]
 #[CoversClass(AdminAuthenticator::class)]
 final class AuthenticatorTest extends DatabaseTestCase
 {
+    use CustomerFixture;
+
     private const PASSWORD = 'Tajne-Heslo-1';
 
     public function testCustomerCanSignInWithTheRightPassword(): void
@@ -64,25 +65,5 @@ final class AuthenticatorTest extends DatabaseTestCase
 
         $this->expectException(AuthenticationException::class);
         self::container()->getByType(AdminAuthenticator::class)->authenticate('customer@example.com', self::PASSWORD);
-    }
-
-    private function createCustomer(string $email): CustomerEntity
-    {
-        $customer = new CustomerEntity(
-            id: null,
-            password: self::container()->getByType(Passwords::class)->hash(self::PASSWORD),
-            email: $email,
-            firstname: 'Test',
-            surname: 'User',
-            identityNumber: '123456789',
-            phone: '123456789',
-            street: 'Street 1',
-            city: 'Praha',
-            zip: '11000',
-            country: 'cz',
-        );
-        $this->assertTrue(self::container()->getByType(CustomerFacade::class)->persist($customer));
-
-        return $customer;
     }
 }

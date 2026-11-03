@@ -4,8 +4,11 @@ namespace Tests;
 
 use App\Core\Authentication\Identity;
 use Nette\Application\IPresenterFactory;
+use Nette\Http\Request as HttpRequest;
+use Nette\Http\UrlScript;
 use Nette\Application\Request;
 use Nette\Application\Response;
+use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
@@ -20,6 +23,9 @@ use Nette\Security\User;
  */
 abstract class PresenterTestCase extends DatabaseTestCase
 {
+    /** Value of the Sec-Fetch-Site header of the simulated browser; set 'cross-site' to simulate a foreign page. */
+    protected string $fetchSite = 'same-origin';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -57,6 +63,15 @@ abstract class PresenterTestCase extends DatabaseTestCase
      */
     protected function runPresenter(string $name, array $params = [], string $method = 'GET', array $post = [], array $files = []): Response
     {
+        // #[Requires(methods: ..., sameOrigin: true)] checks the real HTTP request, not the application one,
+        // so every call gets an HTTP request with the wanted method and Sec-Fetch-Site header.
+        $container = self::container();
+        $container->removeService('http.request');
+        $container->addService('http.request', new HttpRequest(
+            new UrlScript('http://localhost/', '/'),
+            headers: ['Sec-Fetch-Site' => $this->fetchSite],
+            method: $method,
+        ));
         $presenter = self::container()->getByType(IPresenterFactory::class)->createPresenter($name);
         $this->assertInstanceOf(Presenter::class, $presenter);
         $presenter->autoCanonicalize = false;
@@ -84,6 +99,19 @@ abstract class PresenterTestCase extends DatabaseTestCase
     protected function signal(string $presenter, string $signal, array $params = [], string $action = 'default'): Response
     {
         return $this->runPresenter($presenter, ['action' => $action, 'do' => $signal] + $params);
+    }
+
+    /**
+     * Opens the page a redirect leads to, so that the flash messages set before the redirect are rendered.
+     *
+     * @param array<string, mixed> $params
+     */
+    protected function followRedirect(RedirectResponse $redirect, string $presenter, array $params): string
+    {
+        parse_str((string) parse_url($redirect->getUrl(), PHP_URL_QUERY), $query);
+        $this->assertArrayHasKey('_fid', $query, 'The redirect carries no flash messages.');
+
+        return $this->renderPage($this->runPresenter($presenter, $params + ['_fid' => $query['_fid']]));
     }
 
     /** Renders the whole page (layout included) and returns the HTML. */
