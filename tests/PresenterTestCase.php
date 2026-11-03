@@ -2,22 +2,54 @@
 
 namespace Tests;
 
+use App\Core\Authentication\Identity;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\Response;
 use Nette\Application\Responses\TextResponse;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
+use Nette\Security\User;
 
 /**
  * Base class for presenter tests: runs a presenter from the real DI container
  * (against the test database) and returns its response.
  *
- * Add helpers here as the application grows, for example loginAs() once you have authentication,
- * or an upload sandbox (a resources directory under temp/ set in config/local.test.neon).
+ * Every test starts as a guest; call loginAs() to act as a signed-in user. The login lives in memory
+ * (no PHP session), so it never leaks between tests.
  */
 abstract class PresenterTestCase extends DatabaseTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->useUser(new User(new ArrayUserStorage()));
+    }
+
+    protected function loginAs(Identity $identity): void
+    {
+        $storage = new ArrayUserStorage();
+        $storage->saveAuthentication($identity);
+        $this->useUser(new User($storage));
+    }
+
+    /** Simulates an expired "stay signed in" login: the identity is still stored, but isLoggedIn() is false. */
+    protected function keepIdentityButLogOut(Identity $identity): void
+    {
+        $storage = new ArrayUserStorage();
+        $storage->saveAuthentication($identity);
+        $storage->clearAuthentication(false);
+        $this->useUser(new User($storage));
+    }
+
+    /** Replaces the container's user so that presenters created afterwards use it. */
+    private function useUser(User $user): void
+    {
+        $container = self::container();
+        $container->removeService('security.user');
+        $container->addService('security.user', $user);
+    }
+
     /**
      * @param array<string, mixed> $params
      * @param array<string, mixed> $post

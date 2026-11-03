@@ -7,13 +7,20 @@ use Tests\PresenterTestCase;
 
 final class HomePresenterTest extends PresenterTestCase
 {
-    public function testTheWelcomePageRenders(): void
+    public function testTheFrontHomePageRenders(): void
     {
-        $response = $this->runPresenter('Home', ['action' => 'default']);
+        $response = $this->runPresenter('Front:Home', ['action' => 'default']);
 
         $this->assertInstanceOf(TextResponse::class, $response);
         $html = $this->renderPage($response);
-        $this->assertStringContainsString('<title>It works | Nette Skeleton</title>', $html);
-        $this->assertStringContainsString('It works', $html);
+        $this->assertStringContainsString('CCC Car', $html);
+    }
+
+    public function testTheAdminHomeRedirectsGuestsToSignIn(): void
+    {
+        $response = $this->runPresenter('Admin:Home', ['action' => 'default']);
+
+        $this->assertInstanceOf(\Nette\Application\Responses\RedirectResponse::class, $response);
+        $this->assertStringContainsString('prihlaseni', $response->getUrl());
     }
 }

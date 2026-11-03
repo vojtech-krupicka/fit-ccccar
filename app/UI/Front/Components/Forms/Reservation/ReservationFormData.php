@@ -9,10 +9,11 @@ class ReservationFormData
 
     public function __construct(
         public readonly int $rentalOffice,
-        \DateTime $reserveFrom,
-        \DateTime $reserveTo,
+        \DateTimeInterface $reserveFrom,
+        \DateTimeInterface $reserveTo,
     ) {
-        $this->reserveFrom = $reserveFrom->setTime(0, 0, 0);
-        $this->reserveTo = $reserveTo->setTime(23, 59, 59);
+        // the date inputs hand over immutable dates; the entity works with mutable ones
+        $this->reserveFrom = \DateTime::createFromInterface($reserveFrom)->setTime(0, 0, 0);
+        $this->reserveTo = \DateTime::createFromInterface($reserveTo)->setTime(23, 59, 59);
     }
 }
