@@ -1,0 +1,23 @@
+{block content}
+
+<div class="row">
+    <div class="col-md-6">
+        <h3><span class="icon-building"></span> Sídlo společnosti</h3>
+        <address>
+            <strong>{$args->info->fullName|noescape}</strong><br />
+            {$args->info->street|noescape}<br />
+            {$args->info->city|noescape}, {$args->info->zip|noescape}<br />
+            IČO: {$args->info->ico}
+        </address>
+    </div>
+    <div class="col-md-6">
+        <h3><span class="icon-phone-sign"></span> Spojení</h3>
+        <address>
+            tel: {$args->info->phone|noescape}<br />
+            mobil: {$args->info->mobile|noescape}<br />
+            e-mail: <a href="mailto:{$args->info->email}" title="{$args->info->email}">{$args->info->email}</a>
+        </address>
+    </div>
+</div>
+
+<p>Vozidla si můžete vyzvednout na kterékoli z našich poboček. Jejich adresy, telefony i seznam zaměstnanců najdete na stránce <a n:href="Home:offices">Pobočky</a>.</p>

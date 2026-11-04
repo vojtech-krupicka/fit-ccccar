@@ -1,0 +1,8 @@
+{block footer}
+
+    <div class="row copyright">
+        <p>&copy; Vytvořeno {$args->system->yearStart|noescape}{ifset $args->system->yearEnd}-{$args->system->yearEnd|noescape}{/ifset} Všechna práva vyhrazena - <a href="{$args->info->email}" title="{$args->info->email}">{$args->info->email}</a>.</p>
+        <p>Vytvořil <a href="{$args->system->email}" title="{$args->system->email}">{$args->system->author}</a> jako školní projekt. Všechny informace na těchto stránkách jsou smyšlené a autor nenese žádnou zodpovědnost za škody vzniklé používáním těchto stránek.</p>
+    </div>
+
+{/block}

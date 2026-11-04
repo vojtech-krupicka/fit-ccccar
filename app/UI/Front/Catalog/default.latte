@@ -1,0 +1,103 @@
+{block content}
+
+{* {control filterForm} *}
+
+<div class="catalog-filter">
+    {form filterForm}
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-3">{label rentalOffice/}</div>
+                    <div class="col-sm-9">{input rentalOffice}</div>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-3">{label availability/}</div>
+                    <div class="col-sm-9">{input availability}</div>
+                </div>
+            </div>
+       </div>
+       <div class="row">
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-3">{label fuelType/}</div>
+                    <div class="col-sm-9">{input fuelType}</div>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-3">{label color/}</div>
+                    <div class="col-sm-9">{input color}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-4">{label costPerDayFrom/}</div>
+                    <div class="col-sm-4">{input costPerDayFrom}</div>
+                    <div class="col-sm-4">{input costPerDayTo}</div>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-4">{label costPerUnitFrom/}</div>
+                    <div class="col-sm-4">{input costPerUnitFrom}</div>
+                    <div class="col-sm-4">{input costPerUnitTo}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="col-sm-3">{label sortBy/}</div>
+                    <div class="col-sm-6">{input sortBy}</div>
+                    <div class="col-sm-3">{input sortDirection}</div>
+                </div>
+            </div>
+            <div class="col-md-4 form-buttons">
+                <div class="form-group text-right">
+                    {input filter}
+                    {input reset}
+                </div>
+            </div>
+        </div>
+    {/form}
+</div>
+
+{if count($vehicleList) > 0}
+    <div class="row">
+    {control pagination}
+    </div>
+
+    <div class="row catalog-items">
+        <div n:foreach="$vehicleList as $vehicle" class="col-md-3">
+            <div class="item">
+                <h2>
+                    <a title="{$vehicle->getFullName()}" n:href="detail, id: $vehicle->id">{$vehicle->getFullName()}, {$vehicle->color->name|lower}</a>
+                </h2>
+                <a class="image" title="{$vehicle->getFullName()}" n:href="detail, id: $vehicle->id">
+                    <img class="thumbnail" src="{asset '/img/vehicles/default.jpg'}" />
+                </a>
+                <div class="row">
+                    <div class="col-md-6 text-left info">{$vehicle->rentalOffice->name}</div>
+                    <div class="col-md-6 text-right info">Dostupnost:<br /><strong class="text-success">dostupné</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-left info"><strong>{$vehicle->costPerDay}Kč/den</strong></div>
+                    <div class="col-md-6 text-right info"><strong>{$vehicle->costPerUnit}Kč/km</strong></div>
+                </div>
+                <div class="col-md-12 text-center"><a class="btn btn-primary" n:href="detail#borrow, id: $vehicle->id" title="Vypůjčit">Vypůjčit</a></div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="row">
+    {control pagination}
+    </div>
+{else}
+    <div class="alert alert-danger">Nebyla nalezena žádná vozidla!</div>
+{/if}

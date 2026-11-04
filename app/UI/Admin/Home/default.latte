@@ -1,0 +1,52 @@
+{block content}
+
+<p>Vítejte v administračním systému společnosti <strong>{$args->info->company|noescape}</strong>.</p>
+
+<h2>Nápověda k používání</h2>
+
+<ul>
+    <li><a href="#toc_basic">Základní přehled</a></li>
+    <li><a href="#toc_lists">Seznamy a práce s nimi</a></li>
+    <li><a href="#toc_sections">Jednotlivé sekce</a></li>
+    <li><a href="#toc_profile">Můj profil a heslo</a></li>
+    <li><a href="#toc_status">Co zatím nefunguje</a></li>
+</ul>
+
+<h3 id="toc_basic">Základní přehled</h3>
+<p>Hlavní menu administračního systému je v horní části stránky, pod názvem společnosti. Obsahuje položky <em>Domů</em> (tato stránka), <em>Správa výpůjček</em>, <em>Správa vozidel</em>, <em>Správa poboček</em> a <em>Správa zákazníků</em>. Vpravo od menu je odkaz <em>Veřejná sekce</em>, který vede na stránky, které vidí zákazníci.</p>
+<p>V pravém horním rohu je zobrazeno jméno právě přihlášeného zaměstnance a odkazy <em>Můj profil</em> a <em>Odhlásit se</em>. Po skončení práce se vždy odhlaste, aby k datům nemohl přistoupit nikdo nepovolaný. Odhlášení se provádí tlačítkem, nikoli odkazem, a funguje jen z tohoto systému.</p>
+
+<h3 id="toc_lists">Seznamy a práce s nimi</h3>
+<p>Všechny sekce zobrazují data v přehledných tabulkách, které se ovládají stejně:</p>
+<ul>
+    <li><strong>Řazení</strong> – kliknutím na název sloupce, který je označen ikonou šipek, se seznam seřadí podle tohoto sloupce. Opětovným kliknutím se změní směr řazení (vzestupně / sestupně). Aktuální řazení je vidět na ikoně u sloupce.</li>
+    <li><strong>Stránkování</strong> – pod i nad tabulkou je navigace mezi stránkami. U nadpisu tabulky je vidět, které záznamy jsou právě zobrazeny a kolik jich je celkem.</li>
+    <li><strong>Počet záznamů na stránku</strong> – volí se v rozbalovacím seznamu <em>Na stránku</em> (5, 10, 20 nebo 50). Po změně se zobrazí první stránka.</li>
+    <li><strong>Akce u záznamu</strong> – na konci každého řádku jsou ikony pro správu (úpravu) a smazání záznamu. Smazání se vždy potvrzuje a provádí se odesláním formuláře, nikdy pouhým kliknutím na odkaz.</li>
+    <li><strong>Hromadné akce</strong> – u některých seznamů (např. vozidla) je v prvním sloupci zaškrtávací pole. Zaškrtněte jeden nebo více záznamů (horní pole označí všechny záznamy na stránce), vyberte akci ve spodním rozbalovacím seznamu a potvrďte tlačítkem <em>Provést</em>. Výběr se týká jen záznamů zobrazených na aktuální stránce.</li>
+</ul>
+
+<h3 id="toc_sections">Jednotlivé sekce</h3>
+<dl class="dl-horizontal">
+    <dt>Správa výpůjček</dt>
+    <dd>Seznam všech rezervací a výpůjček vozidel. U každé je vidět vozidlo, pobočka, zákazník, zaměstnanec, který vozidlo vydal a převzal, doba rezervace, skutečná doba výpůjčky, ujeté kilometry a cena. Rezervace, která ještě nebyla vydána, nemá vyplněn čas výpůjčky; probíhající výpůjčka nemá vyplněn čas vrácení.</dd>
+    <dt>Správa vozidel</dt>
+    <dd>Seznam vozidel včetně výrobce a modelu, SPZ, počtu ujetých kilometrů, roku výroby, pobočky, paliva, barvy a cen za den a za kilometr.</dd>
+    <dt>Správa poboček</dt>
+    <dd>Seznam poboček s adresou, kontaktními údaji a zodpovědnou osobou.</dd>
+    <dt>Správa zákazníků</dt>
+    <dd>Seznam registrovaných zákazníků s kontaktními údaji a datem registrace. Zákazník se může zaregistrovat sám ve veřejné sekci.</dd>
+</dl>
+
+<h3 id="toc_profile">Můj profil a heslo</h3>
+<p>V sekci <em>Můj profil</em> si každý zaměstnanec může změnit své osobní údaje (e-mail, jméno, příjmení, telefon) a pobočku, na které pracuje. E-mail slouží zároveň jako přihlašovací jméno, proto jej nemůže používat více zaměstnanců; pokud je již obsazen, formulář to oznámí a údaje se neuloží.</p>
+<p>Heslo se mění v témže místě. Je nutné zadat staré heslo a dvakrát nové. Nové heslo musí mít alespoň 10 znaků a obsahovat malé písmeno, velké písmeno, číslo a speciální znak. Hesla se ukládají pouze v zašifrované podobě, nikdo (ani správce) je nemůže přečíst.</p>
+
+<h3 id="toc_status">Co zatím nefunguje</h3>
+<p>Systém je školní projekt a některé části jsou zatím jen ukázkové:</p>
+<ul>
+    <li>Tlačítka <em>Přidat</em>, <em>Upravit</em> a <em>Smazat</em> zobrazí pouze zprávu, že funkce zatím není implementována, a data se nemění.</li>
+    <li>Hromadné akce (aktivovat, deaktivovat, smazat) zatím jen vypíšou, na kterých záznamech by se provedly.</li>
+    <li>Systém neobsahuje správu vlastních stránek, souborů ani galerií.</li>
+</ul>
+<p>Všechna data v systému jsou smyšlená.</p>

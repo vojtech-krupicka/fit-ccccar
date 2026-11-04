@@ -1,0 +1,36 @@
+{block content}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Seznam rezervací/výpujček</h3></div>
+
+            {if count($reservations) > 0}
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th class="col-md-2 text-center">Rezervováno</th>
+                        <th class="col-md-2 text-center">Rezervace od</th>
+                        <th class="col-md-2 text-center">Rezervace do</th>
+                        <th class="col-md-2 text-center">Zapůjčeno</th>
+                        <th class="col-md-2 text-center">Vráceno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr n:foreach="$reservations as $rental" n:class="$rental->endAt === null ? 'warning'">
+                        <td class="text-center">{$rental->reservedAt|date:'d.m.Y H:i'}</td>
+                        <td class="text-center">{$rental->reservedFrom|date:'d.m.Y'}</td>
+                        <td class="text-center">{$rental->reservedTo|date:'d.m.Y'}</td>
+                        <td class="text-center">{ifset $rental->startAt}{$rental->startAt|date:'d.m.Y H:i'}{else}<em>Nevypůjčeno</em>{/ifset}</td>
+                        <td class="text-center">{ifset $rental->endAt}{$rental->endAt|date:'d.m.Y H:i'}{else}<em>Nevráceno</em>{/ifset}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {else}
+            <div class="panel-body">
+                <div class="alert alert-info">Pro daného uživatele nejsou k dispozici žádné rezervace nebo výpůjčky.</div>
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>

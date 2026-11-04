@@ -1,0 +1,67 @@
+{if count($entityList) > 0}
+<table class="table table-bordered table-condensed table-striped" style="margin-bottom: 0px;">
+    <thead>
+        <tr>
+            <th n:if="$control->bulkActions" class="text-center">
+                <input type="checkbox" onclick="document.querySelectorAll('input[name=&quot;bulkActionIds[]&quot;]').forEach(cb => cb.checked = this.checked)">
+            </th>
+            <th n:foreach="$control->columns as $column" n:class="$column->getHeaderCss()">
+                {var $title = $column->title !== null ? $column->title : '&nbsp;'}
+                {if $column->sortableKey === null}
+                    {$title}
+                {else}
+                    {var $sortDirection = $column->sortableKey === $control->sortBy ? $control->sortDirection->opposite() : $control->defaultSortDirection}
+                    {var $sortIcon = $column->sortableKey !== $control->sortBy ? 'icon-sort' : ($control->sortDirection->isAscending() ? 'icon-caret-up' : 'icon-caret-down')}
+                    <a href="{plink this, page: null, sortBy: $column->sortableKey->value, sortDirection: $sortDirection->value}">
+                    {$title}
+                    <span class="{$sortIcon}"></span>
+                    </a>
+                {/if}
+            </th>
+            <th class="text-center" n:if="$control->rowActions">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr n:foreach="$entityList as $entity" n:class="$control->getRowCss($entity, $iterator)">
+            <td n:if="$control->bulkActions" class="text-center">
+                {input bulkActionIds:$entity->id}
+            </td>
+            <td n:foreach="$control->columns as $column" n:class="$column->getCellCss()">
+                {$column->getCellContent($entity) ?? $column->getEmptyValue()}
+            </td>
+            <td class="text-center" n:if="$control->rowActions">
+                {foreach $control->rowActions as $action}
+                    {$action->render($entity)}
+                {/foreach}
+            </td>
+        </tr>
+    </tbody>
+    <tfoot n:if="$control->bulkActions">
+        <tr>
+            <td colspan="{count($control->columns) + 2}">
+                <div class="row row-no-gutters">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            {input bulkAction, class: 'input-sm form-control'}
+                        </div>
+                        <div class="col-md-2">
+                            {input bulkActionSubmit, class: 'btn btn-sm btn-default'}
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+{else}
+<div class="row" style="margin: 20px 0;">
+    <div class="col-md-12">
+        <h4 class="text-center text-danger">{$control->noDataMsg}</h4>
+    </div>
+    <div class="col-md-12 text-center">
+        {foreach $control->gridActions as $action}
+            <a class="btn btn-default" href="{plink $action->target}" title="{$action->title}"><span class="{$action->icon}"></span> {$action->title}</a>
+        {/foreach}
+    </div>
+</div>
+{/if}

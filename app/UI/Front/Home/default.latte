@@ -1,0 +1,38 @@
+{block content}
+
+<p class="lead">Vítejte na stránkách společnosti <strong>{$args->info->fullName|noescape}</strong>. Půjčujeme osobní i užitková vozidla na všech našich pobočkách po celé republice i na Slovensku.</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3><span class="icon-truck"></span> Katalog vozidel</h3>
+        <p>V katalogu najdete všechna vozidla k zapůjčení. Můžete je filtrovat podle pobočky, paliva, barvy a ceny a řadit podle názvu nebo ceny.</p>
+        <p><a class="btn btn-primary" n:href="Catalog:default">Zobrazit katalog</a></p>
+    </div>
+    <div class="col-md-4">
+        <h3><span class="icon-globe"></span> Naše pobočky</h3>
+        <p>Vozidlo si můžete vyzvednout na kterékoli z našich poboček. U každé je uvedena adresa, telefon, e-mail i zaměstnanci, kteří se o vás postarají.</p>
+        <p><a class="btn btn-default" n:href="Home:offices">Zobrazit pobočky</a></p>
+    </div>
+    <div class="col-md-4">
+        <h3><span class="icon-user"></span> Váš účet</h3>
+        {if $user->isLoggedIn()}
+            <p>Jste přihlášeni. Ve svém profilu můžete upravit osobní údaje a změnit heslo.</p>
+            <p><a class="btn btn-default" n:href="Customer:profile">Můj profil</a></p>
+        {else}
+            <p>Pro rezervaci vozidla je potřeba se přihlásit. Pokud ještě nemáte účet, registrace trvá jen chvíli.</p>
+            <p>
+                <a class="btn btn-primary" n:href="SignIn:default">Přihlásit se</a>
+                <a class="btn btn-default" n:href="SignUp:default">Registrace</a>
+            </p>
+        {/if}
+    </div>
+</div>
+
+<h2>Jak si půjčit vozidlo</h2>
+<ol>
+    <li><strong>Vyberte vozidlo.</strong> V katalogu si otevřete detail vozidla, kde uvidíte jeho parametry, cenu za den i za kilometr a seznam již existujících rezervací.</li>
+    <li><strong>Přihlaste se nebo se zaregistrujte.</strong> Rezervovat mohou pouze přihlášení zákazníci.</li>
+    <li><strong>Vytvořte rezervaci.</strong> V detailu vozidla zvolte pobočku a datum, od kdy a do kdy chcete vozidlo mít.</li>
+    <li><strong>Vyzvedněte vozidlo.</strong> Na zvolené pobočce se prokažte občanským průkazem a převezměte vozidlo. Cena se počítá z počtu dnů a ujetých kilometrů.</li>
+</ol>
+<p>Odpovědi na další otázky najdete v <a n:href="Home:faq">často kladených otázkách</a>, podmínky půjčení v <a n:href="Home:conditions">obchodních podmínkách</a> a kontaktní údaje na stránce <a n:href="Home:contact">Kontakt</a>.</p>

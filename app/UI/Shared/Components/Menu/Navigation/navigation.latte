@@ -1,0 +1,9 @@
+{varType array $items}
+
+<li n:foreach="$items as $item" n:class="$item->isActive ? active">
+    {if $item->isLink()}
+        <a href="{plink $item->target, ...$item->args}" title="{$item->title}"><span n:if="$item->icon" class="{$item->icon}"></span> {$item->title}</a>
+    {elseif $item->isButton()}
+        <button class="btn btn-link" form="postForm" formaction="{plink $item->target, ...$item->args}" title="{$item->title}"><span n:if="$item->icon" class="{$item->icon}"></span> {$item->title}</button>
+    {/if}
+</li>

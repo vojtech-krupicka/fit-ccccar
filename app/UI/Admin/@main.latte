@@ -1,0 +1,18 @@
+{block main}
+
+    <h1 n:ifset="$pageHeading">{$pageHeading}</h1>
+
+    {control breadcrumb items: $breadcrumbItems}
+
+    {snippet flashes}
+    <div n:foreach="$flashes as $flash" class="alert alert-dismissable alert-{$flash->type}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p>{$flash->message}</p>
+    </div>
+    {/snippet}
+
+    <article class="page">
+        {include content}
+    </article>
+
+{/block}

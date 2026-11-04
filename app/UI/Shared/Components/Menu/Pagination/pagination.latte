@@ -1,0 +1,22 @@
+<ul n:if="$control->getPageCount() > 1" class="pagination pagination-sm pull-right">
+    {if $control->isFirst()}
+    <li class="disabled"><span class="page-link">Předchozí</span></li>
+    {else}
+    <li><a href="{plink this, page: $control->getPreviousPage()}">Předchozí</a></li>
+    {/if}
+
+    {foreach $items as $step}
+    <li n:class="$control->isActive($step) ? 'active'">
+        <a href="{plink this, page: $step}">{$step}</a>
+    </li>
+    {if isset($items[$iterator->counter0 + 1]) && $items[$iterator->counter0 + 1] > $step + 1}
+        <li class="disabled"><span>...</span></li>
+    {/if}
+    {/foreach}
+
+    {if $control->isLast()}
+    <li class="disabled"><span class="page-link">Další</span></li>
+    {else}
+    <li><a href="{plink this, page: $control->getNextPage()}">Další</a></li>
+    {/if}
+</ul>

@@ -1,0 +1,36 @@
+{
+  "php.validate.enable": true,
+  "php.validate.executablePath": "/usr/local/bin/php",
+  "intelephense.environment.phpVersion": "8.4.0",
+  "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
+  "files.associations": {
+    "*.php": "php"
+  },
+  "files.exclude": {
+    "**/.git": true
+  },
+  "search.exclude": {
+    "vendor": true,
+    "db/dumps": true
+  },
+  "[sql]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": false
+  },
+  "[php]": {
+    "editor.defaultFormatter": "lkrms.pretty-php",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4
+  },
+  "[latte]": {
+    "editor.defaultFormatter": "zraly.latte-formatter",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false
+  },
+  "[json]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": false
+  }
+}

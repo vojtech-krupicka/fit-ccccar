@@ -1,0 +1,63 @@
+parameters:
+	system:
+		author: "Vojtěch Krupička"
+		email: "voker@email.cz"
+		yearStart: 2014
+		debugMode: %debugMode%
+
+	seo:
+		title: "CCC Car"
+		keywords: "půjčovna, shop, e-shop, vozidla"
+		description: "E-shop půjčovny vozidel."
+
+	info:
+		company: "CCC Car"
+		name: "CCC&nbsp;Car"
+		fullName: "CCC&nbsp;Car,&nbsp;s.r.o."
+		url: "https://www.ccccar.example.com"
+		street: "Hlavní&nbsp;ulice&nbsp;123/45"
+		city: "Město 10"
+		zip: "123&nbsp;45"
+		phone: "+420&nbsp;123&nbsp;456&nbsp;789"
+		mobile: "+420&nbsp;123&nbsp;456&nbsp;789"
+		email: "info@cccccar.example.com"
+		ico: "12345678"
+		location:
+			lon: 15.1234
+			lat: 49.9876
+
+
+application:
+	errorPresenter:
+		4xx: Error:Error4xx
+		5xx: Error:Error5xx
+	mapping:
+		*: App\UI\*\**Presenter
+
+
+# dsn, user and password come from config/local.<env>.neon
+database:
+	dsn: '%database.driver%:host=%database.host%;dbname=%database.dbname%'
+	user: %database.user%
+	password: %database.password%
+
+
+latte:
+	strictParsing: yes
+
+
+assets:
+	mapping:
+		default:
+			path: assets
+
+
+session:
+	expiration: 14 days
+	autoStart: smart
+
+
+di:
+	export:
+		parameters: no
+		tags: no

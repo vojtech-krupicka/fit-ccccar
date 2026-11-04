@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="cs">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="{$args->system->author}" />
+    <meta name="keywords" content="{$args->seo->keywords|striptags}" />
+    <meta name="description" content="administrační systém, {$args->seo->description|striptags}" />
+    <meta name="robots" content="noindex, nofollow" />
+    {block meta}{/block}
+
+    <title>.: {$args->info->company}{if $pageHeading} | {$pageHeading|striptags}{/if} :.</title>
+
+    {asset 'css/bootstrap.css'}
+    {asset 'css/bootstrap-theme.css'}
+    {asset 'css/font-awesome.css'}
+    {asset 'css/style.css'}
+    {block css}{/block}
+
+    <link rel="icon" type="image/x-icon" href="{asset? 'images/favicon.ico'}">
+</head>
+
+<body>
+    <form method="post" id="postForm"></form>
+
+    <div id="container-wide">
+        <header>
+            {import '@header.latte'}
+            {include header}
+        </header>
+
+        <main>
+            {import '@main.latte'}
+            {include main}
+        </main>
+
+        <footer>
+            {import '@footer.latte'}
+            {include footer}
+        </footer>
+    </div>
+
+
+    {asset "js/jquery.min.js"}
+    {asset "js/bootstrap.min.js"}
+    {asset "js/netteForms.min.js"}
+    {asset "js/naja.min.js"}
+    {asset "js/app.js"}
+</body>
+
+</html>

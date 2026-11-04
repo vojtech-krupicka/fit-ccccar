@@ -1,11 +1,36 @@
-# Local environment / editor
-*.log
-*.cache
-.idea/
-.vscode/
-*.sublime-*
-Thumbs.db
-.DS_Store
+# Docker and app environment (template: .env.example)
+/.env
 
-# Local config overrides (if you split credentials out of app/config.php)
-app/config.local.php
+# Local DI configuration - holds database credentials, must never be committed
+/config/local.dev.neon
+/config/local.prod.neon
+
+# Deployment settings with the FTP password (template: config/deployment.example.ini)
+/config/deployment.ini
+
+# Writable runtime directories (keep the dir, ignore the contents)
+/temp/*
+!/temp/.gitignore
+!/temp/.htaccess
+!/temp/web.config
+/log/*
+!/log/.gitignore
+!/log/.htaccess
+!/log/web.config
+
+# PHPUnit test cache
+/.phpunit.cache/
+
+# Uploaded content (the .htaccess denies script execution there)
+/www/resources/*
+!/www/resources/.htaccess
+
+# Editors / OS
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+/vendor/
+/db/dumps/*
+!/db/dumps/.gitkeep

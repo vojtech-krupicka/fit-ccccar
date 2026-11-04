@@ -1,0 +1,29 @@
+{block header}
+
+    <div class="row top">
+        <div class="col-md-4">
+            <a class="logo" n:href="Home" title="{$args->info->company}">
+                <h1>{$args->info->company}<span>{if $args->system->debugMode}devel{else}beta{/if}</span></h1>
+                <h2>Jednička v půjčování vozidel všeho druhu!</h2>
+            </a>
+        </div>
+
+        <nav role="navigation" class="pull-right">
+            <ul class="nav nav-pills">
+                <li n:if="$user->isLoggedIn()">
+                    <strong title="{$user->getIdentity()->fullname}"><span class="icon-user"></span> {$user->getIdentity()->fullname}:</strong>
+                </li>
+                {control navigation:frontUser}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row">
+        <nav role="navigation" class="pull-left">
+            <ul class="nav nav-pills">
+                {control navigation:frontMain}
+            </ul>
+        </nav>
+    </div>
+
+{/block}

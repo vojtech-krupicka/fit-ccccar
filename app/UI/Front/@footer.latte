@@ -1,0 +1,47 @@
+{block footer}
+
+    <div class="row">
+        <div class="col-md-7">
+            <h1><span class="icon-question-sign"></span> Důležité odkazy</h1>
+
+            <ul class="pull-left">
+                {control navigation:frontMain}
+            </ul>
+
+            <ul class="pull-left">
+                <li class="list-item-no-style">
+                {if $user->isLoggedIn()}
+                    <strong title="$user->getIdentity()->fullname"><span class="icon-user"></span> {$user->getIdentity()->fullname}:</strong>
+                {else}
+                    <strong><span class="icon-user"></span> Uživatelská sekce</strong>
+                {/if}
+                </li>
+
+                {control navigation:frontUser}
+                <li><em><a n:href=":Admin:Home:default" title="Administrace systému">Administrace systému</a></em></li>
+            </ul>
+        </div>
+        <div class="col-md-5">
+            <h1><span class="icon-envelope"></span> Kontakt</h1>
+            <div class="col-md-6">
+                <address>
+                    {$args->info->fullName|noescape}<br />
+                    {$args->info->street|noescape}<br />
+                    {$args->info->city|noescape}, {$args->info->zip|noescape}
+                </address>
+            </div>
+            <div class="col-md-6">
+                <address>
+                    tel: {$args->info->phone|noescape}<br />
+                    mobil: {$args->info->mobile|noescape}<br />
+                    <a href="mailto:{$args->info->email}" title="{$args->info->email}">{$args->info->email}</a>
+                </address>
+            </div>
+        </div>
+    </div>
+    <div class="row copyright">
+        <p>&copy; Vytvořeno {$args->system->yearStart|noescape}{ifset $args->system->yearEnd}-{$args->system->yearEnd|noescape}{/ifset} Všechna práva vyhrazena - <a href="{$args->info->email}" title="{$args->info->email}">{$args->info->email}</a>.</p>
+        <p>Vytvořil <a href="{$args->system->email}" title="{$args->system->email}">{$args->system->author}</a> jako školní projekt. Všechny informace na těchto stránkách jsou smyšlené a autor nenese žádnou zodpovědnost za škody vzniklé používáním těchto stránek.</p>
+    </div>
+
+{/block}
