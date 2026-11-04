@@ -7,6 +7,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-04
+
 First version of the application: the legacy PHP project rewritten for Nette 3.3 on PHP 8.4.
 
 ### Added
@@ -67,3 +69,6 @@ First version of the application: the legacy PHP project rewritten for Nette 3.3
   jQuery 1.11 are replaced by the maintained 3.4.1 and 3.7.1.
 - The development web port is bound to `127.0.0.1`, so Tracy debug pages are not exposed to the
   local network.
+
+[Unreleased]: https://github.com/vojtech-krupicka/fit-ccccar/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/vojtech-krupicka/fit-ccccar/releases/tag/v1.0.0
